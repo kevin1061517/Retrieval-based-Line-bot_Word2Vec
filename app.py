@@ -159,7 +159,7 @@ def yout_download(_id):
     print('out----'+url)
     return url
 
-def buttons_template_yout(page,keyword,jud):
+def buttons_template_yout(page,keyword):
     confirm_template = TemplateSendMessage(
             alt_text = 'video template',
             template = ConfirmTemplate(
@@ -171,7 +171,7 @@ def buttons_template_yout(page,keyword,jud):
                                     ),
                             PostbackTemplateAction(
                                     label = '再來10部',
-                                    data = 'carousel/{}/{}/{}'.format(page,keyword,jud)
+                                    data = 'carousel/{}/{}'.format(page,keyword)
                                     )
                             ]
                     )
@@ -531,8 +531,7 @@ def handle_postback(event):
         pa += 1
         print('--------af else-------{}'.format(pa))
         keyword = t[2]
-        jud = t[3]
-        t = carousel_template(keyword,jud,page=pa)
+        t = carousel_template(keyword,page=pa)
         line_bot_api.reply_message(
             event.reply_token,
             t)
