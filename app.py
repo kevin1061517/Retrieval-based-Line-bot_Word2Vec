@@ -36,7 +36,6 @@ import json
 from selenium import webdriver
 
 app = Flask(__name__)
-#imgur上傳照片
 client_id = os.getenv('client_id',None)
 client_secret = os.getenv('client_secret',None)
 album_id = os.getenv('album_id',None)
