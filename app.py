@@ -64,7 +64,6 @@ def callback():
             print("ERROR is %s: %s" % (m.property, m.message))
         print("\n")
     except InvalidSignatureError:
-        print('---------error----')
         abort(400)
     return 'OK'
 
@@ -178,7 +177,7 @@ def buttons_template_yout(page,keyword,jud):
     return confirm_template
 
 
-def carousel_template(keyword='japanese',page=0):
+def carousel_template(keyword,page=0):
     pass_url = []
     video_url,title,img_url = youtube_page(keyword)
     if page!=0:
@@ -203,7 +202,7 @@ def carousel_template(keyword='japanese',page=0):
                 action=PostbackTemplateAction(
                     label=title[0][:12],
                     text='請等待一下...',
-                    data = 'video/{}/{}/{}'.format(keyword,pass_url[0])
+                    data = 'video/{}/{}'.format(keyword,pass_url[0])
                 )
             ),
             ImageCarouselColumn(
@@ -211,7 +210,7 @@ def carousel_template(keyword='japanese',page=0):
                 action=PostbackTemplateAction(
                     label=title[1][:12],
                     text='請等待一下...',
-                    data = 'video/{}/{}/{}'.format(keyword,pass_url[1])
+                    data = 'video/{}/{}'.format(keyword,pass_url[1])
                 )
             ),
             ImageCarouselColumn(
@@ -219,7 +218,7 @@ def carousel_template(keyword='japanese',page=0):
                 action=PostbackTemplateAction(
                     label=title[2][:12],
                     text='請等待一下...',
-                    data = 'video/{}/{}/{}'.format(keyword,pass_url[2])
+                    data = 'video/{}/{}'.format(keyword,pass_url[2])
                 )
             ),
             ImageCarouselColumn(
@@ -227,7 +226,7 @@ def carousel_template(keyword='japanese',page=0):
                 action=PostbackTemplateAction(
                     label=title[3][:12],
                     text='請等待一下...',
-                    data = 'video/{}/{}/{}'.format(keyword,pass_url[3])
+                    data = 'video/{}/{}'.format(keyword,pass_url[3])
                 )
             ),
             ImageCarouselColumn(
@@ -235,7 +234,7 @@ def carousel_template(keyword='japanese',page=0):
                 action=PostbackTemplateAction(
                     label=title[4][:12],
                     text='請等待一下...',
-                    data = 'video/{}/{}/{}'.format(keyword,pass_url[4])
+                    data = 'video/{}/{}'.format(keyword,pass_url[4])
                 )
             ),
             ImageCarouselColumn(
@@ -243,7 +242,7 @@ def carousel_template(keyword='japanese',page=0):
                 action=PostbackTemplateAction(
                     label=title[5][:12],
                     text='請等待一下...',
-                    data = 'video/{}/{}/{}'.format(keyword,pass_url[5])
+                    data = 'video/{}/{}'.format(keyword,pass_url[5])
                 )
             ),
             ImageCarouselColumn(
@@ -251,7 +250,7 @@ def carousel_template(keyword='japanese',page=0):
                 action=PostbackTemplateAction(
                     label=title[6][:12],
                     text='請等待一下...',
-                    data = 'video/{}/{}/{}'.format(keyword,pass_url[6])
+                    data = 'video/{}/{}'.format(keyword,pass_url[6])
                 )
             ),
             ImageCarouselColumn(
@@ -259,7 +258,7 @@ def carousel_template(keyword='japanese',page=0):
                 action=PostbackTemplateAction(
                     label=title[7][:12],
                     text='請等待一下...',
-                    data = 'video/{}/{}/{}'.format(keyword,pass_url[7])
+                    data = 'video/{}/{}'.format(keyword,pass_url[7])
                 )
             ),
             ImageCarouselColumn(
@@ -267,7 +266,7 @@ def carousel_template(keyword='japanese',page=0):
                 action=PostbackTemplateAction(
                     label=title[8][:12],
                     text='請等待一下...',
-                    data = 'video/{}/{}/{}'.format(keyword,pass_url[8])
+                    data = 'video/{}/{}'.format(keyword,pass_url[8])
                 )
             ),
             ImageCarouselColumn(
@@ -275,7 +274,7 @@ def carousel_template(keyword='japanese',page=0):
                 action=PostbackTemplateAction(
                     label=title[9][:12],
                     text='請等待一下...',
-                    data = 'video/{}/{}/{}'.format(keyword,pass_url[9])
+                    data = 'video/{}/{}'.format(keyword,pass_url[9])
                 )
             )
         ]
@@ -283,10 +282,7 @@ def carousel_template(keyword='japanese',page=0):
     )
     return [Image_Carousel,buttons_template_yout(page,keyword)]
  
-def porn_video_template(keyword='japanese',jud='xvideo',index=0):
-    judge = ''
-    if jud == 'yout':
-        judge = 'yout'
+def porn_video_template(keyword,index=0):
         video_url,title,img_url = youtube_page(keyword)
         pass_url = video_url[index][32:]
         title = title[index]
@@ -299,32 +295,14 @@ def porn_video_template(keyword='japanese',jud='xvideo',index=0):
             actions=[
                 PostbackTemplateAction(
                     label='觀看~請耐心等待.....',
-                    data = 'video/{}/{}/{}/{}'.format(judge,str(index),keyword,pass_url)
+                    data = 'video/{}/{}/{}'.format(str(index),keyword,pass_url)
                 ),
                 PostbackTemplateAction(
                     label='下一部',
-                    data = 'porn/{}/{}/{}'.format(judge,str(index),keyword)
+                    data = 'porn/{}/{}'.format(str(index),keyword)
                 )
             ]))
-    return buttons_template
-
-
-def get_wiboPic(index,i):
-    print('---fun---{}--{}'.format(index,i))
-    pic = []
-    target_url = 'https://m.weibo.cn/api/container/getIndex?uid=6140485374&luicode=10000011&lfid=100103type%3D1%26q%3D%E7%AC%AC%E4%BA%94%E4%BA%BA%E6%A0%BC&containerid=1076036140485374'
-    rs = requests.session()
-    res = rs.get(target_url).json()
-    try:
-        pic += [i['url'] for i in res['data']['cards'][i]['mblog']['pics']]
-    except KeyError:
-        pic += [i['url'] for i in res['data']['cards'][i]['mblog']['retweeted_status']['pics']]
-    if len(pic) > index and index >= 0:
-        return pic[index]
-    else:
-        return '就這些照片囉!!'
-
-
+        return buttons_template
     
 #更改
 def drink_menu(text):
@@ -577,9 +555,8 @@ def handle_postback(event):
     elif temp[0:4] == 'porn':
         print('------in------')
         t = temp.split('/')
-        judge = t[1]
-        index = int(t[2])
-        keyword = t[3]
+        index = int(t[1])
+        keyword = t[2]
         index += 1
         try:
             buttons_template = porn_video_template(keyword,judge,index)
@@ -589,9 +566,8 @@ def handle_postback(event):
     elif temp[0:5] == 'video':
         t = temp.split('/')
         print('----t-----'+str(t))
-        judge = t[1]
-        keyword = t[2]
-        video_url = t[3]
+        keyword = t[1]
+        video_url = t[2]
         video_url = 'https://www.youtube.com/watch?v={}'.format(video_url)
         video_url,img = yvideo(video_url)
         line_bot_api.reply_message(
@@ -948,7 +924,7 @@ def handle_msg_text(event):
 
     elif re.search(r'yout$',event.message.text.lower())!=None:
         keyword = event.message.text.lower()[:-4]
-        carousel = carousel_template(keyword,jud='yout')
+        carousel = carousel_template(keyword)
         line_bot_api.reply_message(event.reply_token, carousel)
 
 #    供下載影片
