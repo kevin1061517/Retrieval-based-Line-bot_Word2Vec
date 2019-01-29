@@ -588,12 +588,8 @@ def handle_postback(event):
         judge = t[1]
         keyword = t[2]
         video_url = t[3]
-        if judge == 'yout':
-              video_url = 'https://www.youtube.com/watch?v={}'.format(video_url)
-              video_url,img = yvideo(video_url)
-        else:
-            url = 'https://www.xvideos.com/{}/{}'.format(video_url,t[4])
-            video_url,img = update_xvideo(url)
+        video_url = 'https://www.youtube.com/watch?v={}'.format(video_url)
+        video_url,img = yvideo(video_url)
         line_bot_api.reply_message(
                 event.reply_token,
                 VideoSendMessage(
