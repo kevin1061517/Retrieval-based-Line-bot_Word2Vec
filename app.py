@@ -1,4 +1,3 @@
-
 from flask import Flask, request, abort
 from linebot import (
     LineBotApi, WebhookHandler
@@ -30,8 +29,6 @@ import random
 import os,tempfile
 from datetime import timedelta, datetime
 from time import sleep
-from urllib.parse import quote
-from urllib import parse
 import json
 from selenium import webdriver
 
@@ -558,9 +555,6 @@ def integer_word(word):
     else:
         message = TextSendMessage(text=content)
     return message
-
-import pytesseract
-from PIL import Image
 
 @handler.add(PostbackEvent)
 def handle_postback(event):
