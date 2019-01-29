@@ -124,7 +124,6 @@ def get_image_link(search_query):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(chrome_options=chrome_options,executable_path=os.getenv('CHROMEDRIVER_PATH',None))
-#    driver = webdriver.Chrome(executable_path='/app/.chromedriver/bin/chromedriver')
     if search_query[-4:] == 'menu':
         t = search_query[:-4]+'餐點價格'
         url = 'https://www.google.com.tw/search?q='+t+'&rlz=1C1EJFA_enTW773TW779&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjX47mP-IjfAhWC7GEKHcZCD4YQ_AUIDigB&biw=1920&bih=969'
