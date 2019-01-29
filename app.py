@@ -31,6 +31,8 @@ from datetime import timedelta, datetime
 from time import sleep
 import json
 from selenium import webdriver
+from urllib.parse import quote
+from urllib import parse
 
 app = Flask(__name__)
 client_id = os.getenv('client_id',None)
