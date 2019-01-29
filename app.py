@@ -112,35 +112,6 @@ def apple_news():
         content += '{}\n{}\n'.format(title,link)
     return content
 
-def get_image_link(search_query):
-    img_urls = []
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.getenv('GOOGLE_CHROME_BIN',None)
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(chrome_options=chrome_options,executable_path=os.getenv('CHROMEDRIVER_PATH',None))
-    if search_query[-4:] == 'menu':
-        t = search_query[:-4]+'餐點價格'
-        url = 'https://www.google.com.tw/search?q='+t+'&rlz=1C1EJFA_enTW773TW779&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjX47mP-IjfAhWC7GEKHcZCD4YQ_AUIDigB&biw=1920&bih=969'
-    elif search_query[-3:] == 'pic':
-        t = search_query[:-3]
-        url = 'https://www.google.com.tw/search?rlz=1C1EJFA_enTW773TW779&biw=1920&bih=920&tbs=isz%3Alt%2Cislt%3Asvga&tbm=isch&sa=1&ei=1UwFXLa8FsT48QWsvpOQDQ&q='+t+'&oq='+t+'&gs_l=img.3..0l10.10955.19019..20688...0.0..0.65.395.10......3....1..gws-wiz-img.....0..0i24.sGlMLu_Pdf0'
-    driver.get(url)
-    imges = driver.find_elements_by_xpath('//div[contains(@class,"rg_meta notranslate")]')
-    count = 0
-    for img in imges:
-        img_url = json.loads(img.get_attribute('innerHTML'))["ou"]
-        print(str(count)+'--->'+str(img_url))
-        if img_url.startswith('https') == False or (img_url in img_urls) == True or img_url.endswith('jpg') == False:
-            continue
-        else:
-            img_urls.append(img_url)
-            count = count + 1
-            if count > 3:
-                break
-    driver.quit()
-    return img_urls
 
 def youtube_page(keyword):
     url = []
