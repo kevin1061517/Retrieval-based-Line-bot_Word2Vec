@@ -41,8 +41,10 @@ refresh_token = os.getenv('refresh_token',None)
 client = ImgurClient(client_id, client_secret, access_token, refresh_token)
 url = os.getenv('firebase_bot',None)
 fb = firebase.FirebaseApplication(url,None)
-line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN',None))
-handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET', None))
+
+
+line_bot_api = LineBotApi('11qU7hpKf2pg6SAffOnM1HKx1Jl7l9jqo/eSv32VjndNzYA4SXFACrDWLP1g3JmfVfulfrGYHqHKIZEYHY3WCyxXJVYIvA+ZqyaLh+t8/IewIdq8sE+qbtDDiT1NXW93F+O6lMc/K8iK+tWClD7wCgdB04t89/1O/w1cDnyilFU=')
+handler = WebhookHandler('f0edc92a00a146f26f929106f0d18b70')
 
 
 @app.route("/callback", methods=['POST'])
@@ -61,7 +63,12 @@ def callback():
         for m in e.error.details:
             print("ERROR is %s: %s" % (m.property, m.message))
         print("\n")
-    except InvalidSignatureError:
+    except InvalidSignatureError as e:
+        print('---------error----')
+        print("Catch exception from LINE Messaging API: %s\n" % e.message)
+        for m in e.error.details:
+            print("ERROR is %s: %s" % (m.property, m.message))
+        print("\n")
         abort(400)
     return 'OK'
 
@@ -647,6 +654,8 @@ def handle_msg_img(event):
 
     buttons_template = template_img(path)
     line_bot_api.reply_message(event.reply_token,buttons_template)
+
+
 
 # 處理訊息:
 @handler.add(MessageEvent, message=TextMessage)
