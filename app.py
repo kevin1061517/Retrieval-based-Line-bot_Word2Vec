@@ -59,9 +59,9 @@ def callback():
     bodyjson=json.loads(body)
     #app.logger.error("Request body: " + bodyjson['events'][0]['message']['text'])
     app.logger.error("Request body: " + body)
-    
+
     #insertdata
-    add_data = usermessage(
+    add_data = (
             id = bodyjson['events'][0]['message']['id'],
             user_id = bodyjson['events'][0]['source']['userId'],
             message = bodyjson['events'][0]['message']['text'],
