@@ -1,5 +1,4 @@
 beautifulsoup4
-Flask
 line-bot-sdk
 python-firebase
 config
@@ -8,6 +7,12 @@ SpeechRecognition
 pydub
 gunicorn==19.7.1
 selenium==3.8.0
+psycopg2
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+psycopg2
+
 
 
 

@@ -1,4 +1,4 @@
-from flask import Flask, request, abort
+from flask import Flask, request, abort,SQLAlchemy,Manager,Migrate, MigrateCommand
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -52,21 +52,29 @@ handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET', None))
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
-    print('------------in-----------')
     signature = request.headers['X-Line-Signature']
+
     # get request body as text
     body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
+    bodyjson=json.loads(body)
+    #app.logger.error("Request body: " + bodyjson['events'][0]['message']['text'])
+    app.logger.error("Request body: " + body)
+    
+    #insertdata
+    add_data = usermessage(
+            id = bodyjson['events'][0]['message']['id'],
+            user_id = bodyjson['events'][0]['source']['userId'],
+            message = bodyjson['events'][0]['message']['text'],
+            birth_date = datetime.fromtimestamp(int(bodyjson['events'][0]['timestamp'])/1000)
+        )
+    db.session.add(add_data)
+    db.session.commit()
     # handle webhook body
     try:
-        handler.handle(body,signature)
-    except LineBotApiError as e:
-        print("Catch exception from LINE Messaging API: %s\n" % e.message)
-        for m in e.error.details:
-            print("ERROR is %s: %s" % (m.property, m.message))
-        print("\n")
+        handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
+
     return 'OK'
 
 
@@ -140,7 +148,11 @@ def yvideo(url):
     res = requests.get(url)
     soup = bf(res.text,'html.parser')
     t = soup.select('.col-md-8 td a' )
-    url = t[0]['href']
+    c = 0
+    url = t[c]['href']
+    while re.search(r'.*googlevideo.*',url) == None:
+        url = t[c]['href']
+        c += 1
     t = soup.select('.info.col-md-4 img' )
     img = t[0]['src']
     url = re.search(r'.*&title',url).group()[:-6]
