@@ -1,4 +1,4 @@
-from flask import Flask, request, abort,SQLAlchemy,Manager,Migrate, MigrateCommand
+from flask import Flask, request, abort
 from linebot import (
     LineBotApi, WebhookHandler
 )
