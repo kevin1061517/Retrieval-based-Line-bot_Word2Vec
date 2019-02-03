@@ -12,6 +12,11 @@ Flask
 Flask-SQLAlchemy
 Flask-Migrate
 psycopg2
+click==6.7
+itsdangerous
+Jinja2
+MarkupSafe
+Werkzeug
 
 
 
