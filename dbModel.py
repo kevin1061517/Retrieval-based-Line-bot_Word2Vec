@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Aug 23 10:54:15 2017
-
-@author: goingcosme20
-"""
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -12,8 +6,9 @@ from flask_migrate import Migrate, MigrateCommand
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://cecabqbzzhnmvn:ebf5dc46ca1e2337c2b6c1c0471318e7e7fe3a7329339e8d9b205bd1fd73027c@ec2-107-20-185-27.compute-1.amazonaws.com:5432/de4f2jdtp52vub'
-
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy()
+db.init_app(app)
 migrate = Migrate(app, db)
 
 manager = Manager(app)
