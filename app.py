@@ -33,7 +33,7 @@ import json
 from selenium import webdriver
 from urllib.parse import quote
 from urllib import parse
-from dbModel import usermessage
+from dbModel import *
 
 app = Flask(__name__)
 client_id = os.getenv('client_id',None)
