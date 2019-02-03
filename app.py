@@ -655,7 +655,7 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
-    elif event.message.text.low() == 'test':
+    elif event.message.text.lower() == 'test':
         print('-----------in')
         data_UserData = usermessage.query.all()
         history_dic = {}
