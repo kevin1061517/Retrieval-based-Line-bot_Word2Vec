@@ -35,7 +35,7 @@ from urllib.parse import quote
 from urllib import parse
 from dbModel import *
 
-app = Flask(__name__)
+
 client_id = os.getenv('client_id',None)
 client_secret = os.getenv('client_secret',None)
 album_id = os.getenv('album_id',None)
