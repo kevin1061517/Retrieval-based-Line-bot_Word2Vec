@@ -10,7 +10,7 @@ selenium==3.8.0
 psycopg2
 Flask
 Flask-Migrate
-psycopg2
+Flask-SQLAlchemy
 click==6.7
 itsdangerous
 Jinja2
