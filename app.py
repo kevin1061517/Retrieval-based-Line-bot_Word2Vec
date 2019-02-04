@@ -670,10 +670,17 @@ def handle_msg_text(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text= str(history_list)))  
     elif event.message.text.lower() == 'clear':
         print('-----------in')
-        data_UserData = usermessage.drop.all()
+        data_UserData = usermessage.drop_all()
         print('end------------',str(data_UserData))
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text= 'successfully'))  
-              
+          
+    elif event.message.text.lower() == 'input':
+        print('-----------in')
+        data_UserData = usermessage.query.filter_by(message='hi').first()
+        print('end------------',str(data_UserData))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text= str(data_UserData)))  
+           
+        
     elif google_picture(event.message.text) != None:
         image = google_picture(event.message.text)
         line_bot_api.reply_message(event.reply_token,image)
