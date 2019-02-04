@@ -667,7 +667,6 @@ def handle_msg_text(event):
             history_dic['Date'] = _data.birth_date
             history_list.append(history_dic)
             history_dic = {}
-        print(history_list)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text= str(history_list)))  
             
     elif google_picture(event.message.text) != None:
