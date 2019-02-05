@@ -843,17 +843,25 @@ def handle_msg_text(event):
             ),
             body=BoxComponent(
                 layout='vertical',
-                color = '#FFFF00',
                 contents=[
                     # title
-                    TextComponent(text='introduction', weight='bold', size='xl',color='#006400'),
-                    SeparatorComponent(),
+                    TextComponent(text='Content', weight='bold', size='xl',color='#006400'),
+                    SeparatorComponent(margin='xl',color='#000000'),
                     # review
                     TextComponent(
                             text='''現在在練習python各種語法~藉由這次的project，讓我更加熟悉python語法與邏輯，這個LineBot有各種功能，可以把youtube網址拉進來，LineBot會傳來網址影片，你就可以利用右下角的下載鍵，以及抓出菜單等等功能，就可以下載到手機端了😜，如下:\n語法:\n1.阿滴英文yout\n關鍵字後面加上yout，就可以抓出影片了\n2.50嵐menu\n餐廳名字後面加上menu，就可以抓出餐廳單\n3.馬英九pic\n搜尋照片關鍵字加上pic，就可以馬上幫你抓到要搜尋的照片\n -------------------- 18禁 -------------------- \n4.李宗瑞porn\n搜尋關鍵字加上porn，就可以有成人影片彈出來🙏''',
                             size='sm',wrap=True,color='#2E8B57'
                     ),
-                    SeparatorComponent(),
+                    SeparatorComponent(margin='xl',color='#000000'),
+                    TextComponent(
+                            text='承認不勇敢 你能不能別離開很多愛不能重來 我應該釋懷在街頭徘徊 下雨時為你撐傘對你的愛成阻礙 祝福你愉快'
+                            size='sm',wrap=True,color='#2E8B57'
+                    ),
+                    SeparatorComponent(margin='xl',color='#000000'),
+                    TextComponent(
+                            text='承認不勇敢 你能不能別離開很多愛不能重來 我應該釋懷在街頭徘徊 下雨時為你撐傘對你的愛成阻礙 祝福你愉快'
+                            size='sm',wrap=True,color='#2E8B57'
+                    ),
                     # info
                     BoxComponent(
                         layout='vertical',
