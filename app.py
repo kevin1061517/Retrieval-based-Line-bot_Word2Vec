@@ -854,12 +854,12 @@ def handle_msg_text(event):
                     ),
                     SeparatorComponent(margin='xl',color='#000000'),
                     TextComponent(
-                            text='承認不勇敢 你能不能別離開很多愛不能重來 我應該釋懷在街頭徘徊 下雨時為你撐傘對你的愛成阻礙 祝福你愉快'
+                            text='承認不勇敢 你能不能別離開很多愛不能重來 我應該釋懷在街頭徘徊 下雨時為你撐傘對你的愛成阻礙 祝福你愉快',
                             size='sm',wrap=True,color='#2E8B57'
                     ),
                     SeparatorComponent(margin='xl',color='#000000'),
                     TextComponent(
-                            text='承認不勇敢 你能不能別離開很多愛不能重來 我應該釋懷在街頭徘徊 下雨時為你撐傘對你的愛成阻礙 祝福你愉快'
+                            text='承認不勇敢 你能不能別離開很多愛不能重來 我應該釋懷在街頭徘徊 下雨時為你撐傘對你的愛成阻礙 祝福你愉快',
                             size='sm',wrap=True,color='#2E8B57'
                     ),
                     # info
