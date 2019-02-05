@@ -33,7 +33,7 @@ import json
 from selenium import webdriver
 from urllib.parse import quote
 from urllib import parse
-from dbModel import *
+
 
 
 client_id = os.getenv('client_id',None)
@@ -834,17 +834,12 @@ def handle_msg_text(event):
     elif event.message.text.lower() == 'post':
         bubble = BubbleContainer(
             direction='ltr',
-            hero=contents=[
-                    ImageComponent(
+            hero=ImageComponent(
                     url='https://i.imgur.com/Njv6p9P.png',
                     size='full',
                     aspect_ratio='5:3',
                     aspect_mode='cover',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
-                    TextComponent(
-                            text='就可以有成人影片彈出來🙏',
-                            size='lg',wrap=True,color='#2E8B57'
-                    )
             ),
             body=BoxComponent(
                 layout='vertical',
