@@ -658,18 +658,18 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
-    elif event.message.text.lower() == "get":
-        result = fb.get('note',None)
-        result2 = firebase.get('note', None, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=str(result)+str(result2)))
-        
-    elif event.message.text.lower() == "save":
-         data = {'name': 'Ozgur Vatansever', 'age': 26,
-            'created_at': datetime.datetime.now()}
-        snapshot = firebase.post('/users', data)
-        print(snapshot['name'])
+#    elif event.message.text.lower() == "get":
+#        result = fb.get('note',None)
+#        result2 = firebase.get('note', None, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
+#        line_bot_api.reply_message(
+#            event.reply_token,
+#            TextSendMessage(text=str(result)+str(result2)))
+#        
+#    elif event.message.text.lower() == "save":
+#         data = {'name': 'Ozgur Vatansever', 'age': 26,
+#            'created_at': datetime.datetime.now()}
+#         snapshot = firebase.post('/users', data)
+#         print(snapshot['name'])
 #    elif event.message.text.lower() == 'test':
 #        print('-----------in')
 #        data_UserData = usermessage.query.all()
