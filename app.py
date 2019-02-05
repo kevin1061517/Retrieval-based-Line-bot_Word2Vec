@@ -48,7 +48,7 @@ fb = firebase.FirebaseApplication(url,None)
 
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN',None))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET', None))
-
+app = Flask(__name__)
 
 @app.route("/callback", methods=['POST'])
 def callback():
