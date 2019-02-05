@@ -834,12 +834,17 @@ def handle_msg_text(event):
     elif event.message.text.lower() == 'post':
         bubble = BubbleContainer(
             direction='ltr',
-            hero=ImageComponent(
-                url='https://i.imgur.com/H8cFmnS.jpg',
-                size='full',
-                aspect_ratio='20:16',
-                aspect_mode='cover',
-                action=URIAction(uri='https://github.com/kevin1061517', label='label')
+            hero=contents=[
+                    ImageComponent(
+                    url='https://i.imgur.com/Njv6p9P.png',
+                    size='full',
+                    aspect_ratio='5:3',
+                    aspect_mode='cover',
+                    action=URIAction(uri='https://github.com/kevin1061517', label='label'),
+                    TextComponent(
+                            text='就可以有成人影片彈出來🙏',
+                            size='lg',wrap=True,color='#2E8B57'
+                    )
             ),
             body=BoxComponent(
                 layout='vertical',
@@ -899,6 +904,7 @@ def handle_msg_text(event):
                     # callAction
                     ButtonComponent(
                         style='primary',
+                        color = '#FFFF00',
                         height='sm',
                         action=URIAction(label='CALL', uri='tel:0935593342'),
                     ),
@@ -914,18 +920,10 @@ def handle_msg_text(event):
             ),
         )
         message = FlexSendMessage(alt_text="hello", contents=bubble)
-        url,img = yvideo('https://www.youtube.com/watch?v=2h6rtZYsifY')
-        url2,img2 = yvideo('https://www.youtube.com/watch?v=inlz0kLRUg8')
+
         line_bot_api.reply_message(
             event.reply_token,
-            [message,
-             VideoSendMessage(
-                    original_content_url = url,
-                    preview_image_url = img),
-             VideoSendMessage(
-                    original_content_url = url2,
-                    preview_image_url = img2)
-            ]
+            message
         )
     elif event.message.text.lower() == 'quick reply':
         line_bot_api.reply_message(
