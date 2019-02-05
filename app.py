@@ -54,28 +54,31 @@ handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET', None))
 def callback():
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
-
     # get request body as text
     body = request.get_data(as_text=True)
     bodyjson=json.loads(body)
     #app.logger.error("Request body: " + bodyjson['events'][0]['message']['text'])
-    app.logger.error("Request body: " + body)
+#    app.logger.error("Request body: " + body)
     #insertdata
-    print('-----in----------')
-    add_data = usermessage(
-            id = bodyjson['events'][0]['message']['id'],
-            user_id = bodyjson['events'][0]['source']['userId'],
-            message = bodyjson['events'][0]['message']['text'],
-            birth_date = datetime.fromtimestamp(int(bodyjson['events'][0]['timestamp'])/1000)
-        )
-    db.session.add(add_data)
-    db.session.commit()
+#    print('-----in----------')
+#    add_data = usermessage(
+#            id = bodyjson['events'][0]['message']['id'],
+#            user_id = bodyjson['events'][0]['source']['userId'],
+#            message = bodyjson['events'][0]['message']['text'],
+#            birth_date = datetime.fromtimestamp(int(bodyjson['events'][0]['timestamp'])/1000)
+#        )
+#    db.session.add(add_data)
+#    db.session.commit()
     # handle webhook body
     try:
-        handler.handle(body, signature)
+        handler.handle(body,signature)
+    except LineBotApiError as e:
+        print("Catch exception from LINE Messaging API: %s\n" % e.message)
+        for m in e.error.details:
+            print("ERROR is %s: %s" % (m.property, m.message))
+        print("\n")
     except InvalidSignatureError:
         abort(400)
-
     return 'OK'
 
 
@@ -655,37 +658,43 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
-    elif event.message.text.lower() == 'test':
-        print('-----------in')
-        data_UserData = usermessage.query.all()
-        history_dic = {}
-        history_list = []
-        for _data in data_UserData:
-            history_dic['id'] = _data.id
-            history_dic['User_Id'] = _data.user_id
-            history_dic['Mesaage'] = _data.message
-            history_dic['Date'] = _data.birth_date
-            history_list.append(history_dic)
-            history_dic = {}
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text= str(history_list)))  
-    elif event.message.text.lower() == 'clear':
-        print('-----------in')
-        data_UserData = usermessage.query.delete()
-        print('end------------',str(data_UserData))
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text= 'successfully'))  
-    
-    elif event.message.text.lower() == 'clear2':
-        t = db.session.query(usermessage).delete()
-        db.session.commit()
-        print('end------------',str(t))
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text= 'successfully'))  
-              
-    elif event.message.text.lower() == 'input':
-        print('-----------in')
-        data_UserData = usermessage.query.filter_by(message='hi').first()
-        print('end------------',str(data_UserData))
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text= str(data_UserData)))  
-           
+    elif event.message.text.lower() == "get":
+        result = fb.get('note',None)
+        result2 = firebase.get('note', None, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=str(result)+str(result2)))
+        
+    elif event.message.text.lower() == "save":
+         data = {'name': 'Ozgur Vatansever', 'age': 26,
+            'created_at': datetime.datetime.now()}
+        snapshot = firebase.post('/users', data)
+        print(snapshot['name'])
+#    elif event.message.text.lower() == 'test':
+#        print('-----------in')
+#        data_UserData = usermessage.query.all()
+#        history_dic = {}
+#        history_list = []
+#        for _data in data_UserData:
+#            history_dic['id'] = _data.id
+#            history_dic['User_Id'] = _data.user_id
+#            history_dic['Mesaage'] = _data.message
+#            history_dic['Date'] = _data.birth_date
+#            history_list.append(history_dic)
+#            history_dic = {}
+#        line_bot_api.reply_message(event.reply_token,TextSendMessage(text= str(history_list)))  
+#    elif event.message.text.lower() == 'clear':
+#        t = db.session.query(usermessage).delete()
+#        db.session.commit()
+#        print('end------------',str(t))
+#        line_bot_api.reply_message(event.reply_token,TextSendMessage(text= 'successfully'))  
+#              
+#    elif event.message.text.lower() == 'input':
+#        print('-----------in')
+#        data_UserData = usermessage.query.filter_by(message='hi').first()
+#        print('end------------',str(data_UserData))
+#        line_bot_api.reply_message(event.reply_token,TextSendMessage(text= str(data_UserData)))  
+#           
         
     elif google_picture(event.message.text) != None:
         image = google_picture(event.message.text)
@@ -822,11 +831,11 @@ def handle_msg_text(event):
             event.reply_token,
             TextSendMessage(text=content))
  
-    elif event.message.text.lower() == 'descript':
+    elif event.message.text.lower() == 'post':
         bubble = BubbleContainer(
             direction='ltr',
             hero=ImageComponent(
-                url='https://i.imgur.com/gGsD6dy.jpg',
+                url='https://i.imgur.com/H8cFmnS.jpg',
                 size='full',
                 aspect_ratio='20:16',
                 aspect_mode='cover',
@@ -834,6 +843,7 @@ def handle_msg_text(event):
             ),
             body=BoxComponent(
                 layout='vertical',
+                color = '#FFFF00',
                 contents=[
                     # title
                     TextComponent(text='introduction', weight='bold', size='xl',color='#006400'),
@@ -848,10 +858,12 @@ def handle_msg_text(event):
                     BoxComponent(
                         layout='vertical',
                         margin='lg',
+                        color = '#FFFF00',
                         spacing='sm',
                         contents=[
                             BoxComponent(
                                 layout='baseline',
+                                color = '#FFFF00',
                                 spacing='sm',
                                 contents=[
                                     TextComponent(
@@ -872,30 +884,7 @@ def handle_msg_text(event):
                                         flex=1
                                     )
                                 ],
-                            ),
-                            BoxComponent(
-                                layout='baseline',
-                                spacing='sm',
-                                contents=[
-                                    TextComponent(
-                                        text='School',
-                                        color='#000000',
-                                        weight='bold',
-                                        align="end",
-                                        size='xxs',
-                                        flex=5
-                                    ),
-                                    TextComponent(
-                                        text="CCU",
-                                        wrap=True,
-                                        color='#000000',
-                                        align="end",
-                                        weight='bold',
-                                        size='xxs',
-                                        flex=1,
-                                    ),
-                                ],
-                            ),
+                            ), 
                         ],
                     ),
                     SeparatorComponent(),
