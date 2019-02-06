@@ -939,25 +939,20 @@ def handle_msg_text(event):
         big,b539 = lottery()
         big_txt = ''
         b539_txt = ''
-        for t,c in enumerate(big,0):
-            if t%2==0:
-                big_txt+='\n'
-            big_txt += str(c)
-            
+        for t,c in enumerate(big,1):
+            if t%3==0:
+                big_txt += '特別號:'
+            big_txt += str(c+'\n')
         print( big_txt)
         for t,c in enumerate(b539,0):
-            if t%2==0:
-                b539_txt+='\n'
-            b539_txt += str(c)
-            
+            b539_txt ='{}\n'.format(str(c))
         print(b539_txt)
         bubble = BubbleContainer(
             direction='ltr',
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     size='full',
-                    aspect_ratio='5:2',
-                    aspect_mode='cover',
+                    aspect_ratio='3:1',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
             body=BoxComponent(
@@ -970,13 +965,13 @@ def handle_msg_text(event):
                         spacing='sm',
                         contents=[
                             BoxComponent(
-                                layout='baseline',
+                                layout='horizontal',
                                 spacing='sm',
                                 contents=[
                                     IconComponent(
                                         url='https://www.casino5168.com/wp-content/uploads/2017/10/%E5%A4%A7%E6%A8%82%E9%80%8F%E5%B0%81%E9%9D%A2-700x574.jpg',
-                                        size='xl',
-                                        aspect_ratio='5:2',
+                                        size='md',
+                                        aspect_ratio='1:1',
                                       
                                     
                                     ),
@@ -990,13 +985,13 @@ def handle_msg_text(event):
                                 ],
                             ),
                             BoxComponent(
-                                layout='baseline',
+                                layout='horizontal',
                                 spacing='sm',
                                 contents=[
                                     IconComponent(
                                         url='https://i.imgur.com/DQrt8Xz.png',
-                                        size='xl',
-                                        aspect_ratio='5:2',
+                                        size='md',
+                                        aspect_ratio='1:1',
                                      
                                         
                                     ),
