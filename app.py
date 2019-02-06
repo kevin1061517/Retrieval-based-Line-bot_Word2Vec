@@ -943,6 +943,7 @@ def handle_msg_text(event):
             b539_txt += str(c)
             if t%2==0:
                 b539_txt+='/n'
+        print(b539_txt)
         bubble = BubbleContainer(
             direction='ltr',
             hero=ImageComponent(
@@ -965,7 +966,7 @@ def handle_msg_text(event):
                                 spacing='sm',
                                 contents=[
                                     ImageComponent(
-                                        url='https://i.imgur.com/dHc2BDS.gif',
+                                        url='https://www.casino5168.com/wp-content/uploads/2017/10/%E5%A4%A7%E6%A8%82%E9%80%8F%E5%B0%81%E9%9D%A2-700x574.jpg',
                                         size='full',
                                         aspect_ratio='5:2',
                                         aspect_mode='cover',
@@ -985,7 +986,7 @@ def handle_msg_text(event):
                                 spacing='sm',
                                 contents=[
                                     ImageComponent(
-                                        url='https://i.imgur.com/mL7jUIk.gif',
+                                        url='https://i.imgur.com/DQrt8Xz.png',
                                         size='full',
                                         aspect_ratio='5:2',
                                         aspect_mode='cover',
