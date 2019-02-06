@@ -632,14 +632,7 @@ def handle_postback(event):
         t = '上傳失敗'+str(e.args)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=t))
 
-@handler.add(JoinEvent)
-def handle_join(event):
-    newcoming_text = "謝謝邀請我這個linebot來至此群組！！我會當做個位小幫手～"
-#    謝謝邀請我這個ccu linebot來至此群組！！我會當做個位小幫手～<class 'linebot.models.events.JoinEvent'>
-    line_bot_api.reply_message(
-            event.reply_token,
-            TextMessage(text=newcoming_text + str(JoinEvent))
-        )
+
 
 # 處理圖片
 @handler.add(MessageEvent,message=ImageMessage)
@@ -940,7 +933,14 @@ def handle_msg_text(event):
         )
     elif event.message.text.lower() == 'lottery':
         big,b539 = lottery()
-        bit_txt = t for t in big
+        for t,c in enumerate(big,0):
+            big_txt += t
+            if c%2==0:
+                big_txt+='/n'
+        for t,c in enumerate(b539,0):
+            b539_txt += t
+            if c%2==0:
+                b539_txt+='/n'
         bubble = BubbleContainer(
             direction='ltr',
             hero=ImageComponent(
@@ -970,7 +970,7 @@ def handle_msg_text(event):
                                         action=URIAction(uri='https://github.com/kevin1061517', label='label'),
                                     ),
                                     TextComponent(
-                                        text='',
+                                        text=big_txt,
                                         wrap=True,
                                         color='#666666',
                                         size='sm',
@@ -990,7 +990,7 @@ def handle_msg_text(event):
                                         action=URIAction(uri='https://github.com/kevin1061517', label='label'),
                                     ),
                                     TextComponent(
-                                        text="10:00 - 23:00",
+                                        text=b539_txt,
                                         wrap=True,
                                         color='#666666',
                                         size='sm',
