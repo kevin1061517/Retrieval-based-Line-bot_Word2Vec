@@ -933,6 +933,8 @@ def handle_msg_text(event):
         )
     elif event.message.text.lower() == 'lottery':
         big,b539 = lottery()
+        big_txt = ''
+        b539_txt = ''
         for t,c in enumerate(big,0):
             big_txt += t
             if c%2==0:
