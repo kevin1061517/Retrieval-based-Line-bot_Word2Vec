@@ -984,7 +984,7 @@ def handle_msg_text(event):
                                 ],
                             ),
                             BoxComponent(
-                                layout='baseline',
+                                layout='horizontal',
                                 spacing='sm',
                                 contents=[
                                     ImageComponent(
