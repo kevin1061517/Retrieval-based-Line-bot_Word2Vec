@@ -952,7 +952,7 @@ def handle_msg_text(event):
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     size='full',
-                    aspect_ratio='3:1',
+                    aspect_ratio='2:1',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
             body=BoxComponent(
@@ -971,9 +971,9 @@ def handle_msg_text(event):
                                     IconComponent(
                                         url='https://www.casino5168.com/wp-content/uploads/2017/10/%E5%A4%A7%E6%A8%82%E9%80%8F%E5%B0%81%E9%9D%A2-700x574.jpg',
                                         size='md',
-                                        aspect_ratio='1:1',
-                                      
-                                    
+                                        aspect_ratio='1:1',  
+                                        flex=3,
+                                        aspect_ratio='10:10',
                                     ),
                                     TextComponent(
                                         text=big_txt,
@@ -992,8 +992,8 @@ def handle_msg_text(event):
                                         url='https://i.imgur.com/DQrt8Xz.png',
                                         size='md',
                                         aspect_ratio='1:1',
-                                     
-                                        
+                                        flex=3,
+                                        aspect_ratio='10:10',
                                     ),
                                     TextComponent(
                                         text=b539_txt,
