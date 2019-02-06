@@ -945,7 +945,7 @@ def handle_msg_text(event):
             big_txt += str(c+'\n')
         print( big_txt)
         for t,c in enumerate(b539,0):
-            b539_txt ='{}\n'.format(str(c))
+            b539_txt +='{}\n'.format(str(c))
         print(b539_txt)
         bubble = BubbleContainer(
             direction='ltr',
@@ -965,7 +965,7 @@ def handle_msg_text(event):
                         spacing='sm',
                         contents=[
                             BoxComponent(
-                                layout='horizontal',
+                                layout='baseline',
                                 spacing='sm',
                                 contents=[
                                     IconComponent(
@@ -985,7 +985,7 @@ def handle_msg_text(event):
                                 ],
                             ),
                             BoxComponent(
-                                layout='horizontal',
+                                layout='baseline',
                                 spacing='sm',
                                 contents=[
                                     IconComponent(
