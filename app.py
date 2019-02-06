@@ -936,11 +936,11 @@ def handle_msg_text(event):
         big_txt = ''
         b539_txt = ''
         for t,c in enumerate(big,0):
-            big_txt += t
+            big_txt += str(t)
             if c%2==0:
                 big_txt+='/n'
         for t,c in enumerate(b539,0):
-            b539_txt += t
+            b539_txt += str(t)
             if c%2==0:
                 b539_txt+='/n'
         bubble = BubbleContainer(
