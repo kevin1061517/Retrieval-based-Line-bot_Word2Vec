@@ -958,7 +958,7 @@ def handle_msg_text(event):
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    TextComponent(text='Brown Cafe', weight='bold', size='xl'),
+                    TextComponent(text='祝你中獎', weight='bold', size='xl'),
                     BoxComponent(
                         layout='vertical',
                         margin='lg',
@@ -968,18 +968,18 @@ def handle_msg_text(event):
                                 layout='baseline',
                                 spacing='sm',
                                 contents=[
-                                    IconComponent(
+                                   ImageComponent(
                                         url='https://www.casino5168.com/wp-content/uploads/2017/10/%E5%A4%A7%E6%A8%82%E9%80%8F%E5%B0%81%E9%9D%A2-700x574.jpg',
                                         size='md',
                                         aspect_ratio='10:10',
-                                        flex=3,
+                                        flex=4,
                                         
                                     ),
                                     TextComponent(
                                         text=big_txt,
                                         wrap=True,
                                         color='#666666',
-                                        size='sm',
+                                        size='lg',
                                         flex=5
                                     )
                                 ],
@@ -988,18 +988,18 @@ def handle_msg_text(event):
                                 layout='baseline',
                                 spacing='sm',
                                 contents=[
-                                    IconComponent(
+                                    ImageComponent(
                                         url='https://i.imgur.com/DQrt8Xz.png',
                                         size='md',
                                         aspect_ratio='10:10',
-                                        flex=3,
+                                        flex=4,
                                         
                                     ),
                                     TextComponent(
                                         text=b539_txt,
                                         wrap=True,
                                         color='#666666',
-                                        size='sm',
+                                        size='lg',
                                         flex=5,
                                     ),
                                 ],
