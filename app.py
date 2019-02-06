@@ -420,8 +420,8 @@ def lottery():
     t = soup.select('.inner td')
     res2 = requests.get(url2)
     res2.encoding = 'utf-8'
-    soup = bf(re2s.text,'html.parser')
-    t2 = soup.select('.inner td')
+    soup2 = bf(res2.text,'html.parser')
+    t2 = soup2.select('.inner td')
     big = [t[i].text.strip() for i in range(4,10,1)]
     b539 = [t2[i].text.strip() for i in range(3,7,1)]
     return big,b539
