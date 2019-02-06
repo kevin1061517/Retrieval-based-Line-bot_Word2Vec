@@ -971,8 +971,8 @@ def handle_msg_text(event):
                                         url='https://www.casino5168.com/wp-content/uploads/2017/10/%E5%A4%A7%E6%A8%82%E9%80%8F%E5%B0%81%E9%9D%A2-700x574.jpg',
                                         size='md',
                                         aspect_ratio='10:10',
-                                        flex=4,
-                                        
+                                        flex=3,
+                                        gravity='center'
                                     ),
                                     TextComponent(
                                         text=big_txt,
@@ -991,8 +991,8 @@ def handle_msg_text(event):
                                         url='https://i.imgur.com/DQrt8Xz.png',
                                         size='md',
                                         aspect_ratio='10:10',
-                                        flex=4,
-                                        
+                                        flex=3,
+                                        gravity='center'
                                     ),
                                     TextComponent(
                                         text=b539_txt,
