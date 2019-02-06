@@ -418,8 +418,12 @@ def lottery():
     res.encoding = 'utf-8'
     soup = bf(res.text,'html.parser')
     t = soup.select('.inner td')
+    res2 = requests.get(url2)
+    res2.encoding = 'utf-8'
+    soup = bf(re2s.text,'html.parser')
+    t2 = soup.select('.inner td')
     big = [t[i].text.strip() for i in range(4,10,1)]
-    b539 = [t[i].text.strip() for i in range(3,7,1)]
+    b539 = [t2[i].text.strip() for i in range(3,7,1)]
     return big,b539
 
 def check_pic(img_id):
@@ -938,11 +942,12 @@ def handle_msg_text(event):
         for t,c in enumerate(big,0):
             big_txt += str(c)
             if t%2==0:
-                big_txt+='/n'
+                big_txt+='\n'
+        print( big_txt)
         for t,c in enumerate(b539,0):
             b539_txt += str(c)
             if t%2==0:
-                b539_txt+='/n'
+                b539_txt+='\n'
         print(b539_txt)
         bubble = BubbleContainer(
             direction='ltr',
@@ -956,6 +961,7 @@ def handle_msg_text(event):
             body=BoxComponent(
                 layout='vertical',
                 contents=[
+                    TextComponent(text='Brown Cafe', weight='bold', size='xl'),
                     BoxComponent(
                         layout='vertical',
                         margin='lg',
