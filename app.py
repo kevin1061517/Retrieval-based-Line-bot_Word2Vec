@@ -965,8 +965,7 @@ def handle_msg_text(event):
                         spacing='sm',
                         contents=[
                             BoxComponent(
-                                layout='baseline',
-                                spacing='sm',
+                                layout='horizontal',
                                 contents=[
                                    ImageComponent(
                                         url='https://www.casino5168.com/wp-content/uploads/2017/10/%E5%A4%A7%E6%A8%82%E9%80%8F%E5%B0%81%E9%9D%A2-700x574.jpg',
