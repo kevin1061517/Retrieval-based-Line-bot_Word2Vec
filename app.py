@@ -411,6 +411,16 @@ def magazine():
         if(v>4):
             break
     return temp
+def lottery():
+    url = 'https://www.pilio.idv.tw/ltobig/drawlist/drawlist.asp'
+    url2 = 'https://www.pilio.idv.tw/lto539/drawlist/drawlist.asp'
+    res = requests.get(url)
+    res.encoding = 'utf-8'
+    soup = bf(res.text,'html.parser')
+    t = soup.select('.inner td')
+    big = [t[i].text.strip() for i in range(4,10,1)]
+    b539 = [t[i].text.strip() for i in range(3,7,1)]
+    return big,b539
 
 def check_pic(img_id):
     Confirm_template = TemplateSendMessage(
@@ -835,7 +845,7 @@ def handle_msg_text(event):
         bubble = BubbleContainer(
             direction='ltr',
             hero=ImageComponent(
-                    url='https://i.imgur.com/Njv6p9P.png',
+                    url='https://i.imgur.com/qXqg5qA.jpg',
                     size='full',
                     aspect_ratio='5:3',
                     aspect_mode='cover',
@@ -893,6 +903,101 @@ def handle_msg_text(event):
                                     )
                                 ],
                             ), 
+                        ],
+                    ),
+                    SeparatorComponent(),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='sm',
+                contents=[
+                    # callAction, separator, websiteAction
+#                    SpacerComponent(size='sm'),
+                    # callAction
+                    ButtonComponent(
+                        style='primary',
+                        color = '#FFFF00',
+                        height='sm',
+                        action=URIAction(label='CALL', uri='tel:0935593342'),
+                    ),
+                    # separator
+                    SeparatorComponent(),
+                    # websiteAction
+                    ButtonComponent(
+                        style='primary',
+                        height='sm',
+                        action=URIAction(label='BLOG', uri="https://www.pixnet.net/pcard/B0212066")
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
+    elif event.message.text.lower() == 'lottery':
+        big,b539 = lottery()
+        bit_txt = t for t in big
+        bubble = BubbleContainer(
+            direction='ltr',
+            hero=ImageComponent(
+                    url='https://i.imgur.com/9IUzhOT.jpg',
+                    size='full',
+                    aspect_ratio='5:2',
+                    aspect_mode='cover',
+                    action=URIAction(uri='https://github.com/kevin1061517', label='label'),
+            ),
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    BoxComponent(
+                        layout='vertical',
+                        margin='lg',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='baseline',
+                                spacing='sm',
+                                contents=[
+                                    ImageComponent(
+                                        url='https://i.imgur.com/dHc2BDS.gif',
+                                        size='full',
+                                        aspect_ratio='5:2',
+                                        aspect_mode='cover',
+                                        action=URIAction(uri='https://github.com/kevin1061517', label='label'),
+                                    ),
+                                    TextComponent(
+                                        text='',
+                                        wrap=True,
+                                        color='#666666',
+                                        size='sm',
+                                        flex=5
+                                    )
+                                ],
+                            ),
+                            BoxComponent(
+                                layout='baseline',
+                                spacing='sm',
+                                contents=[
+                                    ImageComponent(
+                                        url='https://i.imgur.com/mL7jUIk.gif',
+                                        size='full',
+                                        aspect_ratio='5:2',
+                                        aspect_mode='cover',
+                                        action=URIAction(uri='https://github.com/kevin1061517', label='label'),
+                                    ),
+                                    TextComponent(
+                                        text="10:00 - 23:00",
+                                        wrap=True,
+                                        color='#666666',
+                                        size='sm',
+                                        flex=5,
+                                    ),
+                                ],
+                            ),
                         ],
                     ),
                     SeparatorComponent(),
