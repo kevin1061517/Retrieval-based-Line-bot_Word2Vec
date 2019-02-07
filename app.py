@@ -963,11 +963,13 @@ def handle_msg_text(event):
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     size='full',
-                    aspect_ratio='6:1',
+                    aspectMode = 'cover',
+                    aspect_ratio='2:1',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
             body=BoxComponent(
                 layout='vertical',
+                spacing='sm',
                 contents=[
                     TextComponent(text='祝你中獎', weight='bold', size='md'),
                     BoxComponent(
@@ -994,6 +996,7 @@ def handle_msg_text(event):
                                     )
                                 ],
                             ),
+                            SeparatorComponent(),
                             BoxComponent(
                                 layout='horizontal',
                                 spacing='sm',
@@ -1014,6 +1017,7 @@ def handle_msg_text(event):
                                     ),
                                 ],
                             ),
+                            SeparatorComponent(),
                             BoxComponent(
                                 layout='horizontal',
                                 spacing='sm',
@@ -1048,7 +1052,7 @@ def handle_msg_text(event):
                     # callAction
                     ButtonComponent(
                         style='secondary',
-                        color = '#E93EFF',
+                        color = '#40E0D0',
                         height='sm',
                         action=URIAction(label='CALL', uri='tel:0935593342'),
                     ),
@@ -1056,7 +1060,8 @@ def handle_msg_text(event):
                     SeparatorComponent(),
                     # websiteAction
                     ButtonComponent(
-                        style='primary',
+                        style='secondary',
+                        color = '#40E0D0',
                         height='sm',
                         action=URIAction(label='BLOG', uri="https://www.pixnet.net/pcard/B0212066")
                     )
