@@ -412,19 +412,24 @@ def magazine():
             break
     return temp
 def lottery():
-    url = 'https://www.pilio.idv.tw/ltobig/drawlist/drawlist.asp'
-    url2 = 'https://www.pilio.idv.tw/lto539/drawlist/drawlist.asp'
-    res = requests.get(url)
-    res.encoding = 'utf-8'
-    soup = bf(res.text,'html.parser')
-    t = soup.select('.inner td')
-    res2 = requests.get(url2)
-    res2.encoding = 'utf-8'
-    soup2 = bf(res2.text,'html.parser')
-    t2 = soup2.select('.inner td')
-    big = [t[i].text.strip() for i in range(4,10,1)]
-    b539 = [t2[i].text.strip() for i in range(3,7,1)]
-    return big,b539
+#    url = 'https://www.pilio.idv.tw/ltobig/drawlist/drawlist.asp'
+#    url2 = 'https://www.pilio.idv.tw/lto539/drawlist/drawlist.asp'
+#    url3 = 'https://www.pilio.idv.tw/lto/drawlist/drawlist.asp'
+    name = ['ltobig','lto539','lto']
+    for i in name:
+        url = 'https://www.pilio.idv.tw/{}/drawlist/drawlist.asp'.format(i)
+        res = requests.get(url)
+        res.encoding = 'utf-8'
+        soup = bf(res.text,'html.parser')
+        t = soup.select('.inner td')
+        if i == 'ltobig':
+            big = [t[i].text.strip() for i in range(4,10,1)]
+        elif i == 'lto539':
+            b539 = [t2[i].text.strip() for i in range(3,7,1)]
+        elif i == 'lto':
+            bwei = [t2[i].text.strip() for i in range(3,7,1)]
+
+    return big,b539,bwei
 
 def check_pic(img_id):
     Confirm_template = TemplateSendMessage(
@@ -936,23 +941,29 @@ def handle_msg_text(event):
             message
         )
     elif event.message.text.lower() == 'lottery':
-        big,b539 = lottery()
+        big,b539,bwei = lottery()
         big_txt = ''
         b539_txt = ''
+        bwei = ''
         for t,c in enumerate(big,1):
             if t%3==0:
                 big_txt += '特別號:'
             big_txt += str(c+'\n')
-        print( big_txt)
+
         for t,c in enumerate(b539,0):
             b539_txt +='{}\n'.format(str(c))
-        print(b539_txt)
+
+        for t,c in enumerate(big,1):
+            if t%3==0:
+                bwei += '二區:'
+                bwei += str(c+'\n')
+                
         bubble = BubbleContainer(
             direction='ltr',
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     size='full',
-                    aspect_ratio='4:1',
+                    aspect_ratio='2:1',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
             body=BoxComponent(
@@ -968,7 +979,7 @@ def handle_msg_text(event):
                                 layout='horizontal',
                                 contents=[
                                    ImageComponent(
-                                        url='https://www.casino5168.com/wp-content/uploads/2017/10/%E5%A4%A7%E6%A8%82%E9%80%8F%E5%B0%81%E9%9D%A2-700x574.jpg',
+                                        url='https://i.imgur.com/T6rFvGm.png',
                                         size='md',
                                         aspect_ratio='10:10',
                                         flex=2,
@@ -996,6 +1007,26 @@ def handle_msg_text(event):
                                     ),
                                     TextComponent(
                                         text=b539_txt,
+                                        wrap=True,
+                                        color='#666666',
+                                        size='lg',
+                                        flex=5,
+                                    ),
+                                ],
+                            ),
+                            BoxComponent(
+                                layout='horizontal',
+                                spacing='sm',
+                                contents=[
+                                    ImageComponent(
+                                        url='https://i.imgur.com/nXq6wrd.png',
+                                        size='md',
+                                        aspect_ratio='10:10',
+                                        flex=2,
+                                        gravity='center'
+                                    ),
+                                    TextComponent(
+                                        text=bwei,
                                         wrap=True,
                                         color='#666666',
                                         size='lg',
@@ -1033,7 +1064,6 @@ def handle_msg_text(event):
             ),
         )
         message = FlexSendMessage(alt_text="hello", contents=bubble)
-
         line_bot_api.reply_message(
             event.reply_token,
             message
