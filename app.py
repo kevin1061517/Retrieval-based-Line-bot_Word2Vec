@@ -949,21 +949,21 @@ def handle_msg_text(event):
             if t%3==0:
                 big_txt += '特別號:'
             big_txt += str(c+'\n')
-
+        big_txt = big_txt[:-1]
         for t,c in enumerate(b539,0):
             b539_txt +='{}\n'.format(str(c))
-
+        b539_txt = b539_txt[:-1]
         for t,c in enumerate(big,1):
             if t%3==0:
                 bwei += '二區:'
             bwei +='{}\n'.format(str(c))
-
+        bwei = bwei[:-1]
         bubble = BubbleContainer(
             direction='ltr',
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     aspectMode = 'cover',
-                    aspect_ratio='4:1',
+                    aspect_ratio='20:13',
                     size='full',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
@@ -986,7 +986,7 @@ def handle_msg_text(event):
                                         aspect_ratio='5:5',
                                         flex=2,
                                         gravity='center',
-                                        margin='none'
+                              
                                     ),
                                     TextComponent(
                                         text=big_txt,
@@ -1007,8 +1007,8 @@ def handle_msg_text(event):
                                         size='md',
                                         aspect_ratio='5:5',
                                         flex=2,
-                                        gravity='center',
-                                        margin='none'
+                                        gravity='center'
+                                     
                                     ),
                                     TextComponent(
                                         text=b539_txt,
@@ -1029,8 +1029,8 @@ def handle_msg_text(event):
                                         size='md',
                                         aspect_ratio='5:5',
                                         flex=2,
-                                        gravity='center',
-                                        margin='none'
+                                        gravity='center'
+                                      
                                     ),
                                     TextComponent(
                                         text=bwei,
@@ -1055,7 +1055,7 @@ def handle_msg_text(event):
                     # callAction
                     ButtonComponent(
                         style='secondary',
-                        color = '#40E0D0',
+                        color = '#FFFF77',
                         height='sm',
                         action=URIAction(label='CALL', uri='tel:0935593342'),
                     ),
@@ -1064,7 +1064,7 @@ def handle_msg_text(event):
                     # websiteAction
                     ButtonComponent(
                         style='secondary',
-                        color = '#40E0D0',
+                        color = '#FFFF77',
                         height='sm',
                         action=URIAction(label='BLOG', uri="https://www.pixnet.net/pcard/B0212066")
                     )
