@@ -425,9 +425,9 @@ def lottery():
         if i == 'ltobig':
             big = [t[i].text.strip() for i in range(4,10,1)]
         elif i == 'lto539':
-            b539 = [t2[i].text.strip() for i in range(3,7,1)]
+            b539 = [t[i].text.strip() for i in range(3,7,1)]
         elif i == 'lto':
-            bwei = [t2[i].text.strip() for i in range(3,7,1)]
+            bwei = [t[i].text.strip() for i in range(3,7,1)]
 
     return big,b539,bwei
 
