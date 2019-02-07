@@ -962,9 +962,9 @@ def handle_msg_text(event):
             direction='ltr',
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
-                    size='full',
                     aspectMode = 'cover',
-                    aspect_ratio='2:1',
+                    aspect_ratio='3:1',
+                    margin = 'none',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
             body=BoxComponent(
@@ -975,9 +975,10 @@ def handle_msg_text(event):
                     BoxComponent(
                         layout='vertical',
                         margin='lg',
-                        spacing='sm',
+                        spacing='xs',
                         contents=[
                             BoxComponent(
+                                margin = 'sm',
                                 layout='horizontal',
                                 contents=[
                                    ImageComponent(
@@ -999,7 +1000,7 @@ def handle_msg_text(event):
                             SeparatorComponent(),
                             BoxComponent(
                                 layout='horizontal',
-                                spacing='sm',
+                                margin = 'sm',
                                 contents=[
                                     ImageComponent(
                                         url='https://i.imgur.com/DQrt8Xz.png',
@@ -1020,7 +1021,7 @@ def handle_msg_text(event):
                             SeparatorComponent(),
                             BoxComponent(
                                 layout='horizontal',
-                                spacing='sm',
+                                margin = 'sm',
                                 contents=[
                                     ImageComponent(
                                         url='https://i.imgur.com/nXq6wrd.png',
