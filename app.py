@@ -956,21 +956,20 @@ def handle_msg_text(event):
         for t,c in enumerate(big,1):
             if t%3==0:
                 bwei += '二區:'
-                bwei += str(c+'\n')
             bwei +='{}\n'.format(str(c))
-                
+
         bubble = BubbleContainer(
             direction='ltr',
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     size='full',
-                    aspect_ratio='2:1',
+                    aspect_ratio='6:1',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    TextComponent(text='祝你中獎', weight='bold', size='xl'),
+                    TextComponent(text='祝你中獎', weight='bold', size='md'),
                     BoxComponent(
                         layout='vertical',
                         margin='lg',
@@ -990,7 +989,7 @@ def handle_msg_text(event):
                                         text=big_txt,
                                         wrap=True,
                                         color='#666666',
-                                        size='lg',
+                                        size='md',
                                         flex=5
                                     )
                                 ],
@@ -1010,7 +1009,7 @@ def handle_msg_text(event):
                                         text=b539_txt,
                                         wrap=True,
                                         color='#666666',
-                                        size='lg',
+                                        size='md',
                                         flex=5,
                                     ),
                                 ],
@@ -1030,7 +1029,7 @@ def handle_msg_text(event):
                                         text=bwei,
                                         wrap=True,
                                         color='#666666',
-                                        size='lg',
+                                        size='md',
                                         flex=5,
                                     ),
                                 ],
@@ -1048,8 +1047,8 @@ def handle_msg_text(event):
 #                    SpacerComponent(size='sm'),
                     # callAction
                     ButtonComponent(
-                        style='primary',
-                        color = '#FFFF00',
+                        style='secondary',
+                        color = '#E93EFF',
                         height='sm',
                         action=URIAction(label='CALL', uri='tel:0935593342'),
                     ),
