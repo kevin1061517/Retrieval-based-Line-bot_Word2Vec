@@ -964,12 +964,10 @@ def handle_msg_text(event):
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     aspectMode = 'cover',
                     aspect_ratio='3:1',
-                    margin = 'none',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
             body=BoxComponent(
                 layout='vertical',
-                spacing='sm',
                 contents=[
                     TextComponent(text='祝你中獎', weight='bold', size='md'),
                     BoxComponent(
@@ -986,7 +984,7 @@ def handle_msg_text(event):
                                         size='md',
                                         aspect_ratio='5:5',
                                         flex=2,
-                                        gravity='center'
+                                        gravity='top'
                                     ),
                                     TextComponent(
                                         text=big_txt,
@@ -1007,7 +1005,7 @@ def handle_msg_text(event):
                                         size='md',
                                         aspect_ratio='5:5',
                                         flex=2,
-                                        gravity='center'
+                                        gravity='top'
                                     ),
                                     TextComponent(
                                         text=b539_txt,
@@ -1028,7 +1026,7 @@ def handle_msg_text(event):
                                         size='md',
                                         aspect_ratio='5:5',
                                         flex=2,
-                                        gravity='center'
+                                        gravity='top'
                                     ),
                                     TextComponent(
                                         text=bwei,
