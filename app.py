@@ -957,6 +957,7 @@ def handle_msg_text(event):
             if t%3==0:
                 bwei += '二區:'
                 bwei += str(c+'\n')
+            bwei +='{}\n'.format(str(c))
                 
         bubble = BubbleContainer(
             direction='ltr',
@@ -981,7 +982,7 @@ def handle_msg_text(event):
                                    ImageComponent(
                                         url='https://i.imgur.com/T6rFvGm.png',
                                         size='md',
-                                        aspect_ratio='10:10',
+                                        aspect_ratio='5:5',
                                         flex=2,
                                         gravity='center'
                                     ),
@@ -1001,7 +1002,7 @@ def handle_msg_text(event):
                                     ImageComponent(
                                         url='https://i.imgur.com/DQrt8Xz.png',
                                         size='md',
-                                        aspect_ratio='10:10',
+                                        aspect_ratio='5:5',
                                         flex=2,
                                         gravity='center'
                                     ),
@@ -1021,7 +1022,7 @@ def handle_msg_text(event):
                                     ImageComponent(
                                         url='https://i.imgur.com/nXq6wrd.png',
                                         size='md',
-                                        aspect_ratio='10:10',
+                                        aspect_ratio='5:5',
                                         flex=2,
                                         gravity='center'
                                     ),
