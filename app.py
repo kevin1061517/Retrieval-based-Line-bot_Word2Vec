@@ -963,7 +963,7 @@ def handle_msg_text(event):
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     aspectMode = 'cover',
-                    aspect_ratio='3:1',
+                    aspect_ratio='4:1',
                     size='full',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
@@ -985,7 +985,8 @@ def handle_msg_text(event):
                                         size='md',
                                         aspect_ratio='5:5',
                                         flex=2,
-                                        gravity='center'
+                                        gravity='center',
+                                        margin='none'
                                     ),
                                     TextComponent(
                                         text=big_txt,
@@ -996,7 +997,7 @@ def handle_msg_text(event):
                                     )
                                 ],
                             ),
-                            SeparatorComponent(margin='none'),
+                            SeparatorComponent(),
                             BoxComponent(
                                 layout='horizontal',
                                 margin = 'sm',
@@ -1006,7 +1007,8 @@ def handle_msg_text(event):
                                         size='md',
                                         aspect_ratio='5:5',
                                         flex=2,
-                                        gravity='center'
+                                        gravity='center',
+                                        margin='none'
                                     ),
                                     TextComponent(
                                         text=b539_txt,
@@ -1017,7 +1019,7 @@ def handle_msg_text(event):
                                     ),
                                 ],
                             ),
-                            SeparatorComponent(margin='none'),
+                            SeparatorComponent(),
                             BoxComponent(
                                 layout='horizontal',
                                 margin = 'sm',
@@ -1027,7 +1029,8 @@ def handle_msg_text(event):
                                         size='md',
                                         aspect_ratio='5:5',
                                         flex=2,
-                                        gravity='center'
+                                        gravity='center',
+                                        margin='none'
                                     ),
                                     TextComponent(
                                         text=bwei,
@@ -1040,7 +1043,7 @@ def handle_msg_text(event):
                             ),
                         ],
                     ),
-                    SeparatorComponent(margin='none'),
+                    SeparatorComponent(),
                 ],
             ),
             footer=BoxComponent(
