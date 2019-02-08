@@ -563,21 +563,30 @@ def handle_postback(event):
         r539 = ''
         r3 = ''
         print('---in--------')
-        for i in  random.sample([i for i in range(1,50)],6):
-            big += '{},'.format(i)
-        for i in random.sample([i for i in range(1,40)],5):
-            r539 += '{},'.format(i)
+        for i in  random.sample([str(i) for i in range(1,50)],6):
+            if len(i) !=2 :
+                big += '0{},'.format(i)
+            else:
+                big += '{},'.format(i)
+        for i in random.sample([str(i) for i in range(1,40)],5):
+            if len(i) !=2 :
+                r539 += '0{},'.format(i)
+            else:
+                r539 += '{},'.format(i)
         
-        for i in  random.sample([i for i in range(1,39)],6):
-            r3 += '{},'.format(i)
-        
-        r3 = r3[:-1] + '第二區:{}'.format(random.sample([i for i in range(1,8)],1))
+        for i in  random.sample([str(i) for i in range(1,39)],6):
+            if len(i) !=2 :
+                r3 += '0{},'.format(i)
+            else:
+                r += '{},'.format(i)
+        r3 = r3[:-1] + '\n第二區:0{}'.format(random.sample([i for i in range(1,8)],1))
         bubble = BubbleContainer(
             direction='ltr',
+            hero=TextComponent(text='僅供參考', size='sm',color='#008844'),
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    TextComponent(text='僅供參考', size='sm',color='#00FF00'),
+                    
                     TextComponent(text='幸運號碼', weight='bold', size='xxl',color='#FF0000'),
                     SeparatorComponent(color='#000000'),
                     # review
@@ -597,15 +606,15 @@ def handle_postback(event):
                                         text='大樂透',
                                         color='#000000',
                                         weight='bold',
-                                        size='lg',
-                                        flex=1
+                                        size='md',
+                                        flex=2
                                     ),
                                     TextComponent(
                                         text=big[:-1],
                                         weight='bold',
                                         color='#000000',
                                         size='lg',
-                                        flex=3
+                                        flex=5
                                     )
                                 ],
                             ),
@@ -617,15 +626,15 @@ def handle_postback(event):
                                         text='今彩539',
                                         color='#000000',
                                         weight='bold',
-                                        size='lg',
-                                        flex=1
+                                        size='md',
+                                        flex = 2
                                     ),
                                     TextComponent(
                                         text=r539[:-1],
                                         weight='bold',
                                         color='#000000',
                                         size='lg',
-                                        flex=3
+                                        flex=5
                                     )
                                 ],
                             ),
@@ -637,15 +646,15 @@ def handle_postback(event):
                                         text='威力彩',
                                         color='#000000',
                                         weight='bold',
-                                        size='lg',
-                                        flex=1
+                                        size='md',
+                                        flex=2
                                     ),
                                     TextComponent(
                                         text=r3,
                                         weight='bold',
                                         color='#000000',
                                         size='lg',
-                                        flex=3
+                                        flex=5
                                     )
                                 ],
                             ),
