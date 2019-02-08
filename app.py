@@ -558,6 +558,105 @@ def handle_postback(event):
                 event.reply_token,
                 AudioSendMessage(original_content_url=url,duration=3000)
             )
+    elif temp == 'ball':
+        for i in  random.sample([i for i in range(1,50)],6):
+            big += '{},'.format(i)
+        for i in random.sample([i for i in range(1,40)],5):
+            r539 += '{},'.format(i)
+        
+        for i in  random.sample([i for i in range(1,39)],6):
+            r3 += '{},'.format(i)
+        
+        r3 = r3[:-1] + '第二區:{}'.format(random.sample([i for i in range(1,8)],1))
+        bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text='僅供參考', size='sm',color='#00FF00'),
+                    TextComponent(text='幸運號碼', weight='bold', size='xxl',color='#FF0000'),
+                    SeparatorComponent(color='#000000'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        margin='lg',
+                        color = '#FFFF00',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='baseline',
+                                color = '#FFFF00',
+                                contents=[
+                                    TextComponent(
+                                        text='大樂透',
+                                        color='#000000',
+                                        weight='bold',
+                                        size='lg',
+                                        flex=1
+                                    ),
+                                    TextComponent(
+                                        text=big[:-1],
+                                        weight='bold',
+                                        color='#000000',
+                                        size='lg',
+                                        flex=3
+                                    )
+                                ],
+                            ),
+                            BoxComponent(
+                                layout='baseline',
+                                color = '#FFFF00',
+                                contents=[
+                                    TextComponent(
+                                        text='今彩539',
+                                        color='#000000',
+                                        weight='bold',
+                                        size='lg',
+                                        flex=1
+                                    ),
+                                    TextComponent(
+                                        text=r539[:-1],
+                                        weight='bold',
+                                        color='#000000',
+                                        size='lg',
+                                        flex=3
+                                    )
+                                ],
+                            ),
+                            BoxComponent(
+                                layout='baseline',
+                                color = '#FFFF00',
+                                contents=[
+                                    TextComponent(
+                                        text='威力彩',
+                                        color='#000000',
+                                        weight='bold',
+                                        size='lg',
+                                        flex=1
+                                    ),
+                                    TextComponent(
+                                        text=r3,
+                                        weight='bold',
+                                        color='#000000',
+                                        size='lg',
+                                        flex=3
+                                    )
+                                ],
+                            ),
+                        ],
+                    ),
+                    SeparatorComponent(),
+                ],
+            )
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
 
     elif temp[:8] == 'carousel':
         t = temp.split('/')
@@ -929,7 +1028,7 @@ def handle_msg_text(event):
                     ButtonComponent(
                         style='primary',
                         height='sm',
-                        action=URIAction(label='BLOG', uri="https://www.pixnet.net/pcard/B0212066")
+                        action=PostbackAction(label='開門見喜', data='ball',text='您的幸運號碼...')
                     )
                 ]
             ),
@@ -963,7 +1062,7 @@ def handle_msg_text(event):
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     aspectMode = 'cover',
-                    aspect_ratio='13:3',
+                    aspect_ratio='11:3',
                     size='full',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
