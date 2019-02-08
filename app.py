@@ -964,7 +964,7 @@ def handle_msg_text(event):
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     aspectMode = 'cover',
                     aspect_ratio='7:3',
-                    size='xl',
+                    size='full',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
             body=BoxComponent(
@@ -988,7 +988,6 @@ def handle_msg_text(event):
                                         gravity='center',
                               
                                     ),
-                                    SeparatorComponent(),
                                     TextComponent(
                                         text=big_txt,
                                         wrap=True,
@@ -1011,7 +1010,6 @@ def handle_msg_text(event):
                                         gravity='center'
                                      
                                     ),
-                                    SeparatorComponent(),
                                     TextComponent(
                                         text=b539_txt,
                                         wrap=True,
@@ -1052,15 +1050,6 @@ def handle_msg_text(event):
                 layout='vertical',
                 spacing='xs',
                 contents=[
-                    # callAction, separator, websiteAction
-#                    SpacerComponent(size='sm'),
-                    # callAction
-                    ButtonComponent(
-                        style='secondary',
-                        color = '#FFFF77',
-                        height='sm',
-                        action=URIAction(label='CALL', uri='tel:0935593342'),
-                    ),
                     # websiteAction
                     ButtonComponent(
                         style='secondary',
