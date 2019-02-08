@@ -582,7 +582,7 @@ def handle_postback(event):
         r3 = r3[:-1] + '\n第二區:0{}'.format(random.sample([i for i in range(1,8)],1))
         bubble = BubbleContainer(
             direction='ltr',
-            hero=TextComponent(text='僅供參考', size='sm',color='#008844'),
+            header=TextComponent(text='僅供參考', size='sm',color='#008844'),
             body=BoxComponent(
                 layout='vertical',
                 contents=[
@@ -639,7 +639,7 @@ def handle_postback(event):
                                 ],
                             ),
                             BoxComponent(
-                                layout='baseline',
+                                layout='horizontal',
                                 color = '#FFFF00',
                                 contents=[
                                     TextComponent(
