@@ -579,12 +579,13 @@ def handle_postback(event):
                 r3 += '0{},'.format(i)
             else:
                 r3 += '{},'.format(i)
-        r3 = r3[:-1] + '\n第二區:0{}'.format(random.sample([i for i in range(1,8)],1))
+        r3 = r3[:-1] + '\n第二區:0{}'.format(random.sample([i for i in range(1,8)],1)[0])
         print(r3)
         bubble = BubbleContainer(
             direction='ltr',
             header=BoxComponent(
                 layout='vertical',
+                margin = 'none',
                 contents=[
                         TextComponent(text='僅供參考', size='sm',color='#008844')
                 ]
