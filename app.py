@@ -583,17 +583,10 @@ def handle_postback(event):
         print(r3)
         bubble = BubbleContainer(
             direction='ltr',
-            header=BoxComponent(
-                layout='vertical',
-                margin = 'none',
-                contents=[
-                        TextComponent(text='僅供參考', size='sm',color='#008844')
-                ]
-            ),
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    
+                    TextComponent(text='僅供參考\n', size='sm',color='#008844'),
                     TextComponent(text='幸運號碼', weight='bold', size='xxl',color='#FF0000'),
                     SeparatorComponent(color='#000000'),
                     # review
