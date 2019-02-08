@@ -1025,11 +1025,7 @@ def handle_msg_text(event):
                     # separator
                     SeparatorComponent(),
                     # websiteAction
-                    ButtonComponent(
-                        style='primary',
-                        height='sm',
-                        action=PostbackAction(label='開門見喜', data='ball',text='您的幸運號碼...')
-                    )
+
                 ]
             ),
         )
@@ -1155,6 +1151,12 @@ def handle_msg_text(event):
                         color = '#FFFF77',
                         height='sm',
                         action=URIAction(label='BLOG', uri="https://www.pixnet.net/pcard/B0212066")
+                    ),
+                    SeparatorComponent(color='#000000'),
+                    ButtonComponent(
+                        style='primary',
+                        height='sm',
+                        action=PostbackAction(label='開門見喜', data='ball',text='您的幸運號碼...')
                     )
                 ]
             ),
