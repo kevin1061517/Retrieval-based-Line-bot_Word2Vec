@@ -963,7 +963,7 @@ def handle_msg_text(event):
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     aspectMode = 'cover',
-                    aspect_ratio='7:3',
+                    aspect_ratio='13:3',
                     size='full',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
