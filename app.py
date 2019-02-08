@@ -578,7 +578,7 @@ def handle_postback(event):
             if len(i) !=2 :
                 r3 += '0{},'.format(i)
             else:
-                r += '{},'.format(i)
+                r3 += '{},'.format(i)
         r3 = r3[:-1] + '\n第二區:0{}'.format(random.sample([i for i in range(1,8)],1))
         bubble = BubbleContainer(
             direction='ltr',
