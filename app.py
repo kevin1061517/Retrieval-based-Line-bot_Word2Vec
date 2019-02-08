@@ -559,6 +559,9 @@ def handle_postback(event):
                 AudioSendMessage(original_content_url=url,duration=3000)
             )
     elif temp == 'ball':
+        big = ''
+        r539 = ''
+        r3 = ''
         print('---in--------')
         for i in  random.sample([i for i in range(1,50)],6):
             big += '{},'.format(i)
