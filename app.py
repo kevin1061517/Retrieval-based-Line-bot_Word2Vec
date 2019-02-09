@@ -438,7 +438,7 @@ def lottery_stat(type_lottery,year):
         div = 5
     elif type_lottery == 'daily539':
         div = 7
-    print('----------'+div)
+    print('----------'+str(div))
     url = 'http://lotto.auzonet.com/lotto_balllist_{}_{}.html'.format(type_lottery,year)
     res = requests.get(url)
     res.encoding = 'utf-8'
