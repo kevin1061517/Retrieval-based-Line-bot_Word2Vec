@@ -432,11 +432,11 @@ def lottery():
     return big,b539,bwei
 
 def lottery_stat(type_lottery,year):
-    if type_lottery == 'big-lotto':
+    if type_lottery == '大樂透':
         div = 4
-    elif type_lottery == 'power':
+    elif type_lottery == '威力彩':
         div = 6
-    elif type_lottery == 'daily539':
+    elif type_lottery == '今彩539':
         div = 7
     url = 'http://lotto.auzonet.com/lotto_balllist_{}_{}.html'.format(type_lottery,year)
     res = requests.get(url)
@@ -452,7 +452,7 @@ def lottery_stat(type_lottery,year):
         else:
             num += '{}次\n'.format(i.text.strip())
             star += '{}\n'.format('⭐'*((int(i.text.strip()))//div))
-    print(star)
+    print('----------'+star)
     return num,star
 
 def lottery_year(type_lottery):
