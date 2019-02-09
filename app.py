@@ -640,7 +640,7 @@ def handle_postback(event):
                 contents=[
                     TextComponent(text='爬蟲程式抓取奧索樂透網', size='xs',wrap=True,color='#888888'),
                     TextComponent(text= lot_year+'年各號碼統計', weight='bold', size='xl',color='#000000'),
-                    TextComponent(text= '各個號碼出現次數統計後的結果呈現，透過爬蟲程式免於開網頁慢慢搜尋....', size='xs',color='#888888'),
+                    TextComponent(text= '各個號碼出現次數統計後的結果呈現，透過爬蟲程式免於開網頁慢慢搜尋....', size='xs',wrap=True,color='#888888'),
                     # review
                     SeparatorComponent(color='#000000'),
                     # info
@@ -656,14 +656,24 @@ def handle_postback(event):
                                     TextComponent(
                                         text='號碼   出現次數',
                                         color='#000000',
-                                        gravity = 'center',
                                         size='md'
+                                    ),
+                                    ImageComponent(
+                                        url='https://i.imgur.com/9IUzhOT.jpg',
+                                        aspectMode = 'cover',
+                                        aspect_ratio='11:3',
+                                        size='full',
+                                    ),
+                                    ImageComponent(
+                                        url='https://i.imgur.com/9IUzhOT.jpg',
+                                        aspectMode = 'cover',
+                                        aspect_ratio='33:3',
+                                        size='full',
                                     ),
                                     TextComponent(
                                         text=num[:-1],
                                         color='#000000',
                                         size='lg',
-                                        gravity = 'center',
                                         wrap=True
                                     )
                                 ],
