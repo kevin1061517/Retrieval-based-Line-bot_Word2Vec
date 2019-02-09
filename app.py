@@ -453,7 +453,7 @@ def lottery_stat(type_lottery,year):
         else:
             num += '{}次\n'.format(i.text.strip())
             star += '{}\n'.format('⭐'*((int(i.text.strip()))//div))
-            print('------'+c)
+            print('------'+str(c))
             print(i.text.strip())
     print('----------'+star)
     return num,star
