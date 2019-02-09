@@ -633,8 +633,8 @@ def handle_postback(event):
                 layout='vertical',
                 contents=[
                     TextComponent(text='爬蟲程式抓取奧索樂透網\n', size='sm',wrap=True,color='#008844'),
-                    TextComponent(text= lot_year'年各號碼統計', weight='bold', size='xxl',color='#FF0000'),
-                    TextComponent(text= lot_year'各個號碼出現次數統計後的結果呈現，透過爬蟲程式免於開網頁慢慢搜尋....', size='md',color='#888888'),
+                    TextComponent(text= lot_year+'年各號碼統計', weight='bold', size='xxl',color='#FF0000'),
+                    TextComponent(text= '各個號碼出現次數統計後的結果呈現，透過爬蟲程式免於開網頁慢慢搜尋....', size='md',color='#888888'),
                     # review
                     SeparatorComponent(color='#000000'),
                     # info
