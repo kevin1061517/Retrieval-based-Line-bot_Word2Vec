@@ -586,7 +586,7 @@ def handle_postback(event):
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    TextComponent(text='僅供參考\n', size='sm',color='#008844'),
+                    TextComponent(text='僅供參考\n', size='sm',wrap=True,color='#008844'),
                     TextComponent(text='幸運號碼', weight='bold', size='xxl',color='#FF0000'),
                     SeparatorComponent(color='#000000'),
                     # review
@@ -612,7 +612,7 @@ def handle_postback(event):
                                     TextComponent(
                                         text=big[:-1],
                                         weight='bold',
-                                        color='#000000',
+                                        color='#FF3333',
                                         size='lg',
                                         flex=5
                                     )
@@ -632,7 +632,7 @@ def handle_postback(event):
                                     TextComponent(
                                         text=r539[:-1],
                                         weight='bold',
-                                        color='#000000',
+                                        color='#FF3333',
                                         size='lg',
                                         flex=5
                                     )
@@ -647,22 +647,43 @@ def handle_postback(event):
                                         color='#000000',
                                         weight='bold',
                                         size='md',
+                                        gravity = 'center',
                                         flex=2
                                     ),
                                     TextComponent(
                                         text=r3,
                                         weight='bold',
-                                        color='#000000',
+                                        color='#FF3333',
                                         size='lg',
                                         wrap=True,
                                         flex=5
                                     )
                                 ],
                             ),
+                            
                         ],
                     ),
                 ],
-            )
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='xs',
+                contents=[
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color = '#FFFF77',
+                        height='sm',
+                        action=URIAction(label='各號碼機率分布', uri="https://www.pixnet.net/pcard/B0212066")
+                    ),
+                    SeparatorComponent(color='#000000'),
+                    ButtonComponent(
+                        style='primary',
+                        height='sm',
+                        action=PostbackAction(label='再來一組', data='ball',text='好運到來...')
+                    )
+                ]
+            ),
         )
         message = FlexSendMessage(alt_text="hello", contents=bubble)
 
