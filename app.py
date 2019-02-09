@@ -442,8 +442,7 @@ def lottery_stat(type_lottery,year):
         if c%3 == 2:
             continue
         elif c%3 == 1:
-            num += i.text.strip()+'        '
-            star += '{}\n'.format('⭐'*((int(i.text.strip()))//7))
+            num += i.text.strip()+'         '
         else:
             num += '{}次\n'.format(i.text.strip())
             star += '{}\n'.format('⭐'*((int(i.text.strip()))//7))
