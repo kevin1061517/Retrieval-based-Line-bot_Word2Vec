@@ -442,11 +442,12 @@ def lottery_stat(type_lottery,year):
         if c%3 == 2:
             continue
         elif c%3 == 1:
-            num += i.text.strip()+'      '
+            num += i.text.strip()
+            star += '{}\n'.format('⭐'*int(i.text.strip()))
         else:
             num += '{}次\n'.format(i.text.strip())
-            print('---------'+str(i.text.strip()))
-            star += '{}\n'.format('⭐'*len(i.text.strip()))
+            star += '{}\n'.format('⭐'*int(i.text.strip()))
+    print(star)
     return num,star
 
 def lottery_year(type_lottery):
@@ -657,7 +658,7 @@ def handle_postback(event):
                                 layout='vertical',
                                 contents=[
                                     TextComponent(
-                                        text='號碼   出現次數',
+                                        text='號碼 出現次數',
                                         color='#000000',
                                         size='md'
                                     ),
@@ -676,7 +677,8 @@ def handle_postback(event):
                                                     TextComponent(
                                                             text=star,
                                                             color='#000000',
-                                                            size='md'
+                                                            size='xxs',
+                                                            wrap=True
                                                     )
                                             ]
                                     )
