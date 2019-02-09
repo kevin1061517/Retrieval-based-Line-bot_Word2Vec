@@ -441,9 +441,9 @@ def lottery_stat(type_lottery,year):
         if c%3 == 2:
             continue
         elif c%3 == 1:
-            num += i.text.strip()+'---->'
+            num += i.text.strip()+'      '
         else:
-            num += i.text.strip()+'\n'
+            num += '{}次\n'.format(i.text.strip())
     return num
 
 def lottery_year(type_lottery):
@@ -459,7 +459,7 @@ def lottery_year(type_lottery):
         columns=[
             CarouselColumn(
                 thumbnail_image_url='https://i.imgur.com/zp75S87.jpg',
-                title=t+'各個年份的統計',
+                title=t+'--各個年份的統計',
                 text='請選擇年份',
                 actions=[
                     PostbackTemplateAction(
@@ -638,9 +638,9 @@ def handle_postback(event):
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    TextComponent(text='爬蟲程式抓取奧索樂透網\n', size='sm',wrap=True,color='#008844'),
-                    TextComponent(text= lot_year+'年各號碼統計', weight='bold', size='xxl',color='#FF0000'),
-                    TextComponent(text= '各個號碼出現次數統計後的結果呈現，透過爬蟲程式免於開網頁慢慢搜尋....', size='md',color='#888888'),
+                    TextComponent(text='爬蟲程式抓取奧索樂透網', size='xs',wrap=True,color='#888888'),
+                    TextComponent(text= lot_year+'年各號碼統計', weight='bold', size='xl',color='#000000'),
+                    TextComponent(text= '各個號碼出現次數統計後的結果呈現，透過爬蟲程式免於開網頁慢慢搜尋....', size='xs',color='#888888'),
                     # review
                     SeparatorComponent(color='#000000'),
                     # info
@@ -656,14 +656,14 @@ def handle_postback(event):
                                     TextComponent(
                                         text='號碼   出現次數',
                                         color='#000000',
-                                        weight='bold',
+                                        gravity = 'center',
                                         size='md'
                                     ),
                                     TextComponent(
-                                        text=num,
-                                        weight='bold',
-                                        color='#FF3333',
+                                        text=num[:-1],
+                                        color='#000000',
                                         size='lg',
+                                        gravity = 'center',
                                         wrap=True
                                     )
                                 ],
