@@ -459,15 +459,15 @@ def lottery_year(type_lottery):
                 actions=[
                     PostbackTemplateAction(
                         label='2019',
-                        data='ball_st\{}\{}'.format('2019',type_lottery)
+                        data='ball_st/{}/{}'.format('2019',type_lottery)
                     ),
                     PostbackTemplateAction(
                         label='2018',
-                        data='ball_st\{}\{}'.format('2018',type_lottery)
+                        data='ball_st/{}/{}'.format('2018',type_lottery)
                     ),
                     PostbackTemplateAction(
                         label='2017',
-                        data='ball_st\{}\{}'.format('2017',type_lottery)
+                        data='ball_st/{}/{}'.format('2017',type_lottery)
                     )
                 ]
             ),
@@ -478,15 +478,15 @@ def lottery_year(type_lottery):
                 actions=[
                     PostbackTemplateAction(
                         label='2016',
-                        data='ball_st\{}\{}'.format('2016',type_lottery)
+                        data='ball_st/{}/{}'.format('2016',type_lottery)
                     ),
                     PostbackTemplateAction(
                         label='2015',
-                        data='ball_st\{}\{}'.format('2015',type_lottery)
+                        data='ball_st/{}/{}'.format('2015',type_lottery)
                     ),
                     PostbackTemplateAction(
                         label='2014',
-                        data='ball_st\{}\{}'.format('2014',type_lottery)
+                        data='ball_st/{}/{}'.format('2014',type_lottery)
                     ),
                 ]
             )
@@ -689,6 +689,7 @@ def handle_postback(event):
 
     elif temp[:9] == 'ball_year':
         print('-------in---')
+        print(temp)
         t = temp.split('/')
         lot_type = t[1]
         print(lot_type+'-----------')
@@ -705,15 +706,15 @@ def handle_postback(event):
                 actions=[
                     PostbackTemplateAction(
                         label='大樂透統計',
-                        data='ball_year\ball_big'
+                        data='ball_year/ball_big'
                     ),
                     PostbackTemplateAction(
                         label='今彩539統計',
-                        data='ball_year\ball_539'
+                        data='ball_year/ball_539'
                     ),
                     PostbackTemplateAction(
                         label='威力彩統計',
-                        data='ball_year\ball_wei'
+                        data='ball_year/ball_wei'
                     )
                 ]
             )
