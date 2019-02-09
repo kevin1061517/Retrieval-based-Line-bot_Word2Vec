@@ -659,15 +659,15 @@ def handle_postback(event):
                                         size='md'
                                     ),
                                     ImageComponent(
-                                        url='https://i.imgur.com/9IUzhOT.jpg',
+                                        url='https://i.imgur.com/2J8UE9e.gif',
                                         aspectMode = 'cover',
-                                        aspect_ratio='11:3',
+                                        aspect_ratio='2:1',
                                         size='full',
                                     ),
                                     ImageComponent(
-                                        url='https://i.imgur.com/9IUzhOT.jpg',
+                                        url='https://i.imgur.com/2J8UE9e.gif',
                                         aspectMode = 'cover',
-                                        aspect_ratio='33:3',
+                                        aspect_ratio='12:6',
                                         size='full',
                                     ),
                                     TextComponent(
