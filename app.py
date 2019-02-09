@@ -447,14 +447,19 @@ def lottery_stat(type_lottery,year):
     return num
 
 def lottery_year(type_lottery):
-    
+    if type_lottery == 'big-lotto':
+        t = '大樂透'
+    elif type_lottery == 'power':
+        t = '威力彩'
+    elif type_lottery == 'daily539':
+         t = '今彩539'
     Carousel_template = TemplateSendMessage(
         alt_text='Carousel template',
         template=CarouselTemplate(
         columns=[
             CarouselColumn(
-                thumbnail_image_url='https://i.imgur.com/cb28aG5.png',
-                title='各個年份的統計',
+                thumbnail_image_url='https://i.imgur.com/zp75S87.jpg',
+                title=t+'各個年份的統計',
                 text='請選擇年份',
                 actions=[
                     PostbackTemplateAction(
@@ -472,7 +477,7 @@ def lottery_year(type_lottery):
                 ]
             ),
             CarouselColumn(
-                thumbnail_image_url='https://i.imgur.com/cb28aG5.png',
+                thumbnail_image_url='https://i.imgur.com/zp75S87.jpg',
                 title='各個年份的統計',
                 text='請選擇年份',
                 actions=[
@@ -706,15 +711,15 @@ def handle_postback(event):
                 actions=[
                     PostbackTemplateAction(
                         label='大樂透統計',
-                        data='ball_year/ball_big'
+                        data='ball_year/big-lotto'
                     ),
                     PostbackTemplateAction(
                         label='今彩539統計',
-                        data='ball_year/ball_539'
+                        data='ball_year/power'
                     ),
                     PostbackTemplateAction(
                         label='威力彩統計',
-                        data='ball_year/ball_wei'
+                        data='ball_year/daily539'
                     )
                 ]
             )
