@@ -432,11 +432,11 @@ def lottery():
     return big,b539,bwei
 
 def lottery_stat(type_lottery,year):
-    if type_lottery == '大樂透':
+    if type_lottery == 'big-lotto':
         div = 4
-    elif type_lottery == '威力彩':
+    elif type_lottery == 'power':
         div = 6
-    elif type_lottery == '今彩539':
+    elif type_lottery == 'daily539':
         div = 7
     url = 'http://lotto.auzonet.com/lotto_balllist_{}_{}.html'.format(type_lottery,year)
     res = requests.get(url)
@@ -641,13 +641,13 @@ def handle_postback(event):
         t = temp.split('/')
         lot_year = t[1]
         lot_type = t[2]
+        num,star = lottery_stat(lot_type,lot_year)
         if lot_type == 'big-lotto':
             lot_type = '大樂透'
         elif lot_type == 'power':
             lot_type = '威力彩'
         elif lot_type == 'daily539':
             lot_type = '今彩539'
-        num,star = lottery_stat(lot_type,lot_year)
         bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
