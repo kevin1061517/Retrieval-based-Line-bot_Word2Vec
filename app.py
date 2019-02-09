@@ -437,6 +437,7 @@ def lottery_stat(type_lottery,year):
     res.encoding = 'utf-8'
     soup = bf(res.text,'html.parser')
     num = ''
+    star = ''
     for c,i in enumerate(soup.select('.forumline tr td')[3:],1):
         if c%3 == 2:
             continue
@@ -444,7 +445,9 @@ def lottery_stat(type_lottery,year):
             num += i.text.strip()+'      '
         else:
             num += '{}次\n'.format(i.text.strip())
-    return num
+            print('---------'+str(i.text.strip()))
+            star += '{}\n'.format('⭐'*len(i.text.strip()))
+    return num,star
 
 def lottery_year(type_lottery):
     if type_lottery == 'big-lotto':
@@ -632,7 +635,7 @@ def handle_postback(event):
         t = temp.split('/')
         lot_year = t[1]
         lot_type = t[2]
-        num = lottery_stat(lot_type,lot_year)
+        num,star = lottery_stat(lot_type,lot_year)
         bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
@@ -658,23 +661,24 @@ def handle_postback(event):
                                         color='#000000',
                                         size='md'
                                     ),
-                                    ImageComponent(
-                                        url='https://i.imgur.com/2J8UE9e.gif',
-                                        aspectMode = 'cover',
-                                        aspect_ratio='2:1',
-                                        size='full',
-                                    ),
-                                    ImageComponent(
-                                        url='https://i.imgur.com/2J8UE9e.gif',
-                                        aspectMode = 'cover',
-                                        aspect_ratio='12:6',
-                                        size='full',
-                                    ),
-                                    TextComponent(
-                                        text=num[:-1],
-                                        color='#000000',
-                                        size='lg',
-                                        wrap=True
+                                     BoxComponent(
+                                             layout='baseline',
+                                             margin='lg',
+                                             color = '#FFFF00',
+                                             spacing='sm',
+                                             contents=[
+                                                     TextComponent(
+                                                             text=num[:-1],
+                                                             color='#000000',
+                                                             size='lg',
+                                                             wrap=True
+                                                    ),
+                                                    TextComponent(
+                                                            text=star,
+                                                            color='#000000',
+                                                            size='md'
+                                                    )
+                                            ]
                                     )
                                 ],
                             ),          
