@@ -442,11 +442,11 @@ def lottery_stat(type_lottery,year):
         if c%3 == 2:
             continue
         elif c%3 == 1:
-            num += i.text.strip()
+            num += i.text.strip()+'    '
             star += '{}\n'.format('⭐'*int(i.text.strip()))
         else:
             num += '{}次\n'.format(i.text.strip())
-            star += '{}\n'.format('⭐'*int(i.text.strip()))
+            star += '{}\n'.format('⭐'*(int(i.text.strip())/7))
     print(star)
     return num,star
 
@@ -658,27 +658,24 @@ def handle_postback(event):
                                 layout='vertical',
                                 contents=[
                                     TextComponent(
-                                        text='號碼 出現次數',
+                                        text='號碼   出現次數',
                                         color='#000000',
                                         size='md'
                                     ),
                                      BoxComponent(
                                              layout='baseline',
-                                             margin='lg',
-                                             color = '#FFFF00',
-                                             spacing='sm',
+                                             margin='none',
                                              contents=[
                                                      TextComponent(
-                                                             text=num[:-1],
-                                                             color='#000000',
-                                                             size='lg',
-                                                             wrap=True
+                                                            text=num[:-1],
+                                                            color='#000000',
+                                                            size='md',
+                                                            wrap=True
                                                     ),
                                                     TextComponent(
                                                             text=star,
                                                             color='#000000',
                                                             size='xxs',
-                                                            wrap=True
                                                     )
                                             ]
                                     )
