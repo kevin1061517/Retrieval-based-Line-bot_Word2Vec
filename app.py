@@ -435,9 +435,10 @@ def lottery_stat(type_lottery,year):
     if type_lottery == 'big-lotto':
         div = 4
     elif type_lottery == 'power':
-        div = 6
+        div = 5
     elif type_lottery == 'daily539':
         div = 7
+    print('----------'+div)
     url = 'http://lotto.auzonet.com/lotto_balllist_{}_{}.html'.format(type_lottery,year)
     res = requests.get(url)
     res.encoding = 'utf-8'
@@ -448,10 +449,12 @@ def lottery_stat(type_lottery,year):
         if c%3 == 2:
             continue
         elif c%3 == 1:
-            num += i.text.strip()+'         '
+            num += ' '+i.text.strip()+'         '
         else:
             num += '{}次\n'.format(i.text.strip())
             star += '{}\n'.format('⭐'*((int(i.text.strip()))//div))
+            print('------'+c)
+            print(i.text.strip())
     print('----------'+star)
     return num,star
 
@@ -654,7 +657,7 @@ def handle_postback(event):
                 layout='vertical',
                 contents=[
                     TextComponent(text='爬蟲程式抓取奧索樂透網', size='xs',wrap=True,color='#888888'),
-                    TextComponent(text= '{}年\n{}各號碼出現次數'.format(lot_year,lot_type), weight='bold', size='xl',color='#000000'),
+                    TextComponent(text= '{}年\n{}各號碼出現次數'.format(lot_year,lot_type), weight='bold', wrap=True,size='xl',color='#000000'),
                     TextComponent(text= '各個號碼出現次數統計後的結果呈現，透過爬蟲程式免於開網頁慢慢搜尋....', size='xs',wrap=True,color='#888888'),
                     # review
                     SeparatorComponent(color='#000000'),
