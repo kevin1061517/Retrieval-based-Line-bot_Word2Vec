@@ -624,8 +624,9 @@ def handle_postback(event):
             )
     elif temp[:7] == 'ball_st':
         print('-------in---')
+        t = temp.split('/')
         lot_year = t[1]
-        lot_type = t[1]
+        lot_type = t[2]
         num = lottery_stat(lot_type,lot_year)
         bubble = BubbleContainer(
             direction='ltr',
@@ -681,13 +682,12 @@ def handle_postback(event):
             ),
         )
         message = FlexSendMessage(alt_text="hello", contents=bubble)
-
         line_bot_api.reply_message(
             event.reply_token,
             message
         )
 
-    elif temp[:8] == 'ball_year':
+    elif temp[:9] == 'ball_year':
         print('-------in---')
         t = temp.split('/')
         lot_type = t[1]
