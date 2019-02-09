@@ -453,9 +453,9 @@ def lottery_year(type_lottery):
         template=CarouselTemplate(
         columns=[
             CarouselColumn(
-                thumbnail_image_url='顯示在開頭的大圖片網址',
-                title='this is menu1',
-                text='description1',
+                thumbnail_image_url='https://i.imgur.com/cb28aG5.png',
+                title='各個年份的統計',
+                text='請選擇年份',
                 actions=[
                     PostbackTemplateAction(
                         label='2019',
@@ -472,9 +472,9 @@ def lottery_year(type_lottery):
                 ]
             ),
             CarouselColumn(
-                thumbnail_image_url='顯示在開頭的大圖片網址',
-                title='this is menu2',
-                text='description2',
+                thumbnail_image_url='https://i.imgur.com/cb28aG5.png',
+                title='各個年份的統計',
+                text='請選擇年份',
                 actions=[
                     PostbackTemplateAction(
                         label='2016',
