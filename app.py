@@ -438,25 +438,19 @@ def lottery_stat(type_lottery,year):
         div = 5
     elif type_lottery == 'daily539':
         div = 7
-    print('----------'+str(div))
     url = 'http://lotto.auzonet.com/lotto_balllist_{}_{}.html'.format(type_lottery,year)
     res = requests.get(url)
     res.encoding = 'utf-8'
     soup = bf(res.text,'html.parser')
     num = ''
-    star = ''
     for c,i in enumerate(soup.select('.forumline tr td')[3:],1):
         if c%3 == 2:
             continue
         elif c%3 == 1:
             num += ' '+i.text.strip()+'         '
         else:
-            num += '{}次\n'.format(i.text.strip())
-            star += '{}\n'.format('⭐'*((int(i.text.strip()))//div))
-            print('------'+str(c))
-            print(i.text.strip())
-    print('----------'+star)
-    return num,star
+            num += '{}次  {}\n'.format(i.text.strip(),'⭐'*((int(i.text.strip()))//div))
+    return num
 
 def lottery_year(type_lottery):
     if type_lottery == 'big-lotto':
@@ -644,7 +638,7 @@ def handle_postback(event):
         t = temp.split('/')
         lot_year = t[1]
         lot_type = t[2]
-        num,star = lottery_stat(lot_type,lot_year)
+        num = lottery_stat(lot_type,lot_year)
         if lot_type == 'big-lotto':
             lot_type = '大樂透'
         elif lot_type == 'power':
@@ -676,23 +670,11 @@ def handle_postback(event):
                                         color='#000000',
                                         size='md'
                                     ),
-                                     BoxComponent(
-                                             layout='baseline',
-                                             margin='none',
-                                             contents=[
-                                                     TextComponent(
-                                                            text=num[:-1],
-                                                            color='#000000',
-                                                            size='md',
-                                                            wrap=True
-                                                    ),
-                                                    TextComponent(
-                                                            text=star,
-                                                            color='#000000',
-                                                            size='xs',
-                                                            wrap=True
-                                                    )
-                                            ]
+                                    TextComponent(
+                                        text=num[:-1],
+                                        color='#000000',
+                                        size='md',
+                                        wrap=True
                                     )
                                 ],
                             ),          
