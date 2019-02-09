@@ -431,6 +431,70 @@ def lottery():
 
     return big,b539,bwei
 
+def lottery_stat(type_lottery,year):
+    url = 'http://lotto.auzonet.com/lotto_balllist_{}_{}.html'.format(type_lottery,year)
+    res = requests.get(url)
+    res.encoding = 'utf-8'
+    soup = bf(res.text,'html.parser')
+    num = ''
+    for c,i in enumerate(soup.select('.forumline tr td')[3:],1):
+        if c%3 == 2:
+            continue
+        elif c%3 == 1:
+            num += i.text.strip()+'---->'
+        else:
+            num += i.text.strip()+'\n'
+    return num
+
+def lottery_year(type_lottery):
+    
+    Carousel_template = TemplateSendMessage(
+        alt_text='Carousel template',
+        template=CarouselTemplate(
+        columns=[
+            CarouselColumn(
+                thumbnail_image_url='顯示在開頭的大圖片網址',
+                title='this is menu1',
+                text='description1',
+                actions=[
+                    PostbackTemplateAction(
+                        label='2019',
+                        data='ball_st\{}\{}'.format('2019',type_lottery)
+                    ),
+                    PostbackTemplateAction(
+                        label='2018',
+                        data='ball_st\{}\{}'.format('2018',type_lottery)
+                    ),
+                    PostbackTemplateAction(
+                        label='2017',
+                        data='ball_st\{}\{}'.format('2017',type_lottery)
+                    )
+                ]
+            ),
+            CarouselColumn(
+                thumbnail_image_url='顯示在開頭的大圖片網址',
+                title='this is menu2',
+                text='description2',
+                actions=[
+                    PostbackTemplateAction(
+                        label='2016',
+                        data='ball_st\{}\{}'.format('2016',type_lottery)
+                    ),
+                    PostbackTemplateAction(
+                        label='2015',
+                        data='ball_st\{}\{}'.format('2015',type_lottery)
+                    ),
+                    PostbackTemplateAction(
+                        label='2014',
+                        data='ball_st\{}\{}'.format('2014',type_lottery)
+                    ),
+                ]
+            )
+        ]
+    )
+    )
+    return Carousel_template           
+
 def check_pic(img_id):
     Confirm_template = TemplateSendMessage(
     alt_text='要給你照片標籤描述嗎?',
@@ -558,6 +622,104 @@ def handle_postback(event):
                 event.reply_token,
                 AudioSendMessage(original_content_url=url,duration=3000)
             )
+    elif temp[:7] == 'ball_st':
+        print('-------in---')
+        lot_year = t[1]
+        lot_type = t[1]
+        num = lottery_stat(lot_type,lot_year)
+        bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text='爬蟲程式抓取奧索樂透網\n', size='sm',wrap=True,color='#008844'),
+                    TextComponent(text= lot_year'年各號碼統計', weight='bold', size='xxl',color='#FF0000'),
+                    TextComponent(text= lot_year'各個號碼出現次數統計後的結果呈現，透過爬蟲程式免於開網頁慢慢搜尋....', size='md',color='#888888'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        margin='lg',
+                        color = '#FFFF00',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='vertical',
+                                contents=[
+                                    TextComponent(
+                                        text='號碼   出現次數',
+                                        color='#000000',
+                                        weight='bold',
+                                        size='md'
+                                    ),
+                                    TextComponent(
+                                        text=num,
+                                        weight='bold',
+                                        color='#FF3333',
+                                        size='lg',
+                                        wrap=True
+                                    )
+                                ],
+                            ),          
+                        ],
+                    ),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='xs',
+                contents=[
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color = '#FFFF77',
+                        height='sm',
+                        action=PostbackAction(label='歷年號碼出現次數',data='ballyear',text='請稍等...')
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
+
+    elif temp[:8] == 'ball_year':
+        print('-------in---')
+        t = temp.split('/')
+        lot_type = t[1]
+        print(lot_type+'-----------')
+        Carousel_template = lottery_year(lot_type)
+        line_bot_api.reply_message(event.reply_token,Carousel_template)
+            
+    elif temp == 'ballyear':
+        buttons_template = TemplateSendMessage(
+            alt_text='歷年號碼出現次數',
+            template=ButtonsTemplate(
+                title='歷年號碼出現次數',
+                text='請選擇一下',
+                thumbnail_image_url='https://i.imgur.com/sMu1PJN.jpg',
+                actions=[
+                    PostbackTemplateAction(
+                        label='大樂透統計',
+                        data='ball_year\ball_big'
+                    ),
+                    PostbackTemplateAction(
+                        label='今彩539統計',
+                        data='ball_year\ball_539'
+                    ),
+                    PostbackTemplateAction(
+                        label='威力彩統計',
+                        data='ball_year\ball_wei'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, buttons_template)
+   
     elif temp == 'ball':
         big = ''
         r539 = ''
@@ -674,7 +836,7 @@ def handle_postback(event):
                         style='secondary',
                         color = '#FFFF77',
                         height='sm',
-                        action=URIAction(label='各號碼機率分布', uri="https://www.pixnet.net/pcard/B0212066")
+                        action=PostbackAction(label='歷年號碼出現次數',data='ballyear',text='請稍等...')
                     ),
                     SeparatorComponent(color='#000000'),
                     ButtonComponent(
