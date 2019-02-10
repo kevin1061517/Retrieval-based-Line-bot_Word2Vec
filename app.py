@@ -1510,7 +1510,7 @@ def handle_msg_text(event):
                         height='sm',
                         action=PostbackAction(label='歷年開獎紀錄',data='ball_all_num',text='歷年號碼~詳細內容參考至台彩官網')
                     ),
-                    SeparatorComponent(color='#000000',,margin='md'),
+                    SeparatorComponent(color='#000000',margin='md'),
                     ButtonComponent(
                         style='primary',
                         color='#DAA520',
