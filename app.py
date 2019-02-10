@@ -727,7 +727,7 @@ def handle_postback(event):
                         height='sm',
                         action=PostbackAction(label='其他年份號碼出現次數',data='ball_year/{}'.format(lot_type),text='請稍等...')
                     ),
-                    SeparatorComponent(color='#000000',,margin='lg'),
+                    SeparatorComponent(color='#000000',margin='lg'),
                     ButtonComponent(
                         style='secondary',
                         color='#DAA520',
