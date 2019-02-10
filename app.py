@@ -1145,7 +1145,7 @@ def handle_msg_text(event):
             TextSendMessage(text=content))
     elif event.message.text.lower() == "choose":
         if fb.get('/{}'.format(event.source.user_id),None) == None:
-            fb.post('/{}'.format(event.source.user_id))
+            fb.post('/{}'.format(event.source.user_id), user_name)
         buttons_template = TemplateSendMessage(
             alt_text='抉擇領域template',
             template=ButtonsTemplate(
