@@ -34,10 +34,10 @@ from selenium import webdriver
 from urllib.parse import quote
 from urllib import parse
 from flask import Flask, request, render_template, make_response, abort
-from flask_bootstrap import Bootstrap
-from PIL import Image
-import warnings
-warnings.simplefilter('error', Image.DecompressionBombWarning)
+#from flask_bootstrap import Bootstrap
+#from PIL import Image
+#import warnings
+#warnings.simplefilter('error', Image.DecompressionBombWarning)
 
 client_id = os.getenv('client_id',None)
 client_secret = os.getenv('client_secret',None)
@@ -53,27 +53,8 @@ line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN',None))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET', None))
 
 app = Flask(__name__)
-bootstrap = Bootstrap(app)
+#bootstrap = Bootstrap(app)
 
-
-# Add the following
-@app.route('/saveimage', methods=['POST'])
-def saveimage():
-    event = request.form.to_dict()
-    dir_name = 'imgs'
-    img_name = uuid.uuid4().hex
-    # Saving image in the 'imgs' folder temporarily. Should be deleted after a certain period of time
-    if not os.path.exists(dir_name):
-        os.makedirs(dir_name)
-    with open(os.path.join(dir_name, '{}.jpg'.format(img_name)), 'wb') as img:
-        img.write(base64.b64decode(event['image'].split(",")[1]))
-    original = Image.open(os.path.join(dir_name, '{}.jpg'.format(img_name)))
-    # Needs simple validation of format for security since Pillow supports various type of Images
-    if(original.format != 'JPEG'):
-        return make_response('Unsupported image type.', 400)
-    original.thumbnail((240, 240), Image.ANTIALIAS)
-    original.save(os.path.join(dir_name, '{}_240.jpg'.format(img_name)), 'JPEG')
-    return make_response(img_name, 200)
 
 
 @app.route('/list')
@@ -1162,6 +1143,37 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
+    elif event.message.text.lower() == "choose":
+        if fb.get('/{}'.format(event.source.user_id),None) == None:
+            fb.post('/{}'.format(event.source.user_id), data)
+        buttons_template = TemplateSendMessage(
+            alt_text='抉擇領域template',
+            template=ButtonsTemplate(
+                title='抉擇類型',
+                text='請選擇一下，想要老天爺替你選擇的問題',
+                actions=[                              
+                    PostbackTemplateAction(
+                        label='要不要問題',
+                        data='choose/yesno'
+                    ),
+                    PostbackTemplateAction(
+                        label='買不買問題',
+                        data='choose/buy'
+                    ),
+                    PostbackTemplateAction(
+                        label='去哪一家店',
+                        data='choose/store'
+                    ),
+                    PostbackTemplateAction(
+                        label='其他',
+                        data='choose/else'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='-----已經進入抉擇領域了-----'),buttons_template)
 #    elif event.message.text.lower() == "get":
 #        result = fb.get('note',None)
 #        result2 = firebase.get('note', None, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
