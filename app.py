@@ -1,4 +1,4 @@
-from flask import Flask, request, abort
+
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -33,8 +33,11 @@ import json
 from selenium import webdriver
 from urllib.parse import quote
 from urllib import parse
-
-
+from flask import Flask, request, render_template, make_response, abort
+from flask_bootstrap import Bootstrap
+from PIL import Image
+import warnings
+warnings.simplefilter('error', Image.DecompressionBombWarning)
 
 client_id = os.getenv('client_id',None)
 client_secret = os.getenv('client_secret',None)
@@ -48,7 +51,17 @@ fb = firebase.FirebaseApplication(url,None)
 
 line_bot_api = LineBotApi(os.getenv('LINE_CHANNEL_ACCESS_TOKEN',None))
 handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET', None))
+
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
+
+@app.route('/')
+def hello():
+    return "Hello World!"
+
+#@app.route('/2')
+#def do_get():
+#    return render_template('index2.html')
 
 @app.route("/callback", methods=['POST'])
 def callback():
