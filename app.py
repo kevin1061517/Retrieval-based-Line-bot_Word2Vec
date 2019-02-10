@@ -1234,7 +1234,7 @@ def handle_msg_text(event):
     picture_url = profile.picture_url
     
     if True:
-        if fb.get('/{}'.format(event.source.user_id),None) == None:
+        if fb.get('/{}'.format(event.source.user_id),None) != None:
             line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='successful'+event.message.text))
