@@ -449,7 +449,11 @@ def lottery_stat(type_lottery,year):
         elif c%3 == 1:
             num += ' '+i.text.strip()+'         '
         else:
-            num += '{}次   {}\n'.format(i.text.strip(),'🎈️'*((int(i.text.strip()))//div))
+            if len(i.text.strip()) < 2:
+                num += '0{}次   {}\n'.format(i.text.strip(),'🎈️'*((int(i.text.strip()))//div))         
+            else:
+                num += '{}次   {}\n'.format(i.text.strip(),'🎈️'*((int(i.text.strip()))//div))
+            
     return num
 
 def lottery_year(type_lottery):
@@ -640,18 +644,18 @@ def handle_postback(event):
         lot_type = t[2]
         num = lottery_stat(lot_type,lot_year)
         if lot_type == 'big-lotto':
-            lot_type = '大樂透'
+            t = '大樂透'
         elif lot_type == 'power':
-            lot_type = '威力彩'
+            t = '威力彩'
         elif lot_type == 'daily539':
-            lot_type = '今彩539'
+            t = '今彩539'
         bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
                 layout='vertical',
                 contents=[
                     TextComponent(text='爬蟲程式抓取奧索樂透網', size='xs',wrap=True,color='#888888'),
-                    TextComponent(text= '{}年\n{}各號碼出現次數'.format(lot_year,lot_type), weight='bold', wrap=True,size='xl',color='#000000'),
+                    TextComponent(text= '{}年\n{}各號碼出現次數'.format(lot_year,t), weight='bold', wrap=True,size='xl',color='#000000'),
                     TextComponent(text= '各個號碼出現次數統計後的結果呈現，透過爬蟲程式免於開網頁慢慢搜尋....', size='xs',wrap=True,color='#888888'),
                     # review
                     SeparatorComponent(color='#000000'),
@@ -691,7 +695,14 @@ def handle_postback(event):
                         style='secondary',
                         color = '#FFFF77',
                         height='sm',
-                        action=PostbackAction(label='歷年號碼出現次數',data='ballyear',text='請稍等...')
+                        action=PostbackAction(label='其他年份號碼出現次數',data='ball_year/{}'.format(lot_type),text='請稍等...')
+                    ),
+                    SeparatorComponent(),
+                    ButtonComponent(
+                        style='secondary',
+                        color = '#FFFF77',
+                        height='sm',
+                        action=PostbackAction(label='其他遊戲號碼出現次數',data='ballyear',text='請稍等...')
                     )
                 ]
             ),
