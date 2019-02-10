@@ -477,12 +477,12 @@ def lottery_all_num(type_lottery):
         if c % div == 1:
             num += i.text.strip()
         elif c % div == 2:
-            num += '   {}\n'.format(i.text.strip())
+            num += '     {}\n'.format(i.text.strip())
         elif c % div == 3:
             if type_lottery == 'listltobigbbk':
-                num += '             特別號:{}\n'.format(i.text.strip())
+                num += '                 特別號:{}\n'.format(i.text.strip())
             elif type_lottery == 'listlto':
-                num += '             第二區:{}\n'.format(i.text.strip())
+                num += '                 第二區:{}\n'.format(i.text.strip())
     return num
 
 def lottery_year(type_lottery):
@@ -784,7 +784,7 @@ def handle_postback(event):
                                 layout='vertical',
                                 contents=[
                                     TextComponent(
-                                        text='日期           {}中獎號碼'.format(t),
+                                        text='    日期           {}中獎號碼'.format(t),
                                         color='#000000',
                                         size='md'
                                     ),
@@ -909,7 +909,7 @@ def handle_postback(event):
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    TextComponent(text='僅供參考\n', size='sm',wrap=True,color='#008844'),
+                    TextComponent(text='僅供參考', size='sm',wrap=True,color='#008844'),
                     TextComponent(text='幸運號碼', weight='bold', size='xxl',color='#000000'),
                     SeparatorComponent(color='#000000'),
                     # review
