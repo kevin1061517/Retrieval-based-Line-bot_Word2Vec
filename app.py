@@ -452,8 +452,37 @@ def lottery_stat(type_lottery,year):
             if len(i.text.strip()) < 2:
                 num += '0{}次   {}\n'.format(i.text.strip(),'🎈️'*((int(i.text.strip()))//div))         
             else:
-                num += '{}次   {}\n'.format(i.text.strip(),'🎈️'*((int(i.text.strip()))//div))
-            
+                num += '{}次   {}\n'.format(i.text.strip(),'🎈️'*((int(i.text.strip()))//div))          
+    return num
+
+def lottery_all_num(type_lottery):
+    if type_lottery == 'big-lotto':
+        type_lottery = 'listltobigbbk'
+        start = 4
+        div = 4
+    elif type_lottery == 'power':
+        type_lottery =  'listlto'
+        start = 4
+        div = 4
+    elif type_lottery == 'daily539':
+        type_lottery = 'listlto539bbk'
+        start = 3
+        div = 3
+    url = 'https://www.lotto-8.com/{}.asp'.format(type_lottery)
+    res = requests.get(url)
+    res.encoding = 'utf-8'
+    soup = bf(res.text,'html.parser')
+    num = ''
+    for c,i in enumerate(soup.select('.auto-style4 tr td')[start:],1):
+        if c % div == 1:
+            num += i.text.strip()
+        elif c % div == 2:
+            num += '   {}\n'.format(i.text.strip())
+        elif c % div == 3:
+            if type_lottery == 'listltobigbbk':
+                num += '             特別號:{}\n'.format(i.text.strip())
+            elif type_lottery == 'listlto':
+                num += '             第二區:{}\n'.format(i.text.strip())
     return num
 
 def lottery_year(type_lottery):
@@ -679,7 +708,8 @@ def handle_postback(event):
                                         color='#000000',
                                         size='md',
                                         wrap=True
-                                    )
+                                    ),
+                                    SeparatorComponent(color='#000000')
                                 ],
                             ),          
                         ],
@@ -697,7 +727,7 @@ def handle_postback(event):
                         height='sm',
                         action=PostbackAction(label='其他年份號碼出現次數',data='ball_year/{}'.format(lot_type),text='請稍等...')
                     ),
-                    SeparatorComponent(),
+                    SeparatorComponent(color='#000000'),
                     ButtonComponent(
                         style='secondary',
                         color = '#FFFF77',
@@ -721,7 +751,111 @@ def handle_postback(event):
         print(lot_type+'-----------')
         Carousel_template = lottery_year(lot_type)
         line_bot_api.reply_message(event.reply_token,Carousel_template)
-            
+         
+    elif temp[:8] == 'ball_num':
+        print('-------in---')
+        t = temp.split('/')
+        lot_type = t[1]
+        num = lottery_all_num(lot_type)
+        if lot_type == 'big-lotto':
+            t = '大樂透'
+        elif lot_type == 'power':
+            t = '威力彩'
+        elif lot_type == 'daily539':
+            t = '今彩539'
+        bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text='爬蟲程式抓取樂透雲內容', size='xs',wrap=True,color='#888888'),
+                    TextComponent(text= '{}歷史開獎紀錄'.format(t), weight='bold', wrap=True,size='xl',color='#000000'),
+                    TextComponent(text= '各個號碼個期紀錄，僅列出最近35筆紀錄，透過爬蟲程式免於開網頁慢慢搜尋....', size='xs',wrap=True,color='#888888'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        margin='lg',
+                        color = '#FFFF00',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='vertical',
+                                contents=[
+                                    TextComponent(
+                                        text='日期           {}中獎號碼'.format(t),
+                                        color='#000000',
+                                        size='md'
+                                    ),
+                                    TextComponent(
+                                        text=num,
+                                        color='#000000',
+                                        size='lg',
+                                        wrap=True
+                                    ),
+                                    SeparatorComponent(color='#000000')
+                                ],
+                            ),          
+                        ],
+                    ),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='xs',
+                contents=[
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color = '#FFFF77',
+                        height='sm',
+                        action=MessageAction(label='近期開獎紀錄',text='lottery')
+                    ),
+                    SeparatorComponent(color='#000000'),
+                    ButtonComponent(
+                        style='secondary',
+                        color = '#FFFF77',
+                        height='sm',
+                        action=PostbackAction(label='其他遊戲歷史開獎紀錄',data='ball_all_num',text='請稍等...')
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
+        
+    elif temp == 'ball_all_num':
+        buttons_template = TemplateSendMessage(
+            alt_text='歷史開獎紀錄',
+            template=ButtonsTemplate(
+                title='歷史開獎紀錄',
+                text='請選擇要查詢的遊戲歷史開獎紀錄',
+                thumbnail_image_url='https://i.imgur.com/sMu1PJN.jpg',
+                actions=[
+                    PostbackTemplateAction(
+                        label='大樂透統計',
+                        data='ball_num/big-lotto',
+                        text = '選擇了大樂透...'
+                    ),
+                    PostbackTemplateAction(
+                        label='今彩539統計',
+                        data='ball_num/power',
+                        text = '選擇了今彩539...'
+                    ),
+                    PostbackTemplateAction(
+                        label='威力彩統計',
+                        data='ball_num/daily539',
+                        text = '選擇了威力彩...'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, buttons_template)
+        
     elif temp == 'ballyear':
         buttons_template = TemplateSendMessage(
             alt_text='歷年號碼出現次數',
@@ -1283,6 +1417,7 @@ def handle_msg_text(event):
                     aspectMode = 'cover',
                     aspect_ratio='11:3',
                     size='full',
+                    backgroundColor = '#FFD700',
                     action=URIAction(uri='https://github.com/kevin1061517', label='label'),
             ),
             body=BoxComponent(
@@ -1370,14 +1505,14 @@ def handle_msg_text(event):
                 contents=[
                     # websiteAction
                     ButtonComponent(
-                        style='secondary',
-                        color = '#FFFF77',
+                        style='primary',
                         height='sm',
-                        action=URIAction(label='BLOG', uri="https://www.pixnet.net/pcard/B0212066")
+                        action=PostbackAction(label='歷年號碼',data='ball_all_num',text='歷年號碼~詳細內容參考至台彩官網')
                     ),
                     SeparatorComponent(color='#000000'),
                     ButtonComponent(
                         style='primary',
+                        color='#DAA520',
                         height='sm',
                         action=PostbackAction(label='開門見喜', data='ball',text='您的幸運號碼...')
                     )
