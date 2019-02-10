@@ -75,9 +75,11 @@ def saveimage():
     original.save(os.path.join(dir_name, '{}_240.jpg'.format(img_name)), 'JPEG')
     return make_response(img_name, 200)
 
-@app.route('/')
+
+@app.route('/list')
 def do_get():
-    return render_template('index.html')
+    return render_template('list.html')
+
 
 #@app.route('/2')
 #def do_get():
