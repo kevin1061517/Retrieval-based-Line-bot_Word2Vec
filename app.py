@@ -1173,7 +1173,7 @@ def handle_msg_text(event):
         )
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text='-----已經進入抉擇領域了-----'),buttons_template)
+            [TextSendMessage(text='-----已經進入抉擇領域了-----'),buttons_template])
 #    elif event.message.text.lower() == "get":
 #        result = fb.get('note',None)
 #        result2 = firebase.get('note', None, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
