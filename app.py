@@ -55,9 +55,29 @@ handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET', None))
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
+
+# Add the following
+@app.route('/saveimage', methods=['POST'])
+def saveimage():
+    event = request.form.to_dict()
+    dir_name = 'imgs'
+    img_name = uuid.uuid4().hex
+    # Saving image in the 'imgs' folder temporarily. Should be deleted after a certain period of time
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
+    with open(os.path.join(dir_name, '{}.jpg'.format(img_name)), 'wb') as img:
+        img.write(base64.b64decode(event['image'].split(",")[1]))
+    original = Image.open(os.path.join(dir_name, '{}.jpg'.format(img_name)))
+    # Needs simple validation of format for security since Pillow supports various type of Images
+    if(original.format != 'JPEG'):
+        return make_response('Unsupported image type.', 400)
+    original.thumbnail((240, 240), Image.ANTIALIAS)
+    original.save(os.path.join(dir_name, '{}_240.jpg'.format(img_name)), 'JPEG')
+    return make_response(img_name, 200)
+
 @app.route('/')
-def hello():
-    return "Hello World!"
+def do_get():
+    return render_template('index.html')
 
 #@app.route('/2')
 #def do_get():

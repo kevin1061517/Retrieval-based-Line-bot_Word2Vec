@@ -8,6 +8,8 @@ pydub
 gunicorn==19.7.1
 selenium==3.8.0
 flask
+flask-bootstrap
+Pillow
 
 
 
