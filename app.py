@@ -727,7 +727,7 @@ def handle_postback(event):
                         height='sm',
                         action=PostbackAction(label='其他年份號碼出現次數',data='ball_year/{}'.format(lot_type),text='請稍等...')
                     ),
-                    SeparatorComponent(color='#000000'),
+                    SeparatorComponent(color='#000000',,margin='lg'),
                     ButtonComponent(
                         style='secondary',
                         color='#DAA520',
@@ -910,7 +910,7 @@ def handle_postback(event):
                 layout='vertical',
                 contents=[
                     TextComponent(text='僅供參考', size='sm',wrap=True,color='#008844'),
-                    TextComponent(text='幸運號碼', weight='bold', size='xxl',color='#000000'),
+                    TextComponent(text='幸運號碼', size='xxl',color='#000000'),
                     SeparatorComponent(color='#000000'),
                     # review
                     SeparatorComponent(color='#000000'),
@@ -999,7 +999,7 @@ def handle_postback(event):
                         height='sm',
                         action=PostbackAction(label='歷年號碼出現次數',data='ballyear',text='請稍等...')
                     ),
-                    SeparatorComponent(color='#000000'),
+                    SeparatorComponent(color='#000000',margin='md'),
                     ButtonComponent(
                         style='primary',
                         height='sm',
@@ -1510,7 +1510,7 @@ def handle_msg_text(event):
                         height='sm',
                         action=PostbackAction(label='歷年開獎紀錄',data='ball_all_num',text='歷年號碼~詳細內容參考至台彩官網')
                     ),
-                    SeparatorComponent(color='#000000'),
+                    SeparatorComponent(color='#000000',,margin='md'),
                     ButtonComponent(
                         style='primary',
                         color='#DAA520',
