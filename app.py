@@ -480,9 +480,9 @@ def lottery_all_num(type_lottery):
             num += '    {}\n'.format(i.text.strip())
         elif c % div == 3:
             if type_lottery == 'listltobigbbk':
-                num += '💰️特別號:{}\n'.format(i.text.strip())
+                num += '💰️特別號 : {}\n'.format(i.text.strip())
             elif type_lottery == 'listlto':
-                num += '💰️第二區:{}\n'.format(i.text.strip())
+                num += '💰️第二區 : {}\n'.format(i.text.strip())
     return num
 
 def lottery_year(type_lottery):
@@ -723,14 +723,14 @@ def handle_postback(event):
                     # websiteAction
                     ButtonComponent(
                         style='secondary',
-                        color = '#FFFF77',
+                        color='#DAA520',
                         height='sm',
                         action=PostbackAction(label='其他年份號碼出現次數',data='ball_year/{}'.format(lot_type),text='請稍等...')
                     ),
                     SeparatorComponent(color='#000000'),
                     ButtonComponent(
                         style='secondary',
-                        color = '#FFFF77',
+                        color='#DAA520',
                         height='sm',
                         action=PostbackAction(label='其他遊戲號碼出現次數',data='ballyear',text='請稍等...')
                     )
@@ -808,14 +808,14 @@ def handle_postback(event):
                     # websiteAction
                     ButtonComponent(
                         style='secondary',
-                        color = '#FFFF77',
+                        color='#DAA520',
                         height='sm',
                         action=MessageAction(label='近期開獎紀錄',text='lottery')
                     ),
                     SeparatorComponent(color='#000000'),
                     ButtonComponent(
                         style='secondary',
-                        color = '#FFFF77',
+                        color='#DAA520',
                         height='sm',
                         action=PostbackAction(label='其他遊戲歷史開獎紀錄',data='ball_all_num',text='請稍等...')
                     )
