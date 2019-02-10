@@ -791,7 +791,7 @@ def handle_postback(event):
                                     TextComponent(
                                         text=num,
                                         color='#000000',
-                                        size='lg',
+                                        size='xs',
                                         wrap=True
                                     ),
                                     SeparatorComponent(color='#000000')
@@ -837,17 +837,17 @@ def handle_postback(event):
                 thumbnail_image_url='https://i.imgur.com/sMu1PJN.jpg',
                 actions=[
                     PostbackTemplateAction(
-                        label='大樂透統計',
+                        label='大樂透歷史紀錄',
                         data='ball_num/big-lotto',
                         text = '選擇了大樂透...'
                     ),
                     PostbackTemplateAction(
-                        label='今彩539統計',
+                        label='今彩539歷史紀錄',
                         data='ball_num/power',
                         text = '選擇了今彩539...'
                     ),
                     PostbackTemplateAction(
-                        label='威力彩統計',
+                        label='威力彩歷史紀錄',
                         data='ball_num/daily539',
                         text = '選擇了威力彩...'
                     )
@@ -910,7 +910,7 @@ def handle_postback(event):
                 layout='vertical',
                 contents=[
                     TextComponent(text='僅供參考\n', size='sm',wrap=True,color='#008844'),
-                    TextComponent(text='幸運號碼', weight='bold', size='xxl',color='#FF0000'),
+                    TextComponent(text='幸運號碼', weight='bold', size='xxl',color='#000000'),
                     SeparatorComponent(color='#000000'),
                     # review
                     SeparatorComponent(color='#000000'),
@@ -994,8 +994,8 @@ def handle_postback(event):
                 contents=[
                     # websiteAction
                     ButtonComponent(
-                        style='secondary',
-                        color = '#FFFF77',
+                        style='primary',
+                        color='#DAA520',
                         height='sm',
                         action=PostbackAction(label='歷年號碼出現次數',data='ballyear',text='請稍等...')
                     ),
@@ -1003,6 +1003,7 @@ def handle_postback(event):
                     ButtonComponent(
                         style='primary',
                         height='sm',
+                        color='#DAA520',
                         action=PostbackAction(label='再來一組', data='ball',text='好運到來...')
                     )
                 ]
@@ -1507,14 +1508,14 @@ def handle_msg_text(event):
                     ButtonComponent(
                         style='primary',
                         height='sm',
-                        action=PostbackAction(label='歷年號碼',data='ball_all_num',text='歷年號碼~詳細內容參考至台彩官網')
+                        action=PostbackAction(label='歷年開獎紀錄',data='ball_all_num',text='歷年號碼~詳細內容參考至台彩官網')
                     ),
                     SeparatorComponent(color='#000000'),
                     ButtonComponent(
                         style='primary',
                         color='#DAA520',
                         height='sm',
-                        action=PostbackAction(label='開門見喜', data='ball',text='您的幸運號碼...')
+                        action=PostbackAction(label='開門見喜💎️', data='ball',text='您的幸運號碼...')
                     )
                 ]
             ),
