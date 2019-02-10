@@ -477,12 +477,12 @@ def lottery_all_num(type_lottery):
         if c % div == 1:
             num += i.text.strip()
         elif c % div == 2:
-            num += '     {}\n'.format(i.text.strip())
+            num += '      {}\n'.format(i.text.strip())
         elif c % div == 3:
             if type_lottery == 'listltobigbbk':
-                num += '                 特別號:{}\n'.format(i.text.strip())
+                num += '                     特別號:{}\n'.format(i.text.strip())
             elif type_lottery == 'listlto':
-                num += '                 第二區:{}\n'.format(i.text.strip())
+                num += '                     第二區:{}\n'.format(i.text.strip())
     return num
 
 def lottery_year(type_lottery):
@@ -784,7 +784,7 @@ def handle_postback(event):
                                 layout='vertical',
                                 contents=[
                                     TextComponent(
-                                        text='    日期           {}中獎號碼'.format(t),
+                                        text='    日期          {}中獎號碼'.format(t),
                                         color='#000000',
                                         size='md'
                                     ),
@@ -843,12 +843,12 @@ def handle_postback(event):
                     ),
                     PostbackTemplateAction(
                         label='今彩539歷史紀錄',
-                        data='ball_num/power',
+                        data='ball_num/daily539',
                         text = '選擇了今彩539...'
                     ),
                     PostbackTemplateAction(
                         label='威力彩歷史紀錄',
-                        data='ball_num/daily539',
+                        data='ball_num/power',
                         text = '選擇了威力彩...'
                     )
                 ]
