@@ -682,6 +682,101 @@ def handle_postback(event):
                 event.reply_token,
                 AudioSendMessage(original_content_url=url,duration=3000)
             )
+        
+    elif temp[:6] == 'choose':
+        print('-----------')
+        t = temp.split('/')
+        _type = t[1]
+        text = ''
+#        if  _type == 'yesno:
+#            
+#        elif _type == 'buy':
+#            
+#        elif _type == 'store':
+#            
+#        elif _type == 'else':
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='請把要老天爺幫你選擇的選項回覆給我，然後每一項以分號區隔\n例如:50嵐;清新福全;coco;茶湯會'))
+
+            
+    elif temp == 'result':     
+        print('-------in---')
+        t = temp.split('/')
+        lot_year = t[1]
+        lot_type = t[2]
+        num = lottery_stat(lot_type,lot_year)
+        if lot_type == 'big-lotto':
+            t = '大樂透'
+        elif lot_type == 'power':
+            t = '威力彩'
+        elif lot_type == 'daily539':
+            t = '今彩539'
+        bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text='爬蟲程式抓取奧索樂透網', size='xs',wrap=True,color='#888888'),
+                    TextComponent(text= '{}年\n{}各號碼出現次數'.format(lot_year,t), weight='bold', wrap=True,size='xl',color='#000000'),
+                    TextComponent(text= '各個號碼出現次數統計後的結果呈現，透過爬蟲程式免於開網頁慢慢搜尋....', size='xs',wrap=True,color='#888888'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        margin='lg',
+                        color = '#FFFF00',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='vertical',
+                                contents=[
+                                    TextComponent(
+                                        text='號碼   出現次數',
+                                        color='#000000',
+                                        size='md'
+                                    ),
+                                    TextComponent(
+                                        text=num[:-1],
+                                        color='#000000',
+                                        size='md',
+                                        wrap=True
+                                    ),
+                                    SeparatorComponent(color='#000000')
+                                ],
+                            ),          
+                        ],
+                    ),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='xs',
+                contents=[
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color='#DAA520',
+                        height='sm',
+                        action=PostbackAction(label='其他年份號碼出現次數',data='ball_year/{}'.format(lot_type),text='請稍等...')
+                    ),
+                    SeparatorComponent(color='#000000'),
+                    ButtonComponent(
+                        style='secondary',
+                        color='#DAA520',
+                        height='sm',
+                        action=PostbackAction(label='其他遊戲號碼出現次數',data='ballyear',text='請稍等...')
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
+        
     elif temp[:7] == 'ball_st':
         print('-------in---')
         t = temp.split('/')
@@ -1138,6 +1233,15 @@ def handle_msg_text(event):
     user_name = profile.display_name
     picture_url = profile.picture_url
     
+    if True:
+        if fb.get('/{}'.format(event.source.user_id),None) == None:
+            line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='successful'+event.message.text))
+        else:
+            print('no')
+        
+        
     if event.message.text.lower() == "eyny":
         content = eyny_movie()
         line_bot_api.reply_message(
@@ -1145,12 +1249,13 @@ def handle_msg_text(event):
             TextSendMessage(text=content))
     elif event.message.text.lower() == "choose":
         if fb.get('/{}'.format(event.source.user_id),None) == None:
-            fb.post('/{}'.format(event.source.user_id), user_name)
+            fb.post('/{}'.format(event.source.user_id), {'DB':'yes'})
         buttons_template = TemplateSendMessage(
             alt_text='抉擇領域template',
             template=ButtonsTemplate(
                 title='抉擇類型',
                 text='請選擇一下，想要老天爺替你選擇的問題',
+                thumbnail_image_url='https://i.imgur.com/ISBqTUQ.jpg',
                 actions=[                              
                     PostbackTemplateAction(
                         label='要不要問題',
@@ -1165,7 +1270,7 @@ def handle_msg_text(event):
                         data='choose/store'
                     ),
                     PostbackTemplateAction(
-                        label='其他',
+                        label='其他問題',
                         data='choose/else'
                     )
                 ]
@@ -1173,7 +1278,7 @@ def handle_msg_text(event):
         )
         line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage(text='-----已經進入抉擇領域了-----'),buttons_template])
+            [TextSendMessage(text=' -----已經進入抉擇領域了----- '),buttons_template])
 #    elif event.message.text.lower() == "get":
 #        result = fb.get('note',None)
 #        result2 = firebase.get('note', None, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
