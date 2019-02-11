@@ -687,7 +687,7 @@ def handle_postback(event):
         temp = temp.split('/')
         _type = temp[1]
         text = ''
-        color = [#AAAAAA,#AAAAAA]
+        color = ['#AAAAAA','#AAAAAA']
         point = ['👈','👈']
         if  _type == 'yesno':
             t = ['是','不是']
