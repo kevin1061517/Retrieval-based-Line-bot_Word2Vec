@@ -1432,12 +1432,16 @@ def handle_msg_text(event):
             TextSendMessage(text=content))
 
     elif event.message.text.lower() == 'draw':
-        start = list(fb.get('/{}/start'.format(user_id),None).values())[0]
+        start = list(fb.get('/{}/start'.format(user_id),None))
         if not start:
             start = 0
-        end = list(fb.get('/{}/end'.format(user_id),None).values())[0]
+        else:
+            start = start.values()[0]
+        end = list(fb.get('/{}/end'.format(user_id),None))
         if not end:
             end = 0
+        else:
+            end = end.values()[0]
         bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
