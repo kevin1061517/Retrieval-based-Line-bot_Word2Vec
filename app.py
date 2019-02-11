@@ -1408,7 +1408,7 @@ def handle_msg_text(event):
         print('-----------請輸入結束數字')  
     elif event.message.text.isdigit():
         temp = int(event.message.text)
-        t = fb.get('/U79c9b40e27fbf9db78e39a6a8ae416cd/temp',None)
+        t = fb.get('/{}/temp'.format(user_id),None)
         if '請輸入起始數字' in list(t.values()):
             fb.post('/{}/start'.format(user_id),temp)
         else:
@@ -1418,7 +1418,7 @@ def handle_msg_text(event):
                 event.reply_token,
                 [TextSendMessage(text='{}為{}'.format(t,temp)),TextSendMessage(text='draw')])
     else:
-        t = fb.get('/U79c9b40e27fbf9db78e39a6a8ae416cd/temp',None)
+        t = fb.get('/{}/temp'.format(user_id),None)
         if t != None:
             if len(list(t.values())) != 0:
                 line_bot_api.reply_message(
@@ -1432,10 +1432,10 @@ def handle_msg_text(event):
             TextSendMessage(text=content))
 
     elif event.message.text.lower() == 'draw':
-        start = fb.get('/U79c9b40e27fbf9db78e39a6a8ae416cd/temp',None)
+        start = list(fb.get('/{}/start'.format(user_id),None).values())[0]
         if not start:
             start = 0
-        end = t = fb.get('/U79c9b40e27fbf9db78e39a6a8ae416cd/temp',None)
+        end = list(fb.get('/{}/end'.format(user_id),None).values())[0]
         if not end:
             end = 0
         bubble = BubbleContainer(
