@@ -1452,7 +1452,7 @@ def handle_msg_text(event):
                                         flex = 5
                                     ),
                                     TextComponent(
-                                        text=start,
+                                        text=str(start),
                                         size='xxl',
                                         flex = 5
                                     )
@@ -1468,7 +1468,7 @@ def handle_msg_text(event):
                                         flex = 5
                                     ),
                                     TextComponent(
-                                        text=end,
+                                        text=str(end),
                                         size='xl',
                                         flex = 5
                                     )
