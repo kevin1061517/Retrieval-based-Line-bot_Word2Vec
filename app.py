@@ -1412,8 +1412,9 @@ def handle_msg_text(event):
         fb.delete('/{}/temp'.format(user_id),None)
     else:
         t = fb.get('/U79c9b40e27fbf9db78e39a6a8ae416cd/temp',None)
-        if len(list(t.values())) != 0:
-            line_bot_api.reply_message(
+        if t != None:
+            if len(list(t.values())) != 0:
+                line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(text='請輸入正確的起始及結束數字'))
         print('------out------')
