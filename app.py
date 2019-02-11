@@ -870,8 +870,8 @@ def handle_postback(event):
         )
     elif temp[:6] == 'random':
         t = temp.split('/')
-        start = t[1]
-        end = t[2]
+        start = int(t[1])
+        end = int(t[2])
         r = random.randint(start,end)
         
         bubble = BubbleContainer(
@@ -1573,9 +1573,10 @@ def handle_msg_text(event):
             fb.post('/{}/end'.format(user_id),temp)
         fb.delete('/{}/temp'.format(user_id),None)
         bubble = process_draw(user_id)
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
         line_bot_api.reply_message(
                 event.reply_token,
-                [TextSendMessage(text='{}為{}'.format(list(t.values())[0],temp)),bubble])
+                [TextSendMessage(text='{}為{}'.format(list(t.values())[0],temp)),message])
     else:
         t = fb.get('/{}/temp'.format(user_id),None)
         if t != None:
