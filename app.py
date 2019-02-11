@@ -670,6 +670,91 @@ def integer_word(word):
         message = TextSendMessage(text=content)
     return message
 
+def process_draw():
+        start = fb.get('/{}/start'.format(user_id),None)
+        if not start:
+            start = 0
+        else:
+            start = list(start.values())[0]
+        end = fb.get('/{}/end'.format(user_id),None)
+        if not end:
+            end = 0
+        else:
+            end = list(end.values())[0]
+        bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text= '抽數字',size='xl',color='#000000'),
+                    TextComponent(text= '按照步驟來隨機產生幸運數字', size='sm',color='#888888'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        color = '#FFFF00',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='baseline',
+                                contents=[
+                                    TextComponent(
+                                        text='起始',
+                                        color='#000000',
+                                        size='xxl',
+                                        flex = 5
+                                    ),
+                                    TextComponent(
+                                        text=str(start),
+                                        size='xxl',
+                                        flex = 5
+                                    )
+                                ],
+                            ),
+                            BoxComponent(
+                                layout='baseline',
+                                contents=[
+                                    TextComponent(
+                                        text='結束',
+                                        color='#000000',
+                                        size='xxl',
+                                        flex = 5
+                                    ),
+                                    TextComponent(
+                                        text=str(end),
+                                        size='xxl',
+                                        flex = 5
+                                    )
+                                ],
+                            )
+                        ],
+                    ),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='xs',
+                contents=[
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color='#FFEE99',
+                        height='sm',
+                        action=MessageAction(label='設定起始數字',text='請輸入起始數字')
+                    ),
+                    SeparatorComponent(color='#000000'),
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color='#FFEE99',
+                        height='sm',
+                        action=MessageAction(label='設定結束數字(包含)',text='請輸入結束數字')
+                    )
+                ]
+            ),
+        )
+        return bubble
 @handler.add(PostbackEvent)
 def handle_postback(event):
     temp = event.postback.data
@@ -1409,14 +1494,17 @@ def handle_msg_text(event):
     elif event.message.text.isdigit():
         temp = int(event.message.text)
         t = fb.get('/{}/temp'.format(user_id),None)
-        if '請輸入起始數字' in list(t.values()):
+        if not t:
+            return
+        elif '請輸入起始數字' in list(t.values()):
             fb.post('/{}/start'.format(user_id),temp)
         else:
             fb.post('/{}/end'.format(user_id),temp)
         fb.delete('/{}/temp'.format(user_id),None)
+        bubble = process_draw()
         line_bot_api.reply_message(
                 event.reply_token,
-                [TextSendMessage(text='{}為{}'.format(t,temp)),TextSendMessage(text='draw')])
+                [TextSendMessage(text='{}為{}'.format(t[0],temp)),bubble])
     else:
         t = fb.get('/{}/temp'.format(user_id),None)
         if t != None:
@@ -1432,89 +1520,7 @@ def handle_msg_text(event):
             TextSendMessage(text=content))
 
     elif event.message.text.lower() == 'draw':
-        start = fb.get('/{}/start'.format(user_id),None)
-        if not start:
-            start = 0
-        else:
-            start = list(start.values())[0]
-        end = fb.get('/{}/end'.format(user_id),None)
-        if not end:
-            end = 0
-        else:
-            end = list(end.values())[0]
-        bubble = BubbleContainer(
-            direction='ltr',
-            body=BoxComponent(
-                layout='vertical',
-                contents=[
-                    TextComponent(text= '抽數字',size='xl',color='#000000'),
-                    TextComponent(text= '按照步驟來隨機產生幸運數字', size='sm',color='#888888'),
-                    # review
-                    SeparatorComponent(color='#000000'),
-                    # info
-                    BoxComponent(
-                        layout='vertical',
-                        color = '#FFFF00',
-                        spacing='sm',
-                        contents=[
-                            BoxComponent(
-                                layout='baseline',
-                                contents=[
-                                    TextComponent(
-                                        text='起始',
-                                        color='#000000',
-                                        size='xxl',
-                                        flex = 5
-                                    ),
-                                    TextComponent(
-                                        text=str(start),
-                                        size='xxl',
-                                        flex = 5
-                                    )
-                                ],
-                            ),
-                            BoxComponent(
-                                layout='baseline',
-                                contents=[
-                                    TextComponent(
-                                        text='結束',
-                                        color='#000000',
-                                        size='xxl',
-                                        flex = 5
-                                    ),
-                                    TextComponent(
-                                        text=str(end),
-                                        size='xxl',
-                                        flex = 5
-                                    )
-                                ],
-                            )
-                        ],
-                    ),
-                ],
-            ),
-            footer=BoxComponent(
-                layout='vertical',
-                spacing='xs',
-                contents=[
-                    # websiteAction
-                    ButtonComponent(
-                        style='secondary',
-                        color='#FFEE99',
-                        height='sm',
-                        action=MessageAction(label='設定起始數字',text='請輸入起始數字')
-                    ),
-                    SeparatorComponent(color='#000000'),
-                    # websiteAction
-                    ButtonComponent(
-                        style='secondary',
-                        color='#FFEE99',
-                        height='sm',
-                        action=MessageAction(label='設定結束數字(包含)',text='請輸入結束數字')
-                    )
-                ]
-            ),
-        )
+        bubble = process_draw()
         message = FlexSendMessage(alt_text="hello", contents=bubble)
         line_bot_api.reply_message(
             event.reply_token,
