@@ -729,8 +729,7 @@ def handle_postback(event):
                                         size='xl',
                                         gravity='center',
                                         flex = 5
-                                    ),
-                                    SeparatorComponent(color='#000000')
+                                    )
                                 ],
                             ),
                             BoxComponent(
@@ -748,8 +747,7 @@ def handle_postback(event):
                                         size='xl',
                                         gravity='center',
                                         flex = 5
-                                    ),
-                                    SeparatorComponent(color='#000000')
+                                    )
                                 ],
                             )
                         ],
@@ -759,6 +757,7 @@ def handle_postback(event):
             footer=BoxComponent(
                 layout='vertical',
                 contents=[
+                    SeparatorComponent(color='#000000'),
                     # websiteAction
                     ButtonComponent(
                         style='secondary',
@@ -1389,13 +1388,13 @@ def handle_msg_text(event):
     user_name = profile.display_name
     picture_url = profile.picture_url
     
-    if True:
-        if fb.get('/{}'.format(event.source.user_id),None) != None:
-            line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text='successful'+event.message.text))
-        else:
-            print('no')
+#    if True:
+#        if fb.get('/{}'.format(event.source.user_id),None) != None:
+#            line_bot_api.reply_message(
+#            event.reply_token,
+#            TextSendMessage(text='successful'+event.message.text))
+#        else:
+#            print('no')
         
         
     if event.message.text.lower() == "eyny":
