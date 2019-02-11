@@ -670,7 +670,7 @@ def integer_word(word):
         message = TextSendMessage(text=content)
     return message
 
-def process_draw():
+def process_draw(user_id):
         start = fb.get('/{}/start'.format(user_id),None)
         if not start:
             start = 0
@@ -1520,7 +1520,7 @@ def handle_msg_text(event):
             TextSendMessage(text=content))
 
     elif event.message.text.lower() == 'draw':
-        bubble = process_draw()
+        bubble = process_draw(user_id)
         message = FlexSendMessage(alt_text="hello", contents=bubble)
         line_bot_api.reply_message(
             event.reply_token,
