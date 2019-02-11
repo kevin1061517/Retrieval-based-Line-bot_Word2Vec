@@ -682,22 +682,178 @@ def handle_postback(event):
                 event.reply_token,
                 AudioSendMessage(original_content_url=url,duration=3000)
             )
-        
-    elif temp[:6] == 'choose':
-        print('-----------')
+    elif temp[:5] == 'first':
+        print('--------in-----')
         t = temp.split('/')
         _type = t[1]
         text = ''
-#        if  _type == 'yesno:
-#            
-#        elif _type == 'buy':
-#            
-#        elif _type == 'store':
-#            
-#        elif _type == 'else':
+        color = ['#888888','#888888']
+        point = ['👈','👈']
+        if  _type == 'yesno':
+            t = ['是','不是']
+        elif _type == 'buy':
+            t = ['買','不買']
+        elif _type == 'store':
+            t = ['要','不要']
+        if 'start' in t:
+            r = random.randint(0,1)
+            point[r] = ' '
+            t [1-r] = '#000000'
+        bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text= '隨機選擇', weight='bold',gravity='center',size='xl',color='#000000'),
+                    TextComponent(text= '開始請按最下面按鈕', size='md',gravity='center',color='#888888'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        color = '#FFFF00',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='baseline',
+                                contents=[
+                                    TextComponent(
+                                        text=t[0],
+                                        color=color[0],
+                                        size='xl',
+                                        gravity='center',
+                                        flex = 5
+                                    ),
+                                    TextComponent(
+                                        text=point[0],
+                                        size='xl',
+                                        gravity='center',
+                                        flex = 5
+                                    ),
+                                    SeparatorComponent(color='#000000')
+                                ],
+                            ),
+                            BoxComponent(
+                                layout='baseline',
+                                contents=[
+                                    TextComponent(
+                                        text=t[1],
+                                        color=color[1],
+                                        size='xl',
+                                        gravity='center',
+                                        flex = 5
+                                    ),
+                                    TextComponent(
+                                        text=point[1],
+                                        size='xl',
+                                        gravity='center',
+                                        flex = 5
+                                    ),
+                                    SeparatorComponent(color='#000000')
+                                ],
+                            )
+                        ],
+                    ),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                contents=[
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color='#5555FF',
+                        height='sm',
+                        action=PostbackAction(label='開始選擇',data='first/{}/start'.format(_type),text='為你選出最佳選擇')
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text='請把要老天爺幫你選擇的選項回覆給我，然後每一項以分號區隔\n例如:50嵐;清新福全;coco;茶湯會'))
+            message
+        )
+
+    elif temp[:6] == 'choose':
+        bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text= '請把要老天爺幫你選擇的選項回覆給我，然後每一項以分號區隔', weight='bold',size='xl',color='#000000'),
+                    TextComponent(text= '希望能夠解決你的選擇障礙...', size='md',wrap=True,color='#888888'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        margin='lg',
+                        color = '#FFFF00',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='baseline',
+                                contents=[
+                                    TextComponent(
+                                        text='範例--選擇飲料店:',
+                                        color='#000000',
+                                        size='md'
+                                    ),
+                                    TextComponent(
+                                        text='50嵐;清新福全;coco;茶湯會',
+                                        color='#000000',
+                                        size='md',
+                                        wrap=True
+                                    ),
+                                    SeparatorComponent(color='#000000')
+                                ],
+                            ),
+                            BoxComponent(
+                                layout='baseline',
+                                contents=[
+                                    TextComponent(
+                                        text='範例:選擇雞排店',
+                                        color='#000000',
+                                        size='md'
+                                    ),
+                                    TextComponent(
+                                        text='豪大雞排;派克雞排;蔥Ya雞;胖老爹雞排',
+                                        color='#000000',
+                                        size='md'
+                                    ),
+                                    SeparatorComponent(color='#000000')
+                                ],
+                            )
+                        ],
+                    ),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                contents=[
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color='#5555FF',
+                        height='sm',
+                        action=PostbackAction(label='其他年份號碼出現次數',data='ball_year/{}'.format(lot_type),text='請稍等...')
+                    ),
+                    SeparatorComponent(color='#000000'),
+                    ButtonComponent(
+                        style='secondary',
+                        color='#5555FF',
+                        height='sm',
+                        action=PostbackAction(label='其他遊戲號碼出現次數',data='ballyear',text='請稍等...')
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
 
             
     elif temp == 'result':     
@@ -1259,26 +1415,26 @@ def handle_msg_text(event):
                 actions=[                              
                     PostbackTemplateAction(
                         label='要不要問題',
-                        data='choose/yesno'
+                        data='first/yesno'
                     ),
                     PostbackTemplateAction(
                         label='買不買問題',
-                        data='choose/buy'
+                        data='first/buy'
                     ),
                     PostbackTemplateAction(
-                        label='去哪一家店',
-                        data='choose/store'
+                        label='是不是問題',
+                        data='first/yes'
                     ),
                     PostbackTemplateAction(
-                        label='其他問題',
-                        data='choose/else'
+                        label='新增問題',
+                        data='choose'
                     )
                 ]
             )
         )
         line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage(text=' -----已經進入抉擇領域了----- '),buttons_template])
+            [TextSendMessage(text=' -------已經進入抉擇領域了------- '),buttons_template])
 #    elif event.message.text.lower() == "get":
 #        result = fb.get('note',None)
 #        result2 = firebase.get('note', None, {'print': 'pretty'}, {'X_FANCY_HEADER': 'VERY FANCY'})
