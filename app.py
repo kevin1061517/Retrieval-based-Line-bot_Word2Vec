@@ -684,8 +684,8 @@ def handle_postback(event):
             )
     elif temp[:5] == 'first':
         print('--------in-----')
-        t = temp.split('/')
-        _type = t[1]
+        temp = temp.split('/')
+        _type = temp[1]
         text = ''
         color = ['#888888','#888888']
         point = ['👈','👈']
@@ -695,7 +695,8 @@ def handle_postback(event):
             t = ['買','不買']
         elif _type == 'store':
             t = ['要','不要']
-        if 'start' in t:
+        if 'start' in temp:
+            print('------start')
             r = random.randint(0,1)
             point[r] = ' '
             t [1-r] = '#000000'
