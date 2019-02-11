@@ -750,6 +750,14 @@ def process_draw(user_id):
                         color='#FFEE99',
                         height='sm',
                         action=MessageAction(label='設定結束數字(包含)',text='請輸入結束數字')
+                    ),
+                    SeparatorComponent(color='#000000'),
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color='#FFEE99',
+                        height='sm',
+                        action=PostbackAction(label='開始抽籤',text='抽籤結果!!',data='random/{}/{}'.format(start,end))
                     )
                 ]
             ),
@@ -860,7 +868,70 @@ def handle_postback(event):
             event.reply_token,
             message
         )
-
+    elif temp[:6] == 'random':
+        t = temp.split('/')
+        start = t[1]
+        end = t[2]
+        r = random.randint(start,end)
+        
+        bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text= '隨機選擇',gravity='center',size='xl',color='#000000'),
+                    TextComponent(text= '{}請按最下面按鈕'.format(text), size='sm',gravity='center',color='#888888'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        color = '#FFFF00',
+                        spacing='sm',
+                        contents=[
+                                    TextComponent(
+                                        text='隨機產生號碼',
+                                        color='#000000',
+                                        size='xl',
+                                        flex = 5
+                                    ),
+                                    TextComponent(
+                                        text=str(r),
+                                        color='#000000',
+                                        size='xl',
+                                        flex = 5
+                                    )
+                        ],
+                        
+                    ),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='xs',
+                contents=[
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color='#FFEE99',
+                        height='sm',
+                        action=PostbackAction(label='再抽一次',text='抽籤結果!!',data='random/{}/{}'.format(start,end))
+                    ),
+                    ButtonComponent(
+                        style='secondary',
+                        color='#FFEE99',
+                        height='sm',
+                        action=MessageAction(label ='重新設範圍',text='choose',)
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
+        
     elif temp[:6] == 'choose':
         bubble = BubbleContainer(
             direction='ltr',
@@ -1501,7 +1572,7 @@ def handle_msg_text(event):
         else:
             fb.post('/{}/end'.format(user_id),temp)
         fb.delete('/{}/temp'.format(user_id),None)
-        bubble = process_draw()
+        bubble = process_draw(user_id)
         line_bot_api.reply_message(
                 event.reply_token,
                 [TextSendMessage(text='{}為{}'.format(t[0],temp)),bubble])
