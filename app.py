@@ -758,8 +758,8 @@ def handle_postback(event):
             ),
             footer=BoxComponent(
                 layout='vertical',
+                spacing='xs',
                 contents=[
-                    SeparatorComponent(color='#000000'),
                     # websiteAction
                     ButtonComponent(
                         style='secondary',
@@ -831,6 +831,7 @@ def handle_postback(event):
             ),
             footer=BoxComponent(
                 layout='vertical',
+                spacing='xs',
                 contents=[
                     # websiteAction
                     ButtonComponent(
@@ -1398,10 +1399,10 @@ def handle_msg_text(event):
 #            print('no')
     if event.message.text == '請輸入起始數字 ':
         fb.post('/{}/temp'.format(user_id),'請輸入起始數字')
-            
+        print('-----------請輸入起始數字') 
     elif event.message.text == '設定結束數字(包含)':
         fb.post('/{}/temp'.format(user_id),'設定結束數字(包含)')
-            
+        print('-----------請輸入結束數字')  
     elif event.message.text.isdigit():
         temp = int(event.message.text)
         t = fb.get('/U79c9b40e27fbf9db78e39a6a8ae416cd/temp',None)
@@ -1480,8 +1481,8 @@ def handle_msg_text(event):
             ),
             footer=BoxComponent(
                 layout='vertical',
+                spacing='xs',
                 contents=[
-                    SeparatorComponent(color='#000000'),
                     # websiteAction
                     ButtonComponent(
                         style='secondary',
