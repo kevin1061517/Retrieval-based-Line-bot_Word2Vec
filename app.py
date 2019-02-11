@@ -1399,16 +1399,16 @@ def handle_msg_text(event):
 #        else:
 #            print('no')
     print('------------'+event.message.text)
-    if event.message.text == '請輸入起始數字 ':
+    if event.message.text == '請輸入起始數字':
         fb.post('/{}/temp'.format(user_id),'請輸入起始數字')
         print('-----------請輸入起始數字') 
-    elif event.message.text == '設定結束數字':
-        fb.post('/{}/temp'.format(user_id),'設定結束數字(包含)')
+    elif event.message.text == '請輸入結束數字':
+        fb.post('/{}/temp'.format(user_id),'請輸入結束數字')
         print('-----------請輸入結束數字')  
     elif event.message.text.isdigit():
         temp = int(event.message.text)
         t = fb.get('/U79c9b40e27fbf9db78e39a6a8ae416cd/temp',None)
-        if '請輸入起始數字 ' in list(t.values()):
+        if '請輸入起始數字' in list(t.values()):
             fb.post('/{}/start'.format(user_id),temp)
         else:
             fb.post('/{}/end'.format(user_id),temp)
