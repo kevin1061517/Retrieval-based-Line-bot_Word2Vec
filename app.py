@@ -687,6 +687,7 @@ def handle_postback(event):
         temp = temp.split('/')
         _type = temp[1]
         text = ''
+        label='開始選擇'
         color = ['#AAAAAA','#AAAAAA']
         point = ['👈','👈']
         if  _type == 'yesno':
@@ -695,18 +696,21 @@ def handle_postback(event):
             t = ['買','不買']
         elif _type == 'store':
             t = ['要','不要']
+        data='first/{}/start'.format(_type)
         if 'start' in temp:
             print('------start')
             r = random.randint(0,1)
             point[r] = ' '
             color[1-r] = '#000000'
+            label='其他選擇'
+            data='choose'
         bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
                 layout='vertical',
                 contents=[
                     TextComponent(text= '隨機選擇', weight='bold',gravity='center',size='xl',color='#000000'),
-                    TextComponent(text= '開始請按最下面按鈕', size='md',gravity='center',color='#888888'),
+                    TextComponent(text= '開始請按最下面按鈕', size='sm',gravity='center',color='#888888'),
                     # review
                     SeparatorComponent(color='#000000'),
                     # info
@@ -762,9 +766,8 @@ def handle_postback(event):
                     # websiteAction
                     ButtonComponent(
                         style='secondary',
-                        color='#5555FF',
-                        height='sm',
-                        action=PostbackAction(label='開始選擇',data='first/{}/start'.format(_type),text='為你選出最佳選擇')
+                        color='#DDFF77',
+                        action=PostbackAction(label=label,data=data,text='為你選出最佳選擇')
                     )
                 ]
             ),
