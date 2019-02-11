@@ -764,6 +764,7 @@ def handle_postback(event):
                     ButtonComponent(
                         style='secondary',
                         color='#FFEE99',
+                        height='sm',
                         action=action
                     )
                 ]
@@ -1397,10 +1398,11 @@ def handle_msg_text(event):
 #            TextSendMessage(text='successful'+event.message.text))
 #        else:
 #            print('no')
+    print('------------'+event.message.text)
     if event.message.text == '請輸入起始數字 ':
         fb.post('/{}/temp'.format(user_id),'請輸入起始數字')
         print('-----------請輸入起始數字') 
-    elif event.message.text == '設定結束數字(包含)':
+    elif event.message.text == '設定結束數字':
         fb.post('/{}/temp'.format(user_id),'設定結束數字(包含)')
         print('-----------請輸入結束數字')  
     elif event.message.text.isdigit():
@@ -1470,7 +1472,7 @@ def handle_msg_text(event):
                                     ),
                                     TextComponent(
                                         text=str(end),
-                                        size='xl',
+                                        size='xxl',
                                         flex = 5
                                     )
                                 ],
@@ -1487,6 +1489,7 @@ def handle_msg_text(event):
                     ButtonComponent(
                         style='secondary',
                         color='#FFEE99',
+                        height='sm',
                         action=MessageAction(label='設定起始數字',text='請輸入起始數字')
                     ),
                     SeparatorComponent(color='#000000'),
@@ -1494,6 +1497,7 @@ def handle_msg_text(event):
                     ButtonComponent(
                         style='secondary',
                         color='#FFEE99',
+                        height='sm',
                         action=MessageAction(label='設定結束數字(包含)',text='請輸入結束數字')
                     )
                 ]
