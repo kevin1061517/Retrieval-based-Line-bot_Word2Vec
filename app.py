@@ -921,7 +921,7 @@ def handle_postback(event):
                         style='secondary',
                         color='#FFEE99',
                         height='sm',
-                        action=MessageAction(label ='重新設範圍',text='choose',)
+                        action=MessageAction(label ='重新設範圍',text='draw',)
                     )
                 ]
             ),
@@ -1575,7 +1575,7 @@ def handle_msg_text(event):
         bubble = process_draw(user_id)
         line_bot_api.reply_message(
                 event.reply_token,
-                [TextSendMessage(text='{}為{}'.format(t[0],temp)),bubble])
+                [TextSendMessage(text='{}為{}'.format(list(t.values())[0],temp)),bubble])
     else:
         t = fb.get('/{}/temp'.format(user_id),None)
         if t != None:
@@ -1591,6 +1591,9 @@ def handle_msg_text(event):
             TextSendMessage(text=content))
 
     elif event.message.text.lower() == 'draw':
+        fb.delete('/{}/end'.format(user_id),None)
+        fb.delete('/{}/start'.format(user_id),None)
+        print('in')
         bubble = process_draw(user_id)
         message = FlexSendMessage(alt_text="hello", contents=bubble)
         line_bot_api.reply_message(
@@ -1599,6 +1602,7 @@ def handle_msg_text(event):
         )
         
     elif event.message.text.lower() == "choose":
+        
         if fb.get('/{}'.format(event.source.user_id),None) == None:
             fb.post('/{}'.format(event.source.user_id), {'DB':'yes'})
         buttons_template = TemplateSendMessage(
