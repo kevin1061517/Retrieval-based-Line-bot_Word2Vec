@@ -692,15 +692,16 @@ def handle_postback(event):
         color = ['#AAAAAA','#AAAAAA']
         point = ['👈','👈']
         if  _type == 'yesno':
-            t = ['是','不是']
+            t = ['要','不要']
         elif _type == 'buy':
             t = ['買','不買']
-        elif _type == 'store':
-            t = ['要','不要']
+        elif _type == 'yes':
+            t = ['是','不是']
 
         if 'start' in temp:
             text = '其他選擇'
             r = random.randint(0,1)
+            print('----------'+str(r))
             point[r] = ' '
             color[1-r] = '#000000'
             action = MessageAction(label='其他選擇',text='choose')
@@ -1387,7 +1388,7 @@ def handle_msg_text(event):
     profile = line_bot_api.get_profile(event.source.user_id)
     user_name = profile.display_name
     picture_url = profile.picture_url
-    
+    user_id = event.source.user_id
 #    if True:
 #        if fb.get('/{}'.format(event.source.user_id),None) != None:
 #            line_bot_api.reply_message(
@@ -1395,13 +1396,111 @@ def handle_msg_text(event):
 #            TextSendMessage(text='successful'+event.message.text))
 #        else:
 #            print('no')
-        
-        
+    if event.message.text == '請輸入起始數字 ':
+        fb.post('/{}/temp'.format(user_id),'請輸入起始數字')
+            
+    elif event.message.text == '設定結束數字(包含)':
+        fb.post('/{}/temp'.format(user_id),'設定結束數字(包含)')
+            
+    elif event.message.text.isdigit():
+        temp = int(event.message.text)
+        t = fb.get('/U79c9b40e27fbf9db78e39a6a8ae416cd/temp',None)
+        if '請輸入起始數字 ' in list(t.values()):
+            fb.post('/{}/start'.format(user_id),temp)
+        else:
+            fb.post('/{}/end'.format(user_id),temp)
+        fb.delete('/{}/temp'.format(user_id),None)
+    else:
+        if len(list(t.values())) != 0:
+            line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='請輸入正確的起始及結束數字'))
     if event.message.text.lower() == "eyny":
         content = eyny_movie()
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
+
+    elif event.message.text.lower() == 'draw':
+        start = 0
+        end = 0
+        bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text= '抽數字',size='xl',color='#000000'),
+                    TextComponent(text= '按照步驟來隨機產生幸運數字', size='sm',color='#888888'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        color = '#FFFF00',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='baseline',
+                                contents=[
+                                    TextComponent(
+                                        text='起始',
+                                        color='#000000',
+                                        size='xxl',
+                                        flex = 5
+                                    ),
+                                    TextComponent(
+                                        text=start,
+                                        size='xxl',
+                                        flex = 5
+                                    )
+                                ],
+                            ),
+                            BoxComponent(
+                                layout='baseline',
+                                contents=[
+                                    TextComponent(
+                                        text='結束',
+                                        color='#000000',
+                                        size='xxl',
+                                        flex = 5
+                                    ),
+                                    TextComponent(
+                                        text=end,
+                                        size='xl',
+                                        flex = 5
+                                    )
+                                ],
+                            )
+                        ],
+                    ),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                contents=[
+                    SeparatorComponent(color='#000000'),
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color='#FFEE99',
+                        action=MessageAction(label='設定起始數字',text='請輸入起始數字')
+                    ),
+                    SeparatorComponent(color='#000000'),
+                    # websiteAction
+                    ButtonComponent(
+                        style='secondary',
+                        color='#FFEE99',
+                        action=MessageAction(label='設定結束數字(包含)',text='請輸入結束數字')
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
+        
     elif event.message.text.lower() == "choose":
         if fb.get('/{}'.format(event.source.user_id),None) == None:
             fb.post('/{}'.format(event.source.user_id), {'DB':'yes'})
