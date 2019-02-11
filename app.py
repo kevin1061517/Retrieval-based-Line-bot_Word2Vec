@@ -687,7 +687,7 @@ def handle_postback(event):
         temp = temp.split('/')
         _type = temp[1]
         text = ''
-        color = ['#888888','#888888']
+        color = [#AAAAAA,#AAAAAA]
         point = ['👈','👈']
         if  _type == 'yesno':
             t = ['是','不是']
@@ -699,7 +699,7 @@ def handle_postback(event):
             print('------start')
             r = random.randint(0,1)
             point[r] = ' '
-            t [1-r] = '#000000'
+            color[1-r] = '#000000'
         bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
