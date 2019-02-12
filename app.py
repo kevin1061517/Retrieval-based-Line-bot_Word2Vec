@@ -1732,16 +1732,15 @@ def handle_msg_text(event):
     elif True:
         t = fb.get('/{}/num'.format(user_id),None)
         if not t:
-            print('in')
-            return
-        elif '問題' in list(t.values()):
-            fb.post('/{}/ques_num'.format(user_id),event.message.text)
-        else:
-            fb.post('/{}/opti_num'.format(user_id),event.message.text)
-        fb.delete('/{}/num'.format(user_id),None)
-        bubble = process_draw(user_id)
-        message = FlexSendMessage(alt_text="hello", contents=bubble)
-        line_bot_api.reply_message(
+            pass
+            if '問題' in list(t.values()):
+                fb.post('/{}/ques_num'.format(user_id),event.message.text)
+            else:
+                fb.post('/{}/opti_num'.format(user_id),event.message.text)
+            fb.delete('/{}/num'.format(user_id),None)
+            bubble = process_draw(user_id)
+            message = FlexSendMessage(alt_text="hello", contents=bubble)
+            line_bot_api.reply_message(
                 event.reply_token,
                 [TextSendMessage(text='{}為{}'.format(list(t.values())[0],temp)),message])
     else:
