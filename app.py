@@ -765,21 +765,17 @@ def process_draw(user_id):
         return bubble
     
 def process_choose(user_id):
+    temp_opti =[]
+    texts = ''
+    temp_ques = '' 
     t = fb.get('/{}/opti_num'.format(user_id),None)
-
     if t :
          temp = list(t.values())[0]
-         print(temp)
          temp_opti = temp.split('；')
-         texts = ''
          
     t1 = fb.get('/{}/ques_num'.format(user_id),None)
     if t1:
-        print('-----quest------')
         temp_ques = list(t1.values())[0]
-    else:
-        print('-----no quest------')
-        temp_ques = ' ' 
     print('-----in------')
     for i in temp_opti:
         texts += '{}\n'.format(i)
