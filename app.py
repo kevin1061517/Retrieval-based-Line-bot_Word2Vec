@@ -741,7 +741,7 @@ def process_draw(user_id):
                         style='secondary',
                         color='#FFEE99',
                         height='sm',
-                        action=MessageAction(label='設定起始數字',text='請輸入起始數字')
+                        action=MessageAction(label='設定起始數字',text='請輸入起始數字-----------')
                     ),
                     SeparatorComponent(color='#000000'),
                     # websiteAction
@@ -749,7 +749,7 @@ def process_draw(user_id):
                         style='secondary',
                         color='#FFEE99',
                         height='sm',
-                        action=MessageAction(label='設定結束數字(包含)',text='請輸入結束數字')
+                        action=MessageAction(label='設定結束數字(包含)',text='請輸入結束數字-----------')
                     ),
                     SeparatorComponent(color='#000000'),
                     # websiteAction
@@ -913,11 +913,12 @@ def handle_postback(event):
                                                        text=' ',
                                                        color='#000000',
                                                        size='xl',
-                                                       flex = 5
+                                                       flex = 4
                                                 ),
                                                 TextComponent(
                                                        text=str(r),
                                                        color='#000000',
+                                                       weight = 'bold',
                                                        size='xxl',
                                                        flex = 5
                                                 )
@@ -1577,14 +1578,12 @@ def handle_msg_text(event):
 #            TextSendMessage(text='successful'+event.message.text))
 #        else:
 #            print('no')
-    if event.message.text == '請輸入起始數字':
+    if event.message.text == '請輸入起始數字-----------':
         t = '起始數字'
         fb.post('/{}/temp'.format(user_id),'請輸入起始數字')  
-        print('-----------請輸入起始數字') 
-    elif event.message.text == '請輸入結束數字':
+    elif event.message.text == '請輸入結束數字-----------':
         t = '結束數字'
         fb.post('/{}/temp'.format(user_id),'請輸入結束數字')
-        print('-----------請輸入結束數字')  
     elif event.message.text.isdigit():
         temp = int(event.message.text)
         t = fb.get('/{}/temp'.format(user_id),None)
@@ -1606,7 +1605,7 @@ def handle_msg_text(event):
             if len(list(t.values())) != 0:
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='請輸入正確的起始及結束數字'))
+                    [TextSendMessage(text='請輸入正確的起始及結束數字'),TextSendMessage(text='只能是數字，不能包含文字喔🙏')])
         print('------out------')
     if event.message.text.lower() == "eyny":
         content = eyny_movie()
