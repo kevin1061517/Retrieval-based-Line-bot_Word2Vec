@@ -1733,6 +1733,7 @@ def handle_msg_text(event):
         t = fb.get('/{}/num'.format(user_id),None)
         if not t:
             print('in')
+            return
         elif '問題' in list(t.values()):
             fb.post('/{}/ques_num'.format(user_id),event.message.text)
         else:
@@ -1751,6 +1752,7 @@ def handle_msg_text(event):
                     event.reply_token,
                     [TextSendMessage(text='請輸入正確的起始及結束數字'),TextSendMessage(text='只能是數字，不能包含文字喔🙏')])
         print('------out------')
+    print('------if')
     if event.message.text.lower() == "eyny":
         content = eyny_movie()
         line_bot_api.reply_message(
