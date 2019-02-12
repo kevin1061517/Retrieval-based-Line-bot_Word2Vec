@@ -850,8 +850,7 @@ def process_choose(user_id):
                 ]
             ),
         )
-    message = FlexSendMessage(alt_text="hello", contents=bubble)
-    return message
+    return bubble
 @handler.add(PostbackEvent)
 def handle_postback(event):
     temp = event.postback.data
