@@ -876,14 +876,13 @@ def handle_postback(event):
         t = temp.split('/')
         start = int(t[1])
         end = int(t[2])
-        if start <= end:
+        if start >= end:
              message = FlexSendMessage(alt_text="hello", contents=bubble)
              line_bot_api.reply_message(
                 event.reply_token,
-                [TextSendMessage(text='咦!{}要注意起始不能小大於等於最後一個數字喔!!'.formate(user_name)),message])
+                [TextSendMessage(text='咦!{}要注意起始不能大於等於最後一個數字喔!!'.formate(user_name)),message])
              return
         r = random.randint(start,end)
-        
         bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
