@@ -1732,7 +1732,7 @@ def handle_msg_text(event):
     elif True:
         t = fb.get('/{}/num'.format(user_id),None)
         if not t:
-            return
+            print('in')
         elif '問題' in list(t.values()):
             fb.post('/{}/ques_num'.format(user_id),event.message.text)
         else:
