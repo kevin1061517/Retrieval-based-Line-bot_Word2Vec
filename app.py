@@ -785,7 +785,7 @@ def process_choose(user_id):
                 layout='vertical',
                 contents=[
                     TextComponent(text= '確定好就按下面的抽籤按鈕', weight='bold',size='lg',color='#000000'),
-                    TextComponent(text= '問題:\n{}'.format(temp_ques), size='md',wrap=True,color='#000000'),
+                    TextComponent(text= '問題為-->{}'.format(temp_ques), size='md',wrap=True,color='#000000'),
                     # review
                     SeparatorComponent(color='#000000'),
                     # info
@@ -800,14 +800,14 @@ def process_choose(user_id):
                                         text='選項:',
                                         color='#000000',
                                         gravity='center',
-                                        flex = 2,
+                                        flex = 1,
                                         size='lg'
                                     ),
                                     TextComponent(
-                                        text='{}\n'.format(texts),
+                                        text='{}\n'.format(texts[:-1]),
                                         color='#000000',
                                         wrap=True,
-                                        flex = 5,
+                                        flex = 4,
                                         size='lg')
                                     ]
                             )
