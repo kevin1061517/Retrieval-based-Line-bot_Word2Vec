@@ -880,7 +880,7 @@ def handle_postback(event):
              message = FlexSendMessage(alt_text="hello", contents=bubble)
              line_bot_api.reply_message(
                 event.reply_token,
-                [TextSendMessage(text='咦!{}要注意起始不能大於等於最後一個數字喔!!'.formate(user_name)),message])
+                [TextSendMessage(text='咦!{}要注意起始不能大於等於最後一個數字喔!!'.format(user_name)),message])
              return
         r = random.randint(start,end)
         bubble = BubbleContainer(
