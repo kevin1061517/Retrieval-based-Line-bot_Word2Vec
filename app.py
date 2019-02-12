@@ -868,8 +868,7 @@ def handle_postback(event):
                 [TextSendMessage(text='必須要有輸入有正確的選項喔'),message]
             )
         result = random.choice(temp_opti)
-        
-        t1 = fb.get('/{}/ques_num'.format(user_id),None)
+        t1 = fb.get('/{}/ques_num'.format(event.source.user_id),None)
         if t1:
             temp_ques = list(t1.values())[0]
         else:
