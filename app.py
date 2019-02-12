@@ -845,7 +845,7 @@ def process_choose(user_id):
                         style='secondary',
                         color='#FFDD55',
                         height='sm',
-                        action=MessageAction(label='設定選項',text='請輸入要設定的選項，各個選項以分號區隔~')
+                        action=MessageAction(label='設定選項',text='請輸入要設定的選項，各個選項以分號區隔!!!')
                     )
                 ]
             ),
@@ -1833,7 +1833,7 @@ def handle_msg_text(event):
     elif event.message.text == '請輸入要設定抉擇的問題:':
         fb.delete('/{}/ques_num'.format(event.source.user_id),None)
         fb.post('/{}/num'.format(user_id),'問題')  
-    elif event.message.text == '請輸入要設定的選項，各個選項以分號區隔喔!!!':
+    elif event.message.text == '請輸入要設定的選項，各個選項以分號區隔!!!':
         fb.delete('/{}/opti_num'.format(event.source.user_id),None)
         fb.post('/{}/num'.format(user_id),'選項')
     elif t:
@@ -1876,9 +1876,6 @@ def handle_msg_text(event):
         )
         
     elif event.message.text.lower() == "choose":
-
-        if fb.get('/{}'.format(event.source.user_id),None) == None:
-            fb.post('/{}'.format(event.source.user_id), {'DB':'yes'})
         buttons_template = TemplateSendMessage(
             alt_text='抉擇領域template',
             template=ButtonsTemplate(
