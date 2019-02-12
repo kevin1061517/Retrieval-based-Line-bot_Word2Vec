@@ -949,8 +949,8 @@ def handle_postback(event):
                 ]
             ),
         )
-    message = FlexSendMessage(alt_text="hello", contents=bubble)
-    line_bot_api.reply_message(
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
                 event.reply_token,
                 message)
         
