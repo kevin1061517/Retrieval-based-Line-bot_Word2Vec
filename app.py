@@ -766,13 +766,13 @@ def process_draw(user_id):
     
 def process_choose(user_id):
     t = fb.get('/{}/opti_num'.format(user_id),None)
-    texts = ' '
+
     if t :
          temp = list(t.values())[0]
+         print(temp)
          temp_opti = temp.split(';')
          texts = ''
-    else:
-        temp_opti = ' '
+         
     t1 = fb.get('/{}/ques_num'.format(user_id),None)
     if t1:
         print('-----quest------')
@@ -817,6 +817,7 @@ def process_choose(user_id):
                                             TextComponent(
                                                     text=texts,
                                                     color='#000000',
+                                                    wrap=True,
                                                     size='lg')]
                                     )
                                 ]
