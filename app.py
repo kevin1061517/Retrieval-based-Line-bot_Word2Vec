@@ -869,9 +869,19 @@ def handle_postback(event):
             message
         )
     elif temp[:6] == 'random':
+        profile = line_bot_api.get_profile(event.source.user_id)
+        user_name = profile.display_name
+        user_id = event.source.user_id
+        bubble = process_draw(user_id)
         t = temp.split('/')
         start = int(t[1])
         end = int(t[2])
+        if start <= end:
+             message = FlexSendMessage(alt_text="hello", contents=bubble)
+             line_bot_api.reply_message(
+                event.reply_token,
+                [TextSendMessage(text='咦!{}要注意起始不能小大於等於最後一個數字喔!!'.formate(user_name)),message])
+             return
         r = random.randint(start,end)
         
         bubble = BubbleContainer(
@@ -896,7 +906,7 @@ def handle_postback(event):
                                         flex = 5
                                     ),
                                     BoxComponent(
-                                        layout='vertical',
+                                        layout='baseline',
                                         color = '#FFFF00',
                                         spacing='sm',
                                         contents=[
