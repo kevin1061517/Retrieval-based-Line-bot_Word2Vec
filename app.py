@@ -833,7 +833,7 @@ def process_choose(user_id):
                         style='secondary',
                         color='#FFDD55',
                         height='sm',
-                        action=PostbackAction(label='隨機選擇',data='custom',text='請選擇一下喔~')
+                        action=PostbackAction(label='隨機選擇',data='custom')
                     ),
                     ButtonComponent(
                         style='secondary',
@@ -865,13 +865,15 @@ def handle_postback(event):
             )
     elif temp == 'custom':
         t = fb.get('/{}/opti_num'.format(event.source.user_id),None)
+        bubble = process_choose(event.source.user_id)
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
         if t :
             temp = list(t.values())[0]
             temp_opti = temp.split(';')
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text='必須要有輸入有正確的選項喔')
+                [TextSendMessage(text='必須要有輸入有正確的選項喔'),message]
             )
         result = random.choice(temp_opti)
         
@@ -881,7 +883,7 @@ def handle_postback(event):
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text='必須要有輸入有正確的問題喔')
+                [TextSendMessage(text='必須要有輸入有正確的問題喔'),message]
             )
         bubble = BubbleContainer(
             direction='ltr',
