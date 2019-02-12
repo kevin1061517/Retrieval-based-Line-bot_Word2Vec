@@ -766,9 +766,11 @@ def process_draw(user_id):
     
 def process_choose(user_id):
     t = fb.get('/{}/opti_num'.format(user_id),None)
+    texts = ' '
     if t :
          temp_opti = list(t.values())[0]
          temp_opti = temp.split(';')
+         texts = ''
     else:
         temp_opti = ' '
     t1 = fb.get('/{}/ques_num'.format(user_id),None)
@@ -779,17 +781,14 @@ def process_choose(user_id):
         print('-----no quest------')
         temp_ques = ' ' 
     print('-----in------')
-    texts = [TextComponent(
-                text=' {}\n'.format(i),
-                color='#000000',
-                size='lg'
-                ) for i in temp_opti]
+    for i in temp_opti:
+        texts += '{}\n'.format(i)
     bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    TextComponent(text= '如果都確定好就按下為下面的抽籤按鈕', weight='bold',size='xl',color='#000000'),
+                    TextComponent(text= '如果都確定好就按下為下面的抽籤按鈕', weight='bold',size='lg',color='#000000'),
                     TextComponent(text= '結果好不好交給老天爺', size='md',color='#888888'),
                     # review
                     SeparatorComponent(color='#000000'),
@@ -799,21 +798,28 @@ def process_choose(user_id):
                         spacing='sm',
                         contents=[
                             BoxComponent(
-                                layout='baseline',
+                                layout='vertical',
                                 contents=[
                                     TextComponent(
                                         text='問題:{}'.format(temp_ques),
                                         color='#000000',
-                                        size='lg'
+                                        size='md'
                                     ),
-                                    TextComponent(
-                                        text='選項:',
-                                        color='#000000',
-                                        gravity = 'center',
-                                        size='lg'
-                                    ),
-                                    texts
-                                ],
+                                     BoxComponent(
+                                         layout='baseline',
+                                         spacing='sm',
+                                         contents=[
+                                            TextComponent(
+                                                    text='選項:',
+                                                    color='#000000',
+                                                    gravity = 'center',
+                                                    size='md'),
+                                            TextComponent(
+                                                    text=texts,
+                                                    color='#000000',
+                                                    size='md')]
+                                    )
+                                ]
                             )
                         ],
                     ),
@@ -835,7 +841,6 @@ def process_choose(user_id):
                         height='sm',
                         action=MessageAction(label='設定問題',text='請輸入要設定抉擇的問題:')
                     ),
-                    SeparatorComponent(color='#000000'),
                     ButtonComponent(
                         style='secondary',
                         color='#5555FF',
