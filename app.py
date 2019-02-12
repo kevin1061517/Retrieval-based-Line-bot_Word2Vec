@@ -1061,10 +1061,8 @@ def handle_postback(event):
                                     TextComponent(
                                         text='設定選項-範例:50嵐;清新福全;coco;茶湯會',
                                         color='#000000',
-                                        size='md',
-                                        wrap=True
-                                    ),
-                                    SeparatorComponent(color='#000000')
+                                        size='md'
+                                    )
                                 ],
                             ),
                             BoxComponent(
@@ -1079,10 +1077,10 @@ def handle_postback(event):
                                         text='設定選項-範例:豪大雞排;派克雞排;蔥Ya雞;胖老爹雞排',
                                         color='#000000',
                                         size='md'
-                                    ),
-                                    SeparatorComponent(color='#000000')
+                                    )
                                 ],
-                            )
+                            ),
+                            SeparatorComponent(color='#000000')
                         ],
                     ),
                 ],
@@ -1103,7 +1101,6 @@ def handle_postback(event):
                         height='sm',
                         action=MessageAction(label='設定問題',text='請輸入要設定抉擇的問題:')
                     ),
-                    SeparatorComponent(color='#000000'),
                     ButtonComponent(
                         style='secondary',
                         color='#5555FF',
@@ -1702,6 +1699,9 @@ def handle_msg_text(event):
 #            TextSendMessage(text='successful'+event.message.text))
 #        else:
 #            print('no')
+    
+    t = fb.get('/{}/num'.format(user_id),None)
+    number = fb.get('/{}/temp'.format(user_id),None)
 #    ----------------抽數字-----------------------
     if event.message.text == '請輸入起始數字-----------':
         t = '起始數字'
@@ -1709,12 +1709,9 @@ def handle_msg_text(event):
     elif event.message.text == '請輸入結束數字-----------':
         t = '結束數字'
         fb.post('/{}/temp'.format(user_id),'結束數字')
-    elif event.message.text.isdigit():
+    elif number:
         temp = int(event.message.text)
-        t = fb.get('/{}/temp'.format(user_id),None)
-        if not t:
-            return
-        elif '起始數字' in list(t.values()):
+        if '起始數字' in list(number.values()):
             fb.post('/{}/start'.format(user_id),temp)
         else:
             fb.post('/{}/end'.format(user_id),temp)
@@ -1723,23 +1720,21 @@ def handle_msg_text(event):
         message = FlexSendMessage(alt_text="hello", contents=bubble)
         line_bot_api.reply_message(
                 event.reply_token,
-                [TextSendMessage(text='{}為{}'.format(list(t.values())[0],temp)),message])
+                [TextSendMessage(text='{}為{}'.format(list(number.values())[0],temp)),message])
 #    -----------------自訂的問題-----------------------
     elif event.message.text == '請輸入要設定抉擇的問題:':
         fb.post('/{}/num'.format(user_id),'問題')  
     elif event.message.text == '請輸入要設定的選項，各個選項以分號區隔~':   
-        fb.post('/{}/num'.format(user_id),'選項')  
-    elif True:
-        t = fb.get('/{}/num'.format(user_id),None)
-        if t:
-            if '問題' in list(t.values()):
-                fb.post('/{}/ques_num'.format(user_id),event.message.text)
-            else:
-                fb.post('/{}/opti_num'.format(user_id),event.message.text)
-            fb.delete('/{}/num'.format(user_id),None)
-            bubble = process_draw(user_id)
-            message = FlexSendMessage(alt_text="hello", contents=bubble)
-            line_bot_api.reply_message(
+        fb.post('/{}/num'.format(user_id),'選項')
+    elif t:
+        if '問題' in list(t.values()):
+            fb.post('/{}/ques_num'.format(user_id),event.message.text)
+        else:
+            fb.post('/{}/opti_num'.format(user_id),event.message.text)
+        fb.delete('/{}/num'.format(user_id),None)
+        bubble = process_draw(user_id)
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
                 event.reply_token,
                 [TextSendMessage(text='{}為{}'.format(list(t.values())[0],temp)),message])
     else:
