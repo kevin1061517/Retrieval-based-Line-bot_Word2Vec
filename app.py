@@ -1041,7 +1041,7 @@ def handle_postback(event):
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    TextComponent(text= '請把要老天爺幫你選擇的選項回覆給我，然後每一項以分號區隔', weight='bold',wrap=True,size='xl',color='#000000'),
+                    TextComponent(text= '把老天爺幫你選擇的選項回覆給我', weight='bold',wrap=True,size='lg',color='#000000'),
                     TextComponent(text= '請先設定問題為什麼，再去設定選項，在最下面的按鈕可以點選並設定，內建有常用的選擇內容，可以參考看看', size='md',wrap=True,color='#888888'),
                     # review
                     SeparatorComponent(color='#000000'),
@@ -1054,13 +1054,13 @@ def handle_postback(event):
                                 layout='baseline',
                                 contents=[
                                     TextComponent(
-                                        text='問題:選擇飲料店:',
+                                        text='問題:\n選擇飲料店:',
                                         color='#000000',
                                         wrap=True,
                                         size='md'
                                     ),
                                     TextComponent(
-                                        text='選項:50嵐;清新福全;coco;茶湯會',
+                                        text='選項:\n50嵐;清新;coco;茶湯會',
                                         wrap=True,
                                         color='#000000',
                                         size='md'
@@ -1071,13 +1071,13 @@ def handle_postback(event):
                                 layout='baseline',
                                 contents=[
                                     TextComponent(
-                                        text='問題:選擇雞排店',
+                                        text='問題:\n選擇雞排店',
                                         color='#000000',
                                         wrap=True,
                                         size='md'
                                     ),
                                     TextComponent(
-                                        text='選項:豪大雞排;派克雞排;蔥Ya雞;胖老爹雞排',
+                                        text='選項:\n豪大;派克;蔥Ya雞;胖老爹',
                                         color='#000000',
                                         wrap=True,
                                         size='md'
@@ -1095,19 +1095,19 @@ def handle_postback(event):
                 contents=[
                     ButtonComponent(
                         style='secondary',
-                        color='#FFFFBB',
+                        color='#FFDD55',
                         height='sm',
                         action=PostbackAction(label='內建問題',data='other',text='請選擇一下喔~')
                     ),
                     ButtonComponent(
                         style='secondary',
-                        color='#FFFFBB',
+                        color='#FFDD55',
                         height='sm',
                         action=MessageAction(label='設定問題',text='請輸入要設定抉擇的問題:')
                     ),
                     ButtonComponent(
                         style='secondary',
-                        color='#FFFFBB',
+                        color='#FFDD55',
                         height='sm',
                         action=MessageAction(label='設定選項',text='請輸入要設定的選項，各個選項以分號區隔~')
                     )
@@ -1740,7 +1740,7 @@ def handle_msg_text(event):
         message = FlexSendMessage(alt_text="hello", contents=bubble)
         line_bot_api.reply_message(
                 event.reply_token,
-                [TextSendMessage(text='{}為{}'.format(list(t.values())[0],temp)),message])
+                [TextSendMessage(text='{}為{}'.format(list(t.values())[0],event.message.text)),message])
     else:
         t = fb.get('/{}/temp'.format(user_id),None)
         if t != None:
