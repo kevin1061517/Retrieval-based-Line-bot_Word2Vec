@@ -1211,7 +1211,7 @@ def handle_postback(event):
                         style='secondary',
                         color='#FFDD55',
                         height='sm',
-                        action=MessageAction(label='設定選項',text='請輸入要設定的選項，各個選項以分號區隔~')
+                        action=MessageAction(label='設定選項',text='請輸入要設定的選項，各個選項以分號區隔喔!!!')
                     )
                 ]
             ),
