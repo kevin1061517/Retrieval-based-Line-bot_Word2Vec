@@ -1731,8 +1731,7 @@ def handle_msg_text(event):
         fb.post('/{}/num'.format(user_id),'選項')  
     elif True:
         t = fb.get('/{}/num'.format(user_id),None)
-        if not t:
-            pass
+        if t:
             if '問題' in list(t.values()):
                 fb.post('/{}/ques_num'.format(user_id),event.message.text)
             else:
