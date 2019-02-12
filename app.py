@@ -1736,15 +1736,17 @@ def handle_msg_text(event):
         else:
             fb.post('/{}/opti_num'.format(user_id),event.message.text)
         fb.delete('/{}/num'.format(user_id),None)
-        bubble = process_draw(user_id)
+        bubble = process_choose(user_id)
         message = FlexSendMessage(alt_text="hello", contents=bubble)
         line_bot_api.reply_message(
                 event.reply_token,
                 [TextSendMessage(text='{}為{}'.format(list(t.values())[0],event.message.text)),message])
     else:
-        t = fb.get('/{}/temp'.format(user_id),None)
         if t != None:
-            if len(list(t.values())) != 0:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    [TextSendMessage(text='請輸入正確格式的問題或是選項'),TextSendMessage(text='就文字包含數字也可以🙏')])
+        elif number != None:
                 line_bot_api.reply_message(
                     event.reply_token,
                     [TextSendMessage(text='請輸入正確的起始及結束數字'),TextSendMessage(text='只能是數字，不能包含文字喔🙏')])
