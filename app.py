@@ -1041,8 +1041,8 @@ def handle_postback(event):
             message
         )
     elif temp[:6] == 'choose':
-        fb.delete('/{}/opti_num'.format(user_id),None)
-        fb.delete('/{}/ques_num'.format(user_id),None)
+        fb.delete('/{}/opti_num'.format(event.source.user_id),None)
+        fb.delete('/{}/ques_num'.format(event.source.user_id),None)
         print('in')
         bubble = BubbleContainer(
             direction='ltr',
