@@ -864,7 +864,7 @@ def handle_postback(event):
                 AudioSendMessage(original_content_url=url,duration=3000)
             )
     elif temp == 'custom':
-        t = fb.get('/{}/opti_num'.format(user_id),None)
+        t = fb.get('/{}/opti_num'.format(event.source.user_id),None)
         if t :
             temp = list(t.values())[0]
             temp_opti = temp.split(';')
