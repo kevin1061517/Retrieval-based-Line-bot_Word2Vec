@@ -831,19 +831,19 @@ def process_choose(user_id):
                 contents=[
                     ButtonComponent(
                         style='secondary',
-                        color='#5555FF',
+                        color='#FFDD55',
                         height='sm',
                         action=PostbackAction(label='隨機選擇',data='other',text='請選擇一下喔~')
                     ),
                     ButtonComponent(
                         style='secondary',
-                        color='#5555FF',
+                        color='#FFDD55',
                         height='sm',
                         action=MessageAction(label='設定問題',text='請輸入要設定抉擇的問題:')
                     ),
                     ButtonComponent(
                         style='secondary',
-                        color='#5555FF',
+                        color='#FFDD55',
                         height='sm',
                         action=MessageAction(label='設定選項',text='請輸入要設定的選項，各個選項以分號區隔~')
                     )
@@ -1738,8 +1738,10 @@ def handle_msg_text(event):
                 [TextSendMessage(text='{}為{}'.format(list(number.values())[0],temp)),message])
 #    -----------------自訂的問題-----------------------
     elif event.message.text == '請輸入要設定抉擇的問題:':
+        fb.delete('/{}/ques_num'.format(event.source.user_id),None)
         fb.post('/{}/num'.format(user_id),'問題')  
-    elif event.message.text == '請輸入要設定的選項，各個選項以分號區隔~':   
+    elif event.message.text == '請輸入要設定的選項，各個選項以分號區隔~':
+        fb.delete('/{}/opti_num'.format(event.source.user_id),None)
         fb.post('/{}/num'.format(user_id),'選項')
     elif t:
         if '問題' in list(t.values()):
