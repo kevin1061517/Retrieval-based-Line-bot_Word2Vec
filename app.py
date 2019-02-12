@@ -880,7 +880,7 @@ def handle_postback(event):
                 layout='vertical',
                 contents=[
                     TextComponent(text= '隨機選擇',size='xl',color='#000000'),
-                    TextComponent(text= '🔔🔔🔔', size='sm',color='#888888'),
+                    TextComponent(text= '🔔🔔🔔', size='sm'),
                     # review
                     SeparatorComponent(color='#000000'),
                     # info
@@ -895,12 +895,26 @@ def handle_postback(event):
                                         size='xl',
                                         flex = 5
                                     ),
-                                    TextComponent(
-                                        text=str(r),
-                                        color='#000000',
-                                        size='xl',
-                                        flex = 5
-                                    )
+                                    BoxComponent(
+                                        layout='vertical',
+                                        color = '#FFFF00',
+                                        spacing='sm',
+                                        contents=[
+                                               TextComponent(
+                                                       text=' ',
+                                                       color='#000000',
+                                                       size='xl',
+                                                       flex = 5
+                                                ),
+                                                TextComponent(
+                                                       text=str(r),
+                                                       color='#000000',
+                                                       size='xxl',
+                                                       flex = 5
+                                                )
+                                        ]
+                                    )    
+                                    
                         ],
                         
                     ),
@@ -921,7 +935,7 @@ def handle_postback(event):
                         style='secondary',
                         color='#FFEE99',
                         height='sm',
-                        action=MessageAction(label ='重新設範圍',text='draw',)
+                        action=MessageAction(label ='重設範圍',text='draw',)
                     )
                 ]
             ),
