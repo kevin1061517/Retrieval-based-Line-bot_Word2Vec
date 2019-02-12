@@ -888,7 +888,7 @@ def handle_postback(event):
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    TextComponent(text= '隨機選擇',size='xl',color='#000000'),
+                    TextComponent(text= '🎯隨機選擇',size='xl',color='#000000'),
                     TextComponent(text= '🔔🔔🔔', size='sm'),
                     # review
                     SeparatorComponent(color='#000000'),
@@ -899,7 +899,7 @@ def handle_postback(event):
                         spacing='sm',
                         contents=[
                                     TextComponent(
-                                        text='隨機產生的號碼',
+                                        text='由{}到{}隨機產生的號碼'.format(start,end),
                                         color='#000000',
                                         size='xl',
                                         flex = 5
