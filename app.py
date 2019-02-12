@@ -780,7 +780,7 @@ def process_choose(user_id):
         temp_ques = ' ' 
     print('-----in------')
     texts = [TextComponent(
-                text='{}\n'.format(i),
+                text=' {}\n'.format(i),
                 color='#000000',
                 size='lg'
                 ) for i in temp_opti]
@@ -812,8 +812,7 @@ def process_choose(user_id):
                                         gravity = 'center',
                                         size='lg'
                                     ),
-                                    texts,
-                                    SeparatorComponent(color='#000000')
+                                    texts
                                 ],
                             )
                         ],
