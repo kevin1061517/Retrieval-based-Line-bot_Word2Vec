@@ -763,6 +763,85 @@ def process_draw(user_id):
             ),
         )
         return bubble
+    
+def process_choose(user_id):
+    t = fb.get('/{}/opti_num'.format(user_id),None)
+    t1 = fb.get('/{}/ques_num'.format(user_id),None)
+    if not t or not t1:
+        print('-------not')
+        return
+    temp_ques = list(t1.values())[0]
+    temp_opti = list(t.values())[0]
+    temp_opti = temp.split(';')
+    texts = [TextComponent(
+                text='{}\n'.format(i),
+                color='#000000',
+                size='lg'
+                ) for i in temp_opti]
+    bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text= '如果都確定好就按下為下面的抽籤按鈕', weight='bold',size='xl',color='#000000'),
+                    TextComponent(text= '結果好不好交給老天爺', size='md',color='#888888'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='baseline',
+                                contents=[
+                                    TextComponent(
+                                        text='問題:{}'.format(temp_ques),
+                                        color='#000000',
+                                        size='lg'
+                                    ),
+                                    TextComponent(
+                                        text='選項:',
+                                        color='#000000',
+                                        gravity = 'center',
+                                        size='lg'
+                                    ),
+                                    texts,
+                                    SeparatorComponent(color='#000000')
+                                ],
+                            )
+                        ],
+                    ),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='xs',
+                contents=[
+                    ButtonComponent(
+                        style='secondary',
+                        color='#5555FF',
+                        height='sm',
+                        action=PostbackAction(label='隨機選擇',data='other',text='請選擇一下喔~')
+                    ),
+                    ButtonComponent(
+                        style='secondary',
+                        color='#5555FF',
+                        height='sm',
+                        action=MessageAction(label='設定問題',text='請輸入要設定抉擇的問題:')
+                    ),
+                    SeparatorComponent(color='#000000'),
+                    ButtonComponent(
+                        style='secondary',
+                        color='#5555FF',
+                        height='sm',
+                        action=MessageAction(label='設定選項',text='請輸入要設定的選項，各個選項以分號區隔~')
+                    )
+                ]
+            ),
+        )
+    message = FlexSendMessage(alt_text="hello", contents=bubble)
+    return message
 @handler.add(PostbackEvent)
 def handle_postback(event):
     temp = event.postback.data
@@ -888,7 +967,7 @@ def handle_postback(event):
             body=BoxComponent(
                 layout='vertical',
                 contents=[
-                    TextComponent(text= '🎯隨機選擇',size='xl',color='#000000'),
+                    TextComponent(text= '隨機選擇',size='xl',color='#000000'),
                     TextComponent(text= '🔔🔔🔔', size='sm'),
                     # review
                     SeparatorComponent(color='#000000'),
@@ -901,7 +980,7 @@ def handle_postback(event):
                                     TextComponent(
                                         text='由{}到{}隨機產生的號碼'.format(start,end),
                                         color='#000000',
-                                        size='xl',
+                                        size='lg',
                                         flex = 5
                                     ),
                                     BoxComponent(
@@ -969,20 +1048,18 @@ def handle_postback(event):
                     # info
                     BoxComponent(
                         layout='vertical',
-                        margin='lg',
-                        color = '#FFFF00',
                         spacing='sm',
                         contents=[
                             BoxComponent(
                                 layout='baseline',
                                 contents=[
                                     TextComponent(
-                                        text='範例--選擇飲料店:',
+                                        text='設定問題-範例:選擇飲料店:',
                                         color='#000000',
                                         size='md'
                                     ),
                                     TextComponent(
-                                        text='50嵐;清新福全;coco;茶湯會',
+                                        text='設定選項-範例:50嵐;清新福全;coco;茶湯會',
                                         color='#000000',
                                         size='md',
                                         wrap=True
@@ -994,12 +1071,12 @@ def handle_postback(event):
                                 layout='baseline',
                                 contents=[
                                     TextComponent(
-                                        text='範例:選擇雞排店',
+                                        text='設定問題-範例:選擇雞排店',
                                         color='#000000',
                                         size='md'
                                     ),
                                     TextComponent(
-                                        text='豪大雞排;派克雞排;蔥Ya雞;胖老爹雞排',
+                                        text='設定選項-範例:豪大雞排;派克雞排;蔥Ya雞;胖老爹雞排',
                                         color='#000000',
                                         size='md'
                                     ),
@@ -1014,19 +1091,24 @@ def handle_postback(event):
                 layout='vertical',
                 spacing='xs',
                 contents=[
-                    # websiteAction
                     ButtonComponent(
                         style='secondary',
                         color='#5555FF',
                         height='sm',
-                        action=PostbackAction(label='其他年份號碼出現次數',data='ball_year/{}'.format(lot_type),text='請稍等...')
+                        action=PostbackAction(label='內建問題',data='other',text='請選擇一下喔~')
+                    ),
+                    ButtonComponent(
+                        style='secondary',
+                        color='#5555FF',
+                        height='sm',
+                        action=MessageAction(label='設定問題',text='請輸入要設定抉擇的問題:')
                     ),
                     SeparatorComponent(color='#000000'),
                     ButtonComponent(
                         style='secondary',
                         color='#5555FF',
                         height='sm',
-                        action=PostbackAction(label='其他遊戲號碼出現次數',data='ballyear',text='請稍等...')
+                        action=MessageAction(label='設定選項',text='請輸入要設定的選項，各個選項以分號區隔~')
                     )
                 ]
             ),
@@ -1036,7 +1118,49 @@ def handle_postback(event):
             event.reply_token,
             message
         )
-
+    elif temp == 'other':
+        bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text= '請把選擇需要解決的選擇', weight='bold',size='xl',color='#000000'),
+                    TextComponent(text= '希望能夠解決你的選擇障礙...', size='md',wrap=True,color='#888888'),
+                    # review
+                    SeparatorComponent(color='#000000'),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='xs',
+                contents=[
+                    ButtonComponent(
+                        style='secondary',
+                        color='#5555FF',
+                        height='sm',
+                        action=PostbackAction(label='內建問題',data='other',text='請選擇一下喔~')
+                    ),
+                    ButtonComponent(
+                        style='secondary',
+                        color='#5555FF',
+                        height='sm',
+                        action=MessageAction(label='設定問題',text='請輸入要設定抉擇的問題:')
+                    ),
+                    SeparatorComponent(color='#000000'),
+                    ButtonComponent(
+                        style='secondary',
+                        color='#5555FF',
+                        height='sm',
+                        action=MessageAction(label='設定選項',text='請輸入要設定的選項，各個選項以分號區隔~')
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
             
     elif temp == 'result':     
         print('-------in---')
@@ -1578,22 +1702,42 @@ def handle_msg_text(event):
 #            TextSendMessage(text='successful'+event.message.text))
 #        else:
 #            print('no')
+#    ----------------抽數字-----------------------
     if event.message.text == '請輸入起始數字-----------':
         t = '起始數字'
-        fb.post('/{}/temp'.format(user_id),'請輸入起始數字')  
+        fb.post('/{}/temp'.format(user_id),'起始數字')  
     elif event.message.text == '請輸入結束數字-----------':
         t = '結束數字'
-        fb.post('/{}/temp'.format(user_id),'請輸入結束數字')
+        fb.post('/{}/temp'.format(user_id),'結束數字')
     elif event.message.text.isdigit():
         temp = int(event.message.text)
         t = fb.get('/{}/temp'.format(user_id),None)
         if not t:
             return
-        elif '請輸入起始數字' in list(t.values()):
+        elif '起始數字' in list(t.values()):
             fb.post('/{}/start'.format(user_id),temp)
         else:
             fb.post('/{}/end'.format(user_id),temp)
         fb.delete('/{}/temp'.format(user_id),None)
+        bubble = process_choose(user_id)
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
+                event.reply_token,
+                [TextSendMessage(text='{}為{}'.format(list(t.values())[0],temp)),message])
+#    -----------------自訂的問題-----------------------
+    elif event.message.text == '請輸入要設定抉擇的問題:':
+        fb.post('/{}/num'.format(user_id),'問題')  
+    elif event.message.text == '請輸入要設定的選項，各個選項以分號區隔~':   
+        fb.post('/{}/num'.format(user_id),'選項')  
+    elif True:
+        t = fb.get('/{}/num'.format(user_id),None)
+        if not t:
+            return
+        elif '問題' in list(t.values()):
+            fb.post('/{}/ques_num'.format(user_id),event.message.text)
+        else:
+            fb.post('/{}/opti_num'.format(user_id),event.message.text)
+        fb.delete('/{}/num'.format(user_id),None)
         bubble = process_draw(user_id)
         message = FlexSendMessage(alt_text="hello", contents=bubble)
         line_bot_api.reply_message(
