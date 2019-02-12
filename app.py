@@ -766,13 +766,19 @@ def process_draw(user_id):
     
 def process_choose(user_id):
     t = fb.get('/{}/opti_num'.format(user_id),None)
+    if t :
+         temp_opti = list(t.values())[0]
+         temp_opti = temp.split(';')
+    else:
+        temp_opti = ' '
     t1 = fb.get('/{}/ques_num'.format(user_id),None)
-    if not t or not t1:
-        print('-------not')
-        return
-    temp_ques = list(t1.values())[0]
-    temp_opti = list(t.values())[0]
-    temp_opti = temp.split(';')
+    if t1:
+        print('-----quest------')
+        temp_ques = list(t1.values())[0]
+    else:
+        print('-----no quest------')
+        temp_ques = ' ' 
+    print('-----in------')
     texts = [TextComponent(
                 text='{}\n'.format(i),
                 color='#000000',
@@ -1034,8 +1040,10 @@ def handle_postback(event):
             event.reply_token,
             message
         )
-        
     elif temp[:6] == 'choose':
+        fb.delete('/{}/opti_num'.format(user_id),None)
+        fb.delete('/{}/ques_num'.format(user_id),None)
+        print('in')
         bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
@@ -1720,7 +1728,7 @@ def handle_msg_text(event):
         else:
             fb.post('/{}/end'.format(user_id),temp)
         fb.delete('/{}/temp'.format(user_id),None)
-        bubble = process_choose(user_id)
+        bubble = process_draw(user_id)
         message = FlexSendMessage(alt_text="hello", contents=bubble)
         line_bot_api.reply_message(
                 event.reply_token,
@@ -1770,7 +1778,7 @@ def handle_msg_text(event):
         )
         
     elif event.message.text.lower() == "choose":
-        
+
         if fb.get('/{}'.format(event.source.user_id),None) == None:
             fb.post('/{}'.format(event.source.user_id), {'DB':'yes'})
         buttons_template = TemplateSendMessage(
