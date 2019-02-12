@@ -770,7 +770,7 @@ def process_choose(user_id):
     if t :
          temp = list(t.values())[0]
          print(temp)
-         temp_opti = temp.split(';')
+         temp_opti = temp.split('；')
          texts = ''
          
     t1 = fb.get('/{}/ques_num'.format(user_id),None)
@@ -802,25 +802,16 @@ def process_choose(user_id):
                                 contents=[
                                     TextComponent(
                                         text='問題:\n{}'.format(temp_ques),
+                                        wrap=True,
                                         color='#000000',
                                         size='lg'
                                     ),
-                                     BoxComponent(
-                                         layout='baseline',
-                                         spacing='sm',
-                                         contents=[
-                                            TextComponent(
-                                                    text='選項:\n',
-                                                    color='#000000',
-                                                    gravity = 'center',
-                                                    size='lg'),
-                                            TextComponent(
-                                                    text=texts,
-                                                    color='#000000',
-                                                    wrap=True,
-                                                    size='lg')]
-                                    )
-                                ]
+                                    TextComponent(
+                                        text='選項:\n{}'.format(texts),
+                                        color='#000000',
+                                        wrap=True,
+                                        size='lg')
+                                    ]
                             )
                         ],
                     ),
@@ -870,7 +861,7 @@ def handle_postback(event):
         message = FlexSendMessage(alt_text="hello", contents=bubble)
         if t :
             temp = list(t.values())[0]
-            temp_opti = temp.split(';')
+            temp_opti = temp.split('；')
         else:
             line_bot_api.reply_message(
                 event.reply_token,
@@ -911,13 +902,11 @@ def handle_postback(event):
                                                     text='問題:',
                                                     color='#000000',
                                                     gravity = 'center',
-                                                    size='lg',
-                                                    flex = 5),
+                                                    size='lg'),
                                             TextComponent(
                                                     text=temp_ques,
                                                     color='#000000',
-                                                    size='lg',
-                                                    flex = 5)]
+                                                    size='lg')]
                                     ),
                                     BoxComponent(
                                          layout='baseline',
