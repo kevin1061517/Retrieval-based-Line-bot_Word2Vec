@@ -2346,6 +2346,15 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
+    elif event.message.text.lower() == 'member':
+        group_id = event.source.group_id
+        member_ids_res = line_bot_api.get_group_member_ids(group_id)
+        print(member_ids_res.member_ids)
+        print(member_ids_res.next)
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=str(member_ids_res))
+        )
         
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
