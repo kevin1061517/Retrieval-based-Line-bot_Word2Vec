@@ -853,6 +853,9 @@ def handle_postback(event):
                 event.reply_token,
                 AudioSendMessage(original_content_url=url,duration=3000)
             )
+    elif temp == 'revise':
+        fb.delete('/{}/member'.format(event.source.user_id),None)
+        print('-------inpostback--------')
     elif temp == 'custom':
         t = fb.get('/{}/opti_num'.format(event.source.user_id),None)
         bubble = process_choose(event.source.user_id)
@@ -1787,13 +1790,34 @@ def handle_msg_text(event):
     user_name = profile.display_name
     picture_url = profile.picture_url
     user_id = event.source.user_id
-#    if True:
-#        if fb.get('/{}'.format(event.source.user_id),None) != None:
-#            line_bot_api.reply_message(
-#            event.reply_token,
-#            TextSendMessage(text='successful'+event.message.text))
-#        else:
-#            print('no')
+#    ----------------註冊-----------------------
+    register = fb.get('/{}/member'.format(user_id),None)
+    if gister == None:
+        temp = event.message.text
+        t = temp.split('/')
+        fb.post('/{}/member'.format(user_id),{'name':t[0],'email':t[1]})
+        buttons_template = TemplateSendMessage(
+                alt_text='Template',
+                template=ButtonsTemplate(
+                        title='註冊成功',
+                        text='姓名:{}\nemail:{}\n請確定是否正確'.format(t[0],t[1]),
+                        actions=[
+                                MessageTemplateAction(
+                                        label='確認無誤',
+                                        text='MENU'
+                                ),
+                                PostbackTemplateAction(
+                                        label='重新輸入',
+                                        text='請再輸入一次，名字與email以斜線(/)區隔'
+                                        data='revise'
+                                )
+                        ]
+                )
+        )
+        line_bot_api.reply_message(
+                event.reply_token,
+                buttons_template)
+    
     
     t = fb.get('/{}/num'.format(user_id),None)
     number = fb.get('/{}/temp'.format(user_id),None)
@@ -2346,16 +2370,7 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
-    elif event.message.text.lower() == 'member':
-        print('----in')
-        group_id = event.source.group_id
-        member_ids_res = line_bot_api.get_group_member_ids(group_id)
-#        print(member_ids_res.member_ids)
-#        print(member_ids_res.next)
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=str(member_ids_res))
-        )
+
         
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
