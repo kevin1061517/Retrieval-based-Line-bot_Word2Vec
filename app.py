@@ -339,25 +339,6 @@ def porn_video_template(keyword,index=0):
             ]))
         return buttons_template
     
-#更改
-def drink_menu(text):
-    pattern = r'.*menu$'
-    web = []
-    if re.search(pattern,text.lower()):
-        temp = get_image_link(text)
-        print('fun'+str(temp))
-        for t in temp:
-            web.append(ImageSendMessage(original_content_url=t,preview_image_url=t))
-        return web
-    
-def google_picture(text):
-    pattern = r'.*pic$'
-    web = []
-    if re.search(pattern,text.lower()):
-        temp = get_image_link(text)
-        for t in temp:
-            web.append(ImageSendMessage(original_content_url=t,preview_image_url=t))
-        return web
 
 def movie():
     target_url = 'http://www.atmovies.com.tw/movie/next/0/'
@@ -1797,7 +1778,15 @@ def handle_msg_text(event):
     if register == None:
         print('----------------in-----------------------')
         temp = event.message.text
+        if '/' not in temp:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='注意!!少了斜線(/)'))
         t = temp.split('/')
+        if len(t) > 2:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='請重新輸入-多打了斜線了'))
         fb.post('/{}/member'.format(user_id),{'name':t[0],'email':t[1]})
         buttons_template = TemplateSendMessage(
                 alt_text='Template',
@@ -1956,23 +1945,67 @@ def handle_msg_text(event):
 #        print('end------------',str(data_UserData))
 #        line_bot_api.reply_message(event.reply_token,TextSendMessage(text= str(data_UserData)))  
 #           
-        
-    elif google_picture(event.message.text) != None:
-        image = google_picture(event.message.text)
-        line_bot_api.reply_message(event.reply_token,image)
-        return
-   
+    elif event.message.text.lower() == "menu":
+        bubble = BubbleContainer(
+            direction='ltr',
+            hero=ImageComponent(
+                    url='https://i.imgur.com/9IUzhOT.jpg',
+                    aspectMode = 'cover',
+                    aspect_ratio='11:3',
+                    size='full',
+                    backgroundColor = '#FFD700',
+                    action=URIAction(uri='https://github.com/kevin1061517', label='label'),
+            ),
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text='目錄功能', weight='bold', size='lg'),
+                    SeparatorComponent(color='#000000'),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='xs',
+                contents=[
+                    # websiteAction
+                    ButtonComponent(
+                        style='primary',
+                        height='sm',
+                        color='#00DD00',
+                        action=PostbackAction(label='問卷填答',data='ball_all_num',text='歷年號碼~詳細內容參考至台彩官網')
+                    ),
+                    ButtonComponent(
+                        style='primary',
+                        color='#00DD00',
+                        height='sm',
+                        action=PostbackAction(label='精選菜單', data='ball',text='您的幸運號碼...')
+                    ),
+                    ButtonComponent(
+                        style='primary',
+                        color='#00DD00',
+                        height='sm',
+                        action=PostbackAction(label='隨機點餐', data='ball',text='您的幸運號碼...')
+                    ),
+                    ButtonComponent(
+                        style='primary',
+                        color='#00DD00',
+                        height='sm',
+                        action=PostbackAction(label='其他功能', data='ball',text='您的幸運號碼...')
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(alt_text="hello", contents=bubble)
+        line_bot_api.reply_message(
+            event.reply_token,
+            message
+        )
     elif event.message.text == "PanX泛科技":
         content = panx()
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
-
-    elif drink_menu(event.message.text) != None:
-        image = drink_menu(event.message.text)
-        image.append(button_template(user_name,event.message.text[:-4],'請問一下~','有想要進一步的資訊嗎?',picture_url))
-        line_bot_api.reply_message(event.reply_token,image)
-        return
+        
     elif event.message.text == "近期上映電影":
         content = movie()
         template = movie_template()
