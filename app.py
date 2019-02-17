@@ -1949,18 +1949,19 @@ def handle_msg_text(event):
         bubble = BubbleContainer(
             direction='ltr',
             hero=ImageComponent(
-                    url='https://i.imgur.com/9IUzhOT.jpg',
+                    url='https://i.imgur.com/d1XQC5H.jpg',
                     aspectMode = 'cover',
                     aspect_ratio='10:3',
                     size='full',
-                    action=URIAction(uri='https://i.imgur.com/d1XQC5H.jpg', label='label'),
+                    action=URIAction(uri='http://www.ccu.edu.tw/', label='label'),
             ),
             body=BoxComponent(
                 layout='vertical',
                 contents=[
                     TextComponent(text='目錄功能', weight='bold', size='lg'),
+                    TextComponent(text='感謝您使用加入本店LINE BOT',align='end',color='#AAAAAA', size='sm'),
                     SeparatorComponent(color='#000000'),
-                ],
+                ], 
             ),
             footer=BoxComponent(
                 layout='vertical',
@@ -1983,7 +1984,7 @@ def handle_msg_text(event):
                         style='primary',
                         color='#00AA00',
                         height='sm',
-                        action=PostbackAction(label='隨機點餐', data='ball',text='您的幸運號碼...')
+                        action=PostbackAction(label='訂位功能', data='ball',text='您的幸運號碼...')
                     ),
                     ButtonComponent(
                         style='primary',
