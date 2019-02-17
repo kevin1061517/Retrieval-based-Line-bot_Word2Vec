@@ -1951,10 +1951,9 @@ def handle_msg_text(event):
             hero=ImageComponent(
                     url='https://i.imgur.com/9IUzhOT.jpg',
                     aspectMode = 'cover',
-                    aspect_ratio='11:3',
+                    aspect_ratio='10:3',
                     size='full',
-                    backgroundColor = '#FFD700',
-                    action=URIAction(uri='https://github.com/kevin1061517', label='label'),
+                    action=URIAction(uri='https://i.imgur.com/d1XQC5H.jpg', label='label'),
             ),
             body=BoxComponent(
                 layout='vertical',
@@ -1971,24 +1970,24 @@ def handle_msg_text(event):
                     ButtonComponent(
                         style='primary',
                         height='sm',
-                        color='#00DD00',
+                        color='#00AA00',
                         action=PostbackAction(label='問卷填答',data='ball_all_num',text='歷年號碼~詳細內容參考至台彩官網')
                     ),
                     ButtonComponent(
                         style='primary',
-                        color='#00DD00',
+                        color='#00AA00',
                         height='sm',
                         action=PostbackAction(label='精選菜單', data='ball',text='您的幸運號碼...')
                     ),
                     ButtonComponent(
                         style='primary',
-                        color='#00DD00',
+                        color='#00AA00',
                         height='sm',
                         action=PostbackAction(label='隨機點餐', data='ball',text='您的幸運號碼...')
                     ),
                     ButtonComponent(
                         style='primary',
-                        color='#00DD00',
+                        color='#00AA00',
                         height='sm',
                         action=PostbackAction(label='其他功能', data='ball',text='您的幸運號碼...')
                     )
