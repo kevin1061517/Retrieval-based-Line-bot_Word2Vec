@@ -1792,7 +1792,7 @@ def handle_msg_text(event):
     user_id = event.source.user_id
 #    ----------------註冊-----------------------
     register = fb.get('/{}/member'.format(user_id),None)
-    if gister == None:
+    if register == None:
         temp = event.message.text
         t = temp.split('/')
         fb.post('/{}/member'.format(user_id),{'name':t[0],'email':t[1]})
