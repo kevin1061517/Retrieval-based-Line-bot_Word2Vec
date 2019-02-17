@@ -1808,7 +1808,7 @@ def handle_msg_text(event):
                                 ),
                                 PostbackTemplateAction(
                                         label='重新輸入',
-                                        text='請再輸入一次，名字與email以斜線(/)區隔'
+                                        text='請再輸入一次，名字與email以斜線(/)區隔',
                                         data='revise'
                                 )
                         ]
