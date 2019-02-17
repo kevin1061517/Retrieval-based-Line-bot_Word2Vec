@@ -56,11 +56,11 @@ app = Flask(__name__)
 #bootstrap = Bootstrap(app)
 
 
-
-@app.route('/list')
-def do_get():
-    return render_template('list.html')
-
+#
+#@app.route('/list')
+#def do_get():
+#    return render_template('list.html')
+#
 
 #@app.route('/2')
 #def do_get():
@@ -71,6 +71,7 @@ def callback():
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
     # get request body as text
+    print('----------in-------')
     body = request.get_data(as_text=True)
     bodyjson=json.loads(body)
     #app.logger.error("Request body: " + bodyjson['events'][0]['message']['text'])
