@@ -826,7 +826,7 @@ def process_choose(user_id):
 
 def questionnaire(num,user_id):
     t = fb.get('/{}/question/no'.format(user_id),None)
-    print('----------'+str)
+    print('----------'+str(t))
     if  t:
 #        profile = line_bot_api.get_profile(event.source.user_id)
 #        user_name = profile.display_name
