@@ -1963,7 +1963,7 @@ def handle_msg_text(event):
             textt=""
             textt+=event.message.text
             if textt!="":
-                worksheet.append_row((datetime.datetime.now(), textt))
+                worksheet.append_row(("TEST", textt))
                 print('新增一列資料到試算表' ,GSpreadSheet)
                 return textt    
     elif event.message.text.lower() == 'draw':
