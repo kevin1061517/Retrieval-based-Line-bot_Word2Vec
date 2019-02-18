@@ -1844,7 +1844,7 @@ from oauth2client.service_account import ServiceAccountCredentials as SAC
 # 處理訊息:
 @handler.add(MessageEvent, message=TextMessage)
 def handle_msg_text(event):
-    profile = line_bot_api.get_profile(event.source.user_id)
+#    profile = line_bot_api.get_profile(event.source.user_id)
 #    user_name = profile.display_name
 #    picture_url = profile.picture_url
     user_id = event.source.user_id
@@ -1944,12 +1944,12 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
-    elif event.message.text != "test":
+    elif event.message.text == "test":
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="紀錄成功"))
         pass
         #GDriveJSON就輸入下載下來Json檔名稱
         #GSpreadSheet是google試算表名稱
-        GDriveJSON = 'LineBot.json'
+        GDriveJSON = 'My First Project-9cf8421ad126.json'
         GSpreadSheet = 'BotTest'
         while True:
             try:
@@ -1977,7 +1977,6 @@ def handle_msg_text(event):
             message
         )
 
-#-----------------問卷系統-----------------------
 #                
 #    elif questionnaire(num,user_id):
 #        if num ==1:
