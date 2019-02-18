@@ -1866,10 +1866,9 @@ def handle_msg_text(event):
 #    user_name = profile.display_name
 #    picture_url = profile.picture_url
     user_id = event.source.user_id
-    keep(user_id,event.message.text)
-#    n = fb.get('/{}/question/no'.format(user_id),None)
-#    if not n:
-#        num = int(n['no'])
+    n = fb.get('/{}/question/no'.format(user_id),None)
+    if n:
+        num = int(n['no'])
 #    ----------------註冊-----------------------
     register = fb.get('/{}/member'.format(user_id),None)
     if register == None:
@@ -1963,11 +1962,7 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
-    elif event.message.text == "test":
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="紀錄成功"))
-        pass
-        
-    
+
     elif event.message.text.lower() == 'draw':
         fb.delete('/{}/end'.format(user_id),None)
         fb.delete('/{}/start'.format(user_id),None)
@@ -1979,16 +1974,15 @@ def handle_msg_text(event):
             message
         )
 
-#                
-#    elif questionnaire(num,user_id):
-#        if num ==1:
-#            
-#        t = questionnaire(num,user_id)
-#        num += 1
-#        fb.put('/{}/question'.format(user_id),data={'no':num},name='no')
-#        line_bot_api.reply_message(
-#            event.reply_token,
-#            TextSendMessage(text=t))
+                
+    elif questionnaire(num,user_id):
+        print('-------問卷----')
+        t = questionnaire(num,user_id)
+        num += 1
+        fb.put('/{}/question'.format(user_id),data={'no':num},name='no')
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=t))
     
     
     
