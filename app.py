@@ -826,7 +826,8 @@ def process_choose(user_id):
 
 def questionnaire(num,user_id):
     t = fb.get('/{}/question/no'.format(user_id),None)
-    if not t:
+    print('----------'+str)
+    if  t:
 #        profile = line_bot_api.get_profile(event.source.user_id)
 #        user_name = profile.display_name
         question = ['請問第一次來用餐?','請問大概多久用餐一次?','用餐的目的是?','享用主餐的部份是?','我對餐廳提供的菜餚口味感到','我對餐廳食物的價格感到','對工作人員的服務態度感到','餐廳衛生評價評鑑優良獎','對餐廳的整體感覺']
@@ -921,7 +922,7 @@ def handle_postback(event):
         fb.put('/{}/question'.format(event.source.user_id),data={'no':'0'},name='no')
         line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text='感謝您的用餐，請先輸入您的用餐編號/n讓小弟可以為你服務')
+                TextSendMessage(text='感謝您的用餐，請先輸入您的用餐編號\n讓小弟可以為你服務')
             )
         
     elif temp == 'revise':
@@ -1985,7 +1986,12 @@ def handle_msg_text(event):
             event.reply_token,
             TextSendMessage(text=t))
     
-    
+    elif event.message.text.lower() == '我吃飽了':
+        fb.put('/{}/question'.format(event.source.user_id),data={'no':'0'},name='no')
+        line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='感謝您的用餐，請先輸入您的用餐編號\n讓小弟可以為你服務')
+            )
     
     elif event.message.text.lower() == "choose":
         buttons_template = TemplateSendMessage(
