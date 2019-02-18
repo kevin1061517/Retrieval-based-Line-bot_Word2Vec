@@ -1953,7 +1953,7 @@ def handle_msg_text(event):
         GSpreadSheet = 'BotTest'
         while True:
             try:
-                scope = ['https://docs.google.com/spreadsheets/d/1_xnFyQWfBc02yA0B4100XqzV9y5OWdZ_MrJy-MdyD5g/edit#gid=0']
+                scope =  ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
                 key = SAC.from_json_keyfile_name(GDriveJSON, scope)
                 gc = gspread.authorize(key)
                 worksheet = gc.open(GSpreadSheet).sheet1
