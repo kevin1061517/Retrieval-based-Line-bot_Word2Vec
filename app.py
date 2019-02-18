@@ -1848,9 +1848,9 @@ def handle_msg_text(event):
 #    user_name = profile.display_name
 #    picture_url = profile.picture_url
     user_id = event.source.user_id
-    n = fb.get('/{}/question/no'.format(user_id),None)
-    if not n:
-        num = int(n['no'])
+#    n = fb.get('/{}/question/no'.format(user_id),None)
+#    if not n:
+#        num = int(n['no'])
 #    ----------------註冊-----------------------
     register = fb.get('/{}/member'.format(user_id),None)
     if register == None:
