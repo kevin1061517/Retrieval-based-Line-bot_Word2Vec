@@ -823,6 +823,70 @@ def process_choose(user_id):
             ),
         )
     return bubble
+
+def questionnaire(num,user_id):
+    t = fb.get('/{}/question/no'.format(user_id),None)
+    if not t:
+#        profile = line_bot_api.get_profile(event.source.user_id)
+#        user_name = profile.display_name
+        question = ['請問第一次來用餐?','請問大概多久用餐一次?','用餐的目的是?','享用主餐的部份是?','我對餐廳提供的菜餚口味感到','我對餐廳食物的價格感到','對工作人員的服務態度感到','餐廳衛生評價評鑑優良獎','對餐廳的整體感覺']
+        return question[num]
+    else:
+        return None
+def quest_template(question,answer,user_name):
+    bubble = BubbleContainer(
+            direction='ltr',
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(text= '{}的消費體驗'.format(user_name), weight='bold',size='xl',color='#000000'),
+                    TextComponent(text= '您的建議與指教是推動我們前進的動力，{}的滿意就是我們的努力目標，歡迎給我們寶貴的意見，感謝!!',size='sm',color='#000000'),
+                    SeparatorComponent(color='#000000'),
+                    # info
+                    BoxComponent(
+                        layout='vertical',
+                        spacing='sm',
+                        contents=[
+                            BoxComponent(
+                                layout='vertical',
+                                contents=[
+                                    BoxComponent(
+                                         layout='baseline',
+                                         spacing='sm',
+                                         contents=[
+                                            TextComponent(
+                                                    text='問題:',
+                                                    color='#000000',
+                                                    gravity = 'center',
+                                                    size='lg'),
+                                            TextComponent(
+                                                    text=temp_ques,
+                                                    color='#000000',
+                                                    size='lg')]
+                                    )
+                                ]
+                            )
+                        ],
+                    ),
+                ],
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='xs',
+                contents=[
+                    ButtonComponent(
+                        style='secondary',
+                        color='#FFDD55',
+                        height='sm',
+                        action=PostbackAction(label='其他猶豫問題',data='choose')
+                    )
+                ]
+            ),
+        )
+    message = FlexSendMessage(alt_text="hello", contents=bubble)
+    return message
+    
+    
 @handler.add(PostbackEvent)
 def handle_postback(event):
     temp = event.postback.data
@@ -835,6 +899,13 @@ def handle_postback(event):
                 event.reply_token,
                 AudioSendMessage(original_content_url=url,duration=3000)
             )
+    elif temp == 'question':
+        fb.put('/{}/question'.format(event.source.user_id),data={'no':'0'},name='no')
+        line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='感謝您的用餐，請先輸入您的用餐編號/n讓小弟可以為你服務')
+            )
+        
     elif temp == 'revise':
         fb.delete('/{}/member'.format(event.source.user_id),None)
         print('-------inpostback--------')
@@ -1765,14 +1836,21 @@ def handle_msg_img(event):
 
 
 
+
+import sys
+import datetime
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials as SAC
 # 處理訊息:
 @handler.add(MessageEvent, message=TextMessage)
 def handle_msg_text(event):
     profile = line_bot_api.get_profile(event.source.user_id)
-    user_name = profile.display_name
-    picture_url = profile.picture_url
+#    user_name = profile.display_name
+#    picture_url = profile.picture_url
     user_id = event.source.user_id
-    print('----------------註冊-----------------------')
+    n = fb.get('/{}/question/no'.format(user_id),None)
+    if not n:
+        num = int(n['no'])
 #    ----------------註冊-----------------------
     register = fb.get('/{}/member'.format(user_id),None)
     if register == None:
@@ -1791,19 +1869,19 @@ def handle_msg_text(event):
         buttons_template = TemplateSendMessage(
                 alt_text='Template',
                 template=ButtonsTemplate(
-                        title='註冊成功',
-                        text='姓名:{}\nemail:{}\n請確定是否正確'.format(t[0],t[1]),
-                        actions=[
-                                MessageTemplateAction(
-                                        label='確認無誤',
-                                        text='MENU'
-                                ),
-                                PostbackTemplateAction(
-                                        label='重新輸入',
-                                        text='請再輸入一次，名字與email以斜線(/)區隔',
-                                        data='revise'
-                                )
-                        ]
+                    title='註冊成功',
+                    text='姓名:{}\nemail:{}\n請確定是否正確'.format(t[0],t[1]),
+                    actions=[
+                        MessageTemplateAction(
+                            label='確認無誤',
+                            text='MENU'
+                        ),
+                        PostbackTemplateAction(
+                            label='重新輸入',
+                            text='請再輸入一次，名字與email以斜線(/)區隔',
+                            data='revise'
+                        )
+                    ]
                 )
         )
         line_bot_api.reply_message(
@@ -1866,7 +1944,28 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
-
+    elif event.message.text != "test":
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="紀錄成功"))
+        pass
+        #GDriveJSON就輸入下載下來Json檔名稱
+        #GSpreadSheet是google試算表名稱
+        GDriveJSON = 'LineBot.json'
+        GSpreadSheet = 'BotTest'
+        while True:
+            try:
+                scope = ['https://spreadsheets.google.com/feeds']
+                key = SAC.from_json_keyfile_name(GDriveJSON, scope)
+                gc = gspread.authorize(key)
+                worksheet = gc.open(GSpreadSheet).sheet1
+            except Exception as ex:
+                print('無法連線Google試算表', ex)
+                sys.exit(1)
+            textt=""
+            textt+=event.message.text
+            if textt!="":
+                worksheet.append_row((datetime.datetime.now(), textt))
+                print('新增一列資料到試算表' ,GSpreadSheet)
+                return textt    
     elif event.message.text.lower() == 'draw':
         fb.delete('/{}/end'.format(user_id),None)
         fb.delete('/{}/start'.format(user_id),None)
@@ -1877,7 +1976,21 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
-        
+
+#-----------------問卷系統-----------------------
+#                
+#    elif questionnaire(num,user_id):
+#        if num ==1:
+#            
+#        t = questionnaire(num,user_id)
+#        num += 1
+#        fb.put('/{}/question'.format(user_id),data={'no':num},name='no')
+#        line_bot_api.reply_message(
+#            event.reply_token,
+#            TextSendMessage(text=t))
+    
+    
+    
     elif event.message.text.lower() == "choose":
         buttons_template = TemplateSendMessage(
             alt_text='抉擇領域template',
@@ -1972,25 +2085,25 @@ def handle_msg_text(event):
                         style='primary',
                         height='sm',
                         color='#00AA00',
-                        action=PostbackAction(label='問卷填答',data='ball_all_num',text='歷年號碼~詳細內容參考至台彩官網')
+                        action=PostbackAction(label='問卷填答',data='question' ,text='questionnaire')
                     ),
                     ButtonComponent(
                         style='primary',
                         color='#00AA00',
                         height='sm',
-                        action=PostbackAction(label='精選菜單', data='ball',text='您的幸運號碼...')
+                        action=MessageAction(label='精選菜單',text='food')
                     ),
                     ButtonComponent(
                         style='primary',
                         color='#00AA00',
                         height='sm',
-                        action=PostbackAction(label='訂位功能', data='ball',text='您的幸運號碼...')
+                        action=MessageAction(label='訂位功能',text='call')
                     ),
                     ButtonComponent(
                         style='primary',
                         color='#00AA00',
                         height='sm',
-                        action=PostbackAction(label='其他功能', data='ball',text='您的幸運號碼...')
+                        action=MessageAction(label='其他功能',text='else')
                     )
                 ]
             ),
@@ -2000,6 +2113,8 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
+
+    
     elif event.message.text == "PanX泛科技":
         content = panx()
         line_bot_api.reply_message(
