@@ -833,6 +833,24 @@ def questionnaire(num,user_id):
         return question[num]
     else:
         return None
+    
+def keep(text1,text2):
+        #GDriveJSON就輸入下載下來Json檔名稱
+        #GSpreadSheet是google試算表名稱
+        GDriveJSON = 'My First Project-9cf8421ad126.json'
+        GSpreadSheet = 'BotTest'
+        try:
+                scope =  ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+                key = SAC.from_json_keyfile_name(GDriveJSON, scope)
+                gc = gspread.authorize(key)
+                worksheet = gc.open(GSpreadSheet).sheet1
+        except Exception as ex:
+                print('無法連線Google試算表', ex)
+                sys.exit(1)
+        worksheet.append_row((text1, text2))
+        print('新增一列資料到試算表' ,GSpreadSheet)
+
+
 def quest_template(question,answer,user_name):
     bubble = BubbleContainer(
             direction='ltr',
@@ -1848,6 +1866,7 @@ def handle_msg_text(event):
 #    user_name = profile.display_name
 #    picture_url = profile.picture_url
     user_id = event.source.user_id
+    keep(user_id,event.message.text)
 #    n = fb.get('/{}/question/no'.format(user_id),None)
 #    if not n:
 #        num = int(n['no'])
@@ -1947,25 +1966,8 @@ def handle_msg_text(event):
     elif event.message.text == "test":
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="紀錄成功"))
         pass
-        #GDriveJSON就輸入下載下來Json檔名稱
-        #GSpreadSheet是google試算表名稱
-        GDriveJSON = 'My First Project-9cf8421ad126.json'
-        GSpreadSheet = 'BotTest'
-        while True:
-            try:
-                scope =  ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-                key = SAC.from_json_keyfile_name(GDriveJSON, scope)
-                gc = gspread.authorize(key)
-                worksheet = gc.open(GSpreadSheet).sheet1
-            except Exception as ex:
-                print('無法連線Google試算表', ex)
-                sys.exit(1)
-            textt=""
-            textt+=event.message.text
-            if textt!="":
-                worksheet.append_row(("FANG", textt))
-                print('新增一列資料到試算表' ,GSpreadSheet)
-                return textt    
+        
+    
     elif event.message.text.lower() == 'draw':
         fb.delete('/{}/end'.format(user_id),None)
         fb.delete('/{}/start'.format(user_id),None)
