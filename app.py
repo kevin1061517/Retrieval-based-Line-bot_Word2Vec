@@ -1867,6 +1867,7 @@ def handle_msg_text(event):
 #    picture_url = profile.picture_url
     user_id = event.source.user_id
     n = fb.get('/{}/question/no'.format(user_id),None)
+    num = 0 
     if n:
         num = int(n['no'])
 #    ----------------註冊-----------------------
