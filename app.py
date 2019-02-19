@@ -848,9 +848,25 @@ def keep(text1,text2):
         except Exception as ex:
                 print('無法連線Google試算表', ex)
                 sys.exit(1)
+
         worksheet.append_row((text1, text2))
         print('新增一列資料到試算表' ,GSpreadSheet)
+def delete_row():
+    #GDriveJSON就輸入下載下來Json檔名稱
+        #GSpreadSheet是google試算表名稱
+        GDriveJSON = 'My First Project-9cf8421ad126.json'
+        GSpreadSheet = 'BotTest'
+        try:
+                scope =  ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+                key = SAC.from_json_keyfile_name(GDriveJSON, scope)
+                gc = gspread.authorize(key)
+                worksheet = gc.open(GSpreadSheet).sheet1
+        except Exception as ex:
+                print('無法連線Google試算表', ex)
+                sys.exit(1)
 
+        worksheet.append_row(1)
+        print('delete一列資料到試算表' ,GSpreadSheet)
 
 def quest_template(question,answer,user_name):
     bubble = BubbleContainer(
@@ -1857,9 +1873,9 @@ def handle_msg_img(event):
 
 
 import sys
-import datetime
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials as SAC
+
 # 處理訊息:
 @handler.add(MessageEvent, message=TextMessage)
 def handle_msg_text(event):
@@ -1976,7 +1992,13 @@ def handle_msg_text(event):
             message
         )
 
-                
+    elif event.message.text.lower() == '我吃飽了':
+        fb.put('/{}/question'.format(event.source.user_id),data={'no':'0'},name='no')
+        line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='感謝您的用餐，請先輸入您的用餐編號\n讓小弟可以為你服務')
+            )    
+            
     elif questionnaire(num,user_id):
         print('-------問卷----')
         t = questionnaire(num,user_id)
@@ -1986,12 +2008,7 @@ def handle_msg_text(event):
             event.reply_token,
             TextSendMessage(text=t))
     
-    elif event.message.text.lower() == '我吃飽了':
-        fb.put('/{}/question'.format(event.source.user_id),data={'no':'0'},name='no')
-        line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text='感謝您的用餐，請先輸入您的用餐編號\n讓小弟可以為你服務')
-            )
+
     
     elif event.message.text.lower() == "choose":
         buttons_template = TemplateSendMessage(
@@ -2523,7 +2540,12 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
-
+    elif event.message.text.lower() == 'delete':
+        delete_row()
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='完成')
+        )
         
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
