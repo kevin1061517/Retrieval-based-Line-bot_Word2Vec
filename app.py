@@ -886,20 +886,18 @@ def delete_row():
 
 def quest_template(answer,user_name):
     t = fb.get('/{}/question/item'.format('U19df1f98bcf1414ec15f9dad09b9b0cb'),None)
-    question = ''
     answer = ''
     value = list(t.values())
     for v in value:
         for key,value in v.items():
-            question += '{}\n'.format(key)
-            answer += '{}\n'.format(value)
+            answer += '{} : {}\n'.format(key,value)
     bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
                 layout='vertical',
                 contents=[
                     TextComponent(text= '{}的消費體驗'.format(user_name), weight='bold',size='xl',color='#000000'),
-                    TextComponent(text= '您的建議與指教是推動我們前進的動力，{}的滿意就是我們的努力目標，歡迎給我們寶貴的意見，感謝!!',size='sm',wrap = True,color='#888888'),
+                    TextComponent(text= '您的建議與指教是推動我們前進的動力，{}的滿意就是我們的努力目標，歡迎給我們寶貴的意見，感謝!!'.format(user_name),size='sm',wrap = True,color='#888888'),
                     SeparatorComponent(color='#000000'),
                     # info
                     BoxComponent(
@@ -914,17 +912,10 @@ def quest_template(answer,user_name):
                                          spacing='md',
                                          contents=[
                                             TextComponent(
-                                                    text=question[:-1],
-                                                    color='#008800',
-                                                    wrap = True,
-                                                    size='md',
-                                                    flex=8),
-                                            TextComponent(
                                                     text=answer[:-1],
                                                     color='#000000',
                                                     wrap = True,
                                                     gravity = 'center',
-                                                    flex=3,
                                                     size='md')]
                                     )
                                 ]
@@ -939,13 +930,13 @@ def quest_template(answer,user_name):
                 contents=[
                     ButtonComponent(
                         style='secondary',
-                        color='#00AA00',
+                        color='#00DD00',
                         height='sm',
                         action=PostbackAction(label='確定送出',data='send')
                     ),
                     ButtonComponent(
                         style='secondary',
-                        color='#00AA00',
+                        color='#00DD00',
                         height='sm',
                         action=PostbackAction(label='清除資料',data='clear')
                     )
