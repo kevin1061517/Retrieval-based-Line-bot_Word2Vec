@@ -834,7 +834,13 @@ def questionnaire(num,user_id):
         return question[num]
     else:
         return None
-    
+
+def greet():
+    t = ['太棒了!!','很寶貴的建議','我們會持續改進','謝謝您的建議','很特別的意見','會不斷提供最好服務給您','給我們持續改善的動力','真的是很寶貴的建議','太寶貴的建議了，恭喜你 \n獲得冰淇淋一隻','謝謝指教']
+    r = random.randint(0,9)
+    message = TextSendMessage(text=t[r])
+    return message
+
 def keep(text1,text2):
         #GDriveJSON就輸入下載下來Json檔名稱
         #GSpreadSheet是google試算表名稱
@@ -865,7 +871,7 @@ def delete_row():
                 print('無法連線Google試算表', ex)
                 sys.exit(1)
 
-        worksheet.delete_row()
+        worksheet.delete_row(1)
         print('delete一列資料到試算表' ,GSpreadSheet)
 
 def quest_template(question,answer,user_name):
@@ -1991,7 +1997,12 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
-
+    elif event.message.text.lower() == 'exit' or event.message.text == '不做':
+        fb.delete('/{}/question'.format(event.source.user_id),None)
+        line_bot_api.reply_message(
+                event.reply_token,
+                [TextSendMessage(text='如需繼續幫我們了解您的需求，可以透過問卷讓我們了解'),TextSendMessage(text='輸入menu進入選單喔')]
+            ) 
     elif event.message.text.lower() == '我吃飽了':
         fb.put('/{}/question'.format(event.source.user_id),data={'no':'0'},name='no')
         line_bot_api.reply_message(
@@ -2002,11 +2013,12 @@ def handle_msg_text(event):
     elif questionnaire(num,user_id):
         print('-------問卷----')
         t = questionnaire(num,user_id)
+        message = greet()
         num += 1
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no')
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=t))
+            [TextSendMessage(text='----- 消費體驗調查 -----\n如需跳開問卷，請輸入exit或不做'),TextSendMessage(text=t),message])
     
 
     
