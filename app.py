@@ -836,8 +836,8 @@ def questionnaire(num,user_id):
         return None
 
 def greet():
-    t = ['太棒了!!','很寶貴的建議','我們會持續改進','謝謝您的建議','很特別的意見','會不斷提供最好服務給您','給我們持續改善的動力','真的是很寶貴的建議','太寶貴的建議了，恭喜你 \n獲得冰淇淋一隻','謝謝指教']
-    r = random.randint(0,9)
+    t = ['哇!!感謝您的答案','太棒了!!','很寶貴的建議','我們會持續改進','謝謝您的建議','很特別的意見','會不斷提供最好服務給您','給我們持續改善的動力','真的是很寶貴的建議','太寶貴的建議了，恭喜你 \n獲得冰淇淋一隻','謝謝指教']
+    r = random.randint(0,10)
     message = TextSendMessage(text=t[r])
     return message
 
@@ -2013,9 +2013,9 @@ def handle_msg_text(event):
     elif questionnaire(num,user_id):
         print('-------問卷----')
         t = questionnaire(num,user_id)
-        greet = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
+        g = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
         r = random.randint(0,4)
-        t = '{}{}'.format(greet[r],t)
+        t = '{}{}'.format(g[r],t)
         message = greet()
         num += 1
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no')
