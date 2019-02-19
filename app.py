@@ -886,6 +886,7 @@ def delete_row():
 
 def quest_template(answer,user_name):
     t = fb.get('/{}/question/item'.format('U19df1f98bcf1414ec15f9dad09b9b0cb'),None)
+ 
     answer = ''
     value = list(t.values())
     for v in value:
@@ -962,12 +963,17 @@ def handle_postback(event):
             )
     elif temp == 'question':
         fb.put('/{}/question'.format(event.source.user_id),data={'no':'1'},name='no')
+
         line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text='感謝您的用餐，請先輸入您的用餐編號\n讓小弟可以為你服務')
             )
     elif temp == 'send':
         t = fb.get('/{}/question/item'.format(event.source.user_id),None)
+        if not t:
+            line_bot_api.reply_message(
+                event.reply_token, TextSendMessage(text='已經送出囉'))
+            return
         temp = [list(i.values())[0] for i in t.values()]
         keep(temp)    
         fb.delete('/{}/question'.format(event.source.user_id),None)
@@ -2047,6 +2053,7 @@ def handle_msg_text(event):
             line_bot_api.reply_message(
                     event.reply_token,
                     flex)
+            return
         t  = questionnaire(num,user_id)
         QuickReply = answer(num,user_id)
         g = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
