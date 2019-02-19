@@ -824,7 +824,6 @@ def process_choose(user_id):
         )
     return bubble
 def answer(num,user_id):
-    
     t = fb.get('/{}/question/no'.format(user_id),None)
     if  t:
         answer = [['Secret'],['是','不是，來過好幾次'],['約會','聚餐','朋友聚','家人聚餐'],['排骨套餐','雞排套餐','銷魂叉燒飯','黯然消魂炒飯','螞蟻上樹'],
@@ -944,7 +943,6 @@ def quest_template(question,answer,user_name):
 def handle_postback(event):
     temp = event.postback.data
     if temp[:5] == 'audio':
-        print('-----------')
         t = temp.split('/')
         word = t[1]
         url = 'https://s.yimg.com/bg/dict/dreye/live/f/{}.mp3'.format(word)
@@ -961,7 +959,6 @@ def handle_postback(event):
         
     elif temp == 'revise':
         fb.delete('/{}/member'.format(event.source.user_id),None)
-        print('-------inpostback--------')
     elif temp == 'custom':
         t = fb.get('/{}/opti_num'.format(event.source.user_id),None)
         bubble = process_choose(event.source.user_id)
@@ -1897,9 +1894,9 @@ from oauth2client.service_account import ServiceAccountCredentials as SAC
 # 處理訊息:
 @handler.add(MessageEvent, message=TextMessage)
 def handle_msg_text(event):
-#    profile = line_bot_api.get_profile(event.source.user_id)
-#    user_name = profile.display_name
-#    picture_url = profile.picture_url
+    profile = line_bot_api.get_profile(event.source.user_id)
+    user_name = profile.display_name
+    picture_url = profile.picture_url
     user_id = event.source.user_id
     n = fb.get('/{}/question/no'.format(user_id),None)
     num = 1 
@@ -2023,16 +2020,19 @@ def handle_msg_text(event):
             )    
             
     elif questionnaire(num,user_id):
-        print('-------問卷----')
+        if num == 9:
+            line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='小弟已經幫{}意見傳給公司了，我們會持續不斷改進，以顧客滿意至極'.format(user_name)))
         t  = questionnaire(num,user_id)
         QuickReply = answer(num,user_id)
         g = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
         r = random.randint(0,4)
         t = '{}{}'.format(g[r],t)
         message = greet()
-
+        if num == 7:
+            message = TextSendMessage(text='最後一題了喔!!!!')
         fb.post('/{}/question/item'.format(user_id),{questionnaire(num-1,user_id):event.message.text})
-
         num += 1
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no') 
         line_bot_api.reply_message(
