@@ -829,14 +829,14 @@ def answer(num,user_id):
         answer = [['Secret'],['是','不是，來過好幾次'],['約會','聚餐','朋友聚','家人聚餐'],['排骨套餐','雞排套餐','銷魂叉燒飯','黯然消魂炒飯','螞蟻上樹'],
                   ['太鹹了','太清淡了','不好吃','好吃沒話講'],['價格公道','太貴了','普普通通'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁']]
         answer_list = answer[num]
-        print(str(answer_list)+'-------------')
         content = []
         for i in answer_list:
             content += [QuickReplyButton(action=MessageAction(label=i, text=i))]
         message = QuickReply(items=content)
-        print(str(message)+'-------------')
         return message
 def questionnaire(num,user_id):
+    if num == 9:
+        num = 0
     t = fb.get('/{}/question/no'.format(user_id),None)
     if  t:
 #        profile = line_bot_api.get_profile(event.source.user_id)
@@ -2030,7 +2030,7 @@ def handle_msg_text(event):
         r = random.randint(0,4)
         t = '{}{}'.format(g[r],t)
         message = greet()
-        if num == 7:
+        if num == 8:
             message = TextSendMessage(text='最後一題了喔!!!!')
         fb.post('/{}/question/item'.format(user_id),{questionnaire(num-1,user_id):event.message.text})
         num += 1
