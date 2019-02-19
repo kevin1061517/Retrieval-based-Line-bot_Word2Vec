@@ -836,7 +836,7 @@ def questionnaire(num,user_id):
         answer_list = answer[num]
         content = []
         for i in answer_list:
-            content += QuickReplyButton(action=MessageAction(label=i, text=i))
+            content += [QuickReplyButton(action=MessageAction(label=i, text=i))]
         message = TextSendMessage(
                 quick_reply=QuickReply(
                     items=[
