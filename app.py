@@ -2541,7 +2541,7 @@ def handle_msg_text(event):
             message
         )
     elif event.message.text.lower() == 'delete':
-        delete_row()
+        delete_row(1)
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='完成')
