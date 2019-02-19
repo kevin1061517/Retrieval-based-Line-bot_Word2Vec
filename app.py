@@ -830,8 +830,10 @@ def answer(num,user_id):
         answer = [['Secret'],['是','不是，來過好幾次'],['約會','聚餐','朋友聚','家人聚餐'],['排骨套餐','雞排套餐','銷魂叉燒飯','黯然消魂炒飯','螞蟻上樹'],
                   ['太鹹了','太清淡了','不好吃','好吃沒話講'],['價格公道','太貴了','普普通通'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁']]
         answer_list = answer[num]
+        print(str(answer_list)+'-------------')
         content = []
         for i in answer_list:
+            print('-------in------')
             content += [QuickReplyButton(action=MessageAction(label=i, text=i))]
         message = TextSendMessage(
                 quick_reply=QuickReply(
@@ -2035,7 +2037,7 @@ def handle_msg_text(event):
         message = greet()
         print('-------------1-------')
         fb.post('/{}/question/item'.format(user_id),{questionnaire(num-1,user_id):event.message.text})
-        print('-------------2-------')
+
         num += 1
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no') 
         line_bot_api.reply_message(
