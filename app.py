@@ -886,11 +886,13 @@ def delete_row():
 
 def quest_template(answer,user_name):
     t = fb.get('/{}/question/item'.format('U19df1f98bcf1414ec15f9dad09b9b0cb'),None)
-    temp = ''
+    question = ''
+    answer = ''
     value = list(t.values())
     for v in value:
         for key,value in v.items():
-            temp += '{} : {}\n'.format(key,value)
+            question += '{}\n'.format(key)
+            answer += '{}\n'.format(value)
     bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
@@ -912,9 +914,17 @@ def quest_template(answer,user_name):
                                          spacing='md',
                                          contents=[
                                             TextComponent(
-                                                    text=temp[:-1],
+                                                    text=question[:-1],
+                                                    color='#008800',
+                                                    wrap = True,
+                                                    gravity = 'center',
+                                                    size='md',
+                                                    flex=3),
+                                            TextComponent(
+                                                    text=answer[:-1],
                                                     color='#000000',
                                                     wrap = True,
+                                                    flex=7,
                                                     size='md')]
                                     )
                                 ]
@@ -929,13 +939,13 @@ def quest_template(answer,user_name):
                 contents=[
                     ButtonComponent(
                         style='secondary',
-                        color='#FFDD55',
+                        color='#008800',
                         height='sm',
                         action=PostbackAction(label='確定送出',data='send')
                     ),
                     ButtonComponent(
                         style='secondary',
-                        color='#FFDD55',
+                        color='#008800',
                         height='sm',
                         action=PostbackAction(label='清除資料',data='clear')
                     )
