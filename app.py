@@ -890,7 +890,7 @@ def quest_template(answer,user_name):
     value = list(t.values())
     for v in value:
         for key,value in v.items():
-            answer += '{} \n{}的回答---> {}\n'.format(key,user_name,value)
+            answer += '{} \n{}的回答---> {}\n\n'.format(key,user_name,value)
     bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
