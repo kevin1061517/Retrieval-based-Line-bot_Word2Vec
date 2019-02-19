@@ -833,8 +833,8 @@ def answer(num,user_id):
         print(str(answer_list)+'-------------')
         content = []
         for i in answer_list:
-            print('-------in------')
             content += [QuickReplyButton(action=MessageAction(label=i, text=i))]
+            print(str(content)+'-------------')
         message = TextSendMessage(
                 quick_reply=QuickReply(
                     items=[
