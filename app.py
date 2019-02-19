@@ -836,7 +836,7 @@ def questionnaire(num,user_id):
         answer_list = answer[num]
         content = []
         for i in answer_list:
-            content += [QuickReplyButton(action=MessageAction(label=i, text=i))]
+            content += [QuickReplyButton(action=MessageAction(label=i, text=i))
         message = TextSendMessage(
                 quick_reply=QuickReply(
                     items=[
@@ -2029,7 +2029,8 @@ def handle_msg_text(event):
         r = random.randint(0,4)
         t = '{}{}'.format(g[r],t)
         message = greet()
-        fb.post('/{}/question/item'.format(user_id),{questionnaire(num-1,user_id):event.message.text})
+        t,quick_reply = questionnaire(num-1,user_id)
+        fb.post('/{}/question/item'.format(user_id),{t:event.message.text})
         num += 1
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no') 
         line_bot_api.reply_message(
