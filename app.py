@@ -865,7 +865,6 @@ def keep(t):
         except Exception as ex:
                 print('無法連線Google試算表', ex)
                 sys.exit(1)
-
         worksheet.append_row(t)
         print('新增一列資料到試算表' ,GSpreadSheet)
 def delete_row():
@@ -885,7 +884,13 @@ def delete_row():
         worksheet.delete_row(1)
         print('delete一列資料到試算表' ,GSpreadSheet)
 
-def quest_template(question,answer,user_name):
+def quest_template(answer,user_name):
+    t = fb.get('/{}/question/item'.format('U19df1f98bcf1414ec15f9dad09b9b0cb'),None)
+    temp = ''
+    value = list(t.values())
+    for v in value:
+        for key,value in v.items():
+            temp += '{} : {}\n'.format(key,value)
     bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
@@ -904,17 +909,12 @@ def quest_template(question,answer,user_name):
                                 contents=[
                                     BoxComponent(
                                          layout='baseline',
-                                         spacing='sm',
+                                         spacing='md',
                                          contents=[
                                             TextComponent(
-                                                    text='問題:',
+                                                    text=temp[:-1],
                                                     color='#000000',
-                                                    gravity = 'center',
-                                                    size='lg'),
-                                            TextComponent(
-                                                    text=temp_ques,
-                                                    color='#000000',
-                                                    size='lg')]
+                                                    size='md')]
                                     )
                                 ]
                             )
@@ -930,7 +930,13 @@ def quest_template(question,answer,user_name):
                         style='secondary',
                         color='#FFDD55',
                         height='sm',
-                        action=PostbackAction(label='其他猶豫問題',data='choose')
+                        action=PostbackAction(label='確定送出',data='send')
+                    ),
+                    ButtonComponent(
+                        style='secondary',
+                        color='#FFDD55',
+                        height='sm',
+                        action=PostbackAction(label='清除資料',data='clear')
                     )
                 ]
             ),
@@ -941,6 +947,8 @@ def quest_template(question,answer,user_name):
     
 @handler.add(PostbackEvent)
 def handle_postback(event):
+    profile = line_bot_api.get_profile(event.source.user_id)
+    user_name = profile.display_name
     temp = event.postback.data
     if temp[:5] == 'audio':
         t = temp.split('/')
@@ -956,7 +964,21 @@ def handle_postback(event):
                 event.reply_token,
                 TextSendMessage(text='感謝您的用餐，請先輸入您的用餐編號\n讓小弟可以為你服務')
             )
-        
+    elif temp == 'send':
+        t = fb.get('/{}/question/item'.format(event.source.user_id),None)
+        temp = [list(i.values())[0] for i in t.values()]
+        keep(temp)    
+        fb.delete('/{}/question'.format(event.source.user_id),None)
+        line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='小弟已經把貴賓{}的意見傳給公司了，我們會持續不斷改進，以顧客滿意至極'.format(user_name))
+            )
+    elif temp == 'clear':
+        fb.delete('/{}/question'.format(event.source.user_id),None)
+        line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='親愛的{} 小弟期待您再給我們意見'.format(user_name))
+            )  
     elif temp == 'revise':
         fb.delete('/{}/member'.format(event.source.user_id),None)
     elif temp == 'custom':
@@ -1905,7 +1927,6 @@ def handle_msg_text(event):
 #    ----------------註冊-----------------------
     register = fb.get('/{}/member'.format(user_id),None)
     if register == None:
-        print('----------------in-----------------------')
         temp = event.message.text
         if '/' not in temp:
             line_bot_api.reply_message(
@@ -1988,19 +2009,13 @@ def handle_msg_text(event):
                 line_bot_api.reply_message(
                     event.reply_token,
                     [TextSendMessage(text='請輸入正確的起始及結束數字'),TextSendMessage(text='只能是數字，不能包含文字喔🙏')])
-        print('------out------')
     print('------if')
     if event.message.text.lower() == "eyny":
         content = eyny_movie()
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
-    if event.message.text.lower() == "t":
-        t = ['a','b','c','f','h','m','j']
-        keep(t)
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text='end'))
+
     elif event.message.text.lower() == 'draw':
         fb.delete('/{}/end'.format(user_id),None)
         fb.delete('/{}/start'.format(user_id),None)
@@ -2026,9 +2041,10 @@ def handle_msg_text(event):
             
     elif questionnaire(num,user_id):
         if num == 9:
+            flex = quest_template(answer,user_name)
             line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='小弟已經把貴賓{}的意見傳給公司了，我們會持續不斷改進，以顧客滿意至極'.format(user_name)))
+                    flex)
         t  = questionnaire(num,user_id)
         QuickReply = answer(num,user_id)
         g = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
