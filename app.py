@@ -831,7 +831,19 @@ def questionnaire(num,user_id):
 #        profile = line_bot_api.get_profile(event.source.user_id)
 #        user_name = profile.display_name
         question = ['用餐編號','第一次來用餐?','用餐的目的是?','享用主餐的部份是?','對餐廳提供的菜餚口味感到?','對餐廳食物的價格感到?','對工作人員的服務態度感到?','餐廳衛生評價是?','對餐廳的整體感覺']
-        return question[num]
+        answer = [['Secret'],['是','不是，來過好幾次'],['約會','聚餐','朋友聚','家人聚餐'],['排骨套餐','雞排套餐','銷魂叉燒飯','黯然消魂炒飯','螞蟻上樹'],
+                  ['太鹹了','太清淡了','不好吃','好吃沒話講'],['價格公道','太貴了','普普通通'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁']]
+        answer_list = answer[num]
+        content = []
+        for i in answer_list:
+            content += QuickReplyButton(action=MessageAction(label=i, text=i))
+        message = TextSendMessage(
+                quick_reply=QuickReply(
+                    items=[
+                        content    
+                    ]))
+        
+        return question[num],message
     else:
         return None
 
@@ -2012,7 +2024,7 @@ def handle_msg_text(event):
             
     elif questionnaire(num,user_id):
         print('-------問卷----')
-        t = questionnaire(num,user_id)
+        t,quick_reply = questionnaire(num,user_id)
         g = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
         r = random.randint(0,4)
         t = '{}{}'.format(g[r],t)
@@ -2022,7 +2034,7 @@ def handle_msg_text(event):
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no') 
         line_bot_api.reply_message(
             event.reply_token,
-            [message,TextSendMessage(text='--------- 消費體驗調查 ---------\n如需跳開問卷，請輸入exit或不做'),TextSendMessage(text=t)])
+            [message,TextSendMessage(text='--------- 消費體驗調查 ---------\n如需跳開問卷，請輸入exit或不做'),TextSendMessage(text=t),quick_reply])
     
 
     
