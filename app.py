@@ -2049,6 +2049,7 @@ def handle_msg_text(event):
             
     elif questionnaire(num,user_id):
         if num == 9:
+            fb.post('/{}/question/item'.format(user_id),{questionnaire(num-1,user_id):event.message.text})
             flex = quest_template(answer,user_name)
             line_bot_api.reply_message(
                     event.reply_token,
