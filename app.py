@@ -830,7 +830,7 @@ def questionnaire(num,user_id):
     if  t:
 #        profile = line_bot_api.get_profile(event.source.user_id)
 #        user_name = profile.display_name
-        question = ['請問第一次來用餐?','請問大概多久用餐一次?','用餐的目的是?','享用主餐的部份是?','我對餐廳提供的菜餚口味感到','我對餐廳食物的價格感到','對工作人員的服務態度感到','餐廳衛生評價評鑑優良獎','對餐廳的整體感覺']
+        question = ['請問第一次來用餐?','請問大概多久用餐一次?','用餐的目的是?','享用主餐的部份是?','我對餐廳提供的菜餚口味感到','我對餐廳食物的價格感到','對工作人員的服務態度感到','餐廳衛生評價是?','對餐廳的整體感覺']
         return question[num]
     else:
         return None
@@ -865,7 +865,7 @@ def delete_row():
                 print('無法連線Google試算表', ex)
                 sys.exit(1)
 
-        worksheet.delete_row(1)
+        worksheet.delete_row()
         print('delete一列資料到試算表' ,GSpreadSheet)
 
 def quest_template(question,answer,user_name):
