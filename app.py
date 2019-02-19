@@ -899,7 +899,7 @@ def quest_template(answer,user_name):
                 layout='vertical',
                 contents=[
                     TextComponent(text= '{}的消費體驗'.format(user_name), weight='bold',size='xl',color='#000000'),
-                    TextComponent(text= '您的建議與指教是推動我們前進的動力，{}的滿意就是我們的努力目標，歡迎給我們寶貴的意見，感謝!!',size='sm',color='#000000'),
+                    TextComponent(text= '您的建議與指教是推動我們前進的動力，{}的滿意就是我們的努力目標，歡迎給我們寶貴的意見，感謝!!',size='sm',wrap = True,color='#888888'),
                     SeparatorComponent(color='#000000'),
                     # info
                     BoxComponent(
@@ -939,13 +939,13 @@ def quest_template(answer,user_name):
                 contents=[
                     ButtonComponent(
                         style='secondary',
-                        color='#00DD00',
+                        color='#00AA00',
                         height='sm',
                         action=PostbackAction(label='確定送出',data='send')
                     ),
                     ButtonComponent(
                         style='secondary',
-                        color='#00DD00',
+                        color='#00AA00',
                         height='sm',
                         action=PostbackAction(label='清除資料',data='clear')
                     )
