@@ -852,7 +852,7 @@ def greet():
     message = TextSendMessage(text=t[r])
     return message
 
-def keep(text1,text2):
+def keep(t):
         #GDriveJSON就輸入下載下來Json檔名稱
         #GSpreadSheet是google試算表名稱
         GDriveJSON = 'My First Project-9cf8421ad126.json'
@@ -866,7 +866,7 @@ def keep(text1,text2):
                 print('無法連線Google試算表', ex)
                 sys.exit(1)
 
-        worksheet.append_row((text1, text2))
+        worksheet.append_row(t)
         print('新增一列資料到試算表' ,GSpreadSheet)
 def delete_row():
     #GDriveJSON就輸入下載下來Json檔名稱
@@ -1995,7 +1995,12 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
-
+    if event.message.text.lower() == "t":
+        t = ['a','b','c','f','h','m','j']
+        keep(t)
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='end'))
     elif event.message.text.lower() == 'draw':
         fb.delete('/{}/end'.format(user_id),None)
         fb.delete('/{}/start'.format(user_id),None)
@@ -2023,7 +2028,7 @@ def handle_msg_text(event):
         if num == 9:
             line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='小弟已經幫{}意見傳給公司了，我們會持續不斷改進，以顧客滿意至極'.format(user_name)))
+                    TextSendMessage(text='小弟已經把貴賓{}的意見傳給公司了，我們會持續不斷改進，以顧客滿意至極'.format(user_name)))
         t  = questionnaire(num,user_id)
         QuickReply = answer(num,user_id)
         g = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
