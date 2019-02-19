@@ -830,7 +830,7 @@ def questionnaire(num,user_id):
     if  t:
 #        profile = line_bot_api.get_profile(event.source.user_id)
 #        user_name = profile.display_name
-        question = ['請問第一次來用餐?','請問大概多久用餐一次?','用餐的目的是?','享用主餐的部份是?','我對餐廳提供的菜餚口味感到','我對餐廳食物的價格感到','對工作人員的服務態度感到','餐廳衛生評價是?','對餐廳的整體感覺']
+        question = ['用餐編號','第一次來用餐?','用餐的目的是?','享用主餐的部份是?','對餐廳提供的菜餚口味感到?','對餐廳食物的價格感到?','對工作人員的服務態度感到?','餐廳衛生評價是?','對餐廳的整體感覺']
         return question[num]
     else:
         return None
@@ -941,7 +941,7 @@ def handle_postback(event):
                 AudioSendMessage(original_content_url=url,duration=3000)
             )
     elif temp == 'question':
-        fb.put('/{}/question'.format(event.source.user_id),data={'no':'0'},name='no')
+        fb.put('/{}/question'.format(event.source.user_id),data={'no':'1'},name='no')
         line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text='感謝您的用餐，請先輸入您的用餐編號\n讓小弟可以為你服務')
@@ -1890,7 +1890,7 @@ def handle_msg_text(event):
 #    picture_url = profile.picture_url
     user_id = event.source.user_id
     n = fb.get('/{}/question/no'.format(user_id),None)
-    num = 0 
+    num = 1 
     if n:
         num = int(n['no'])
 #    ----------------註冊-----------------------
@@ -2017,8 +2017,9 @@ def handle_msg_text(event):
         r = random.randint(0,4)
         t = '{}{}'.format(g[r],t)
         message = greet()
+        fb.post('/{}/question/item'.format(user_id),{questionnaire(num-1,user_id):event.message.text})
         num += 1
-        fb.put('/{}/question'.format(user_id),data={'no':num},name='no')
+        fb.put('/{}/question'.format(user_id),data={'no':num},name='no') 
         line_bot_api.reply_message(
             event.reply_token,
             [message,TextSendMessage(text='--------- 消費體驗調查 ---------\n如需跳開問卷，請輸入exit或不做'),TextSendMessage(text=t)])
