@@ -917,14 +917,14 @@ def quest_template(answer,user_name):
                                                     text=question[:-1],
                                                     color='#008800',
                                                     wrap = True,
-                                                    gravity = 'center',
                                                     size='md',
-                                                    flex=3),
+                                                    flex=8),
                                             TextComponent(
                                                     text=answer[:-1],
                                                     color='#000000',
                                                     wrap = True,
-                                                    flex=7,
+                                                    gravity = 'center',
+                                                    flex=3,
                                                     size='md')]
                                     )
                                 ]
