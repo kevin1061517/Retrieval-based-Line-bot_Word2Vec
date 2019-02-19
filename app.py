@@ -823,27 +823,29 @@ def process_choose(user_id):
             ),
         )
     return bubble
-
+def answer(num,user_id):
+    t = fb.get('/{}/question/no'.format(user_id),None)
+    if  t:
+        answer = [['Secret'],['是','不是，來過好幾次'],['約會','聚餐','朋友聚','家人聚餐'],['排骨套餐','雞排套餐','銷魂叉燒飯','黯然消魂炒飯','螞蟻上樹'],
+                  ['太鹹了','太清淡了','不好吃','好吃沒話講'],['價格公道','太貴了','普普通通'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁']]
+        answer_list = answer[num]
+        content = []
+        for i in answer_list:
+            content += [QuickReplyButton(action=MessageAction(label=i, text=i))]
+        message = TextSendMessage(
+                quick_reply=QuickReply(
+                    items=[
+                        content    
+                    ]))
+        return message
 def questionnaire(num,user_id):
     t = fb.get('/{}/question/no'.format(user_id),None)
     print('----------'+str(t))
     if  t:
 #        profile = line_bot_api.get_profile(event.source.user_id)
 #        user_name = profile.display_name
-        question = ['用餐編號','第一次來用餐?','用餐的目的是?','享用主餐的部份是?','對餐廳提供的菜餚口味感到?','對餐廳食物的價格感到?','對工作人員的服務態度感到?','餐廳衛生評價是?','對餐廳的整體感覺']
-        answer = [['Secret'],['是','不是，來過好幾次'],['約會','聚餐','朋友聚','家人聚餐'],['排骨套餐','雞排套餐','銷魂叉燒飯','黯然消魂炒飯','螞蟻上樹'],
-                  ['太鹹了','太清淡了','不好吃','好吃沒話講'],['價格公道','太貴了','普普通通'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁']]
-        answer_list = answer[num]
-        content = []
-        for i in answer_list:
-            content += [QuickReplyButton(action=MessageAction(label=i, text=i))
-        message = TextSendMessage(
-                quick_reply=QuickReply(
-                    items=[
-                        content    
-                    ]))
-        
-        return question[num],message
+        question = ['用餐編號','第一次來用餐?','用餐的目的是?','享用主餐的部份是?','對餐廳提供的菜餚口味感到?','對餐廳食物的價格感到?','對工作人員的服務態度感到?','餐廳衛生評價是?','對餐廳的整體感覺']  
+        return question[num]
     else:
         return None
 
@@ -2024,13 +2026,13 @@ def handle_msg_text(event):
             
     elif questionnaire(num,user_id):
         print('-------問卷----')
-        t,quick_reply = questionnaire(num,user_id)
+        t  = questionnaire(num,user_id)
+        quick_reply=answer(num,user_id)
         g = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
         r = random.randint(0,4)
         t = '{}{}'.format(g[r],t)
         message = greet()
-        t,quick_reply = questionnaire(num-1,user_id)
-        fb.post('/{}/question/item'.format(user_id),{t:event.message.text})
+        fb.post('/{}/question/item'.format(user_id),{questionnaire(num-1,user_id):event.message.text})
         num += 1
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no') 
         line_bot_api.reply_message(
