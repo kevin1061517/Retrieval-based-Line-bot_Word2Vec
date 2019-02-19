@@ -2025,13 +2025,13 @@ def handle_msg_text(event):
     elif questionnaire(num,user_id):
         print('-------問卷----')
         t  = questionnaire(num,user_id)
-        QuickReply = answer(num-1,user_id)
+        QuickReply = answer(num,user_id)
         g = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
         r = random.randint(0,4)
         t = '{}{}'.format(g[r],t)
         message = greet()
 
-        fb.post('/{}/question/item'.format(user_id),{questionnaire(num-1,user_id):event.message.text})
+        fb.post('/{}/question/item'.format(user_id),{questionnaire(num,user_id):event.message.text})
 
         num += 1
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no') 
