@@ -2013,12 +2013,15 @@ def handle_msg_text(event):
     elif questionnaire(num,user_id):
         print('-------問卷----')
         t = questionnaire(num,user_id)
+        greet = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
+        r = random.randint(0,4)
+        t = '{}{}'.format(greet[r],t)
         message = greet()
         num += 1
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no')
         line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage(text='----- 消費體驗調查 -----\n如需跳開問卷，請輸入exit或不做'),TextSendMessage(text=t),message])
+            [message,TextSendMessage(text='--------- 消費體驗調查 ---------\n如需跳開問卷，請輸入exit或不做'),TextSendMessage(text=t)])
     
 
     
@@ -2116,7 +2119,7 @@ def handle_msg_text(event):
                         style='primary',
                         height='sm',
                         color='#00AA00',
-                        action=PostbackAction(label='問卷填答',data='question' ,text='questionnaire')
+                        action=PostbackAction(label='問卷填答',data='question')
                     ),
                     ButtonComponent(
                         style='primary',
