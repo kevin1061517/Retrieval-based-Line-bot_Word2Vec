@@ -914,6 +914,7 @@ def quest_template(answer,user_name):
                                             TextComponent(
                                                     text=temp[:-1],
                                                     color='#000000',
+                                                    wrap = True,
                                                     size='md')]
                                     )
                                 ]
