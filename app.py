@@ -2016,7 +2016,7 @@ def handle_msg_text(event):
                 [TextSendMessage(text='如需繼續幫我們了解您的需求，可以透過問卷讓我們了解'),TextSendMessage(text='輸入menu進入選單喔')]
             ) 
     elif event.message.text.lower() == '我吃飽了':
-        fb.put('/{}/question'.format(event.source.user_id),data={'no':'0'},name='no')
+        fb.put('/{}/question'.format(event.source.user_id),data={'no':'1'},name='no')
         line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text='感謝您的用餐，請先輸入您的用餐編號\n讓小弟可以為你服務')
@@ -2031,7 +2031,7 @@ def handle_msg_text(event):
         t = '{}{}'.format(g[r],t)
         message = greet()
 
-        fb.post('/{}/question/item'.format(user_id),{questionnaire(num,user_id):event.message.text})
+        fb.post('/{}/question/item'.format(user_id),{questionnaire(num-1,user_id):event.message.text})
 
         num += 1
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no') 
