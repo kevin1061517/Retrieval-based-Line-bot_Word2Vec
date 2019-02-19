@@ -834,12 +834,10 @@ def answer(num,user_id):
         content = []
         for i in answer_list:
             content += [QuickReplyButton(action=MessageAction(label=i, text=i))]
-            print(str(content)+'-------------')
         message = TextSendMessage(
                 quick_reply=QuickReply(
-                    items=[
-                        content    
-                    ]))
+                    items=content    
+                    ))
         print(str(message)+'-------------')
         return message
 def questionnaire(num,user_id):
