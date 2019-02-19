@@ -2037,7 +2037,7 @@ def handle_msg_text(event):
         fb.put('/{}/question'.format(user_id),data={'no':num},name='no') 
         line_bot_api.reply_message(
             event.reply_token,
-            [message,TextSendMessage(text='--------- 消費體驗調查 ---------\n如需跳開問卷，請輸入exit或不做'),TextSendMessage(text=t,quick_reply=QuickReply),quick_reply])
+            [message,TextSendMessage(text='--------- 消費體驗調查 ---------\n如需跳開問卷，請輸入exit或不做'),TextSendMessage(text=t,quick_reply=QuickReply)])
 
     elif event.message.text.lower() == "choose":
         buttons_template = TemplateSendMessage(
