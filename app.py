@@ -910,7 +910,7 @@ def quest_template(answer,user_name):
                                 layout='vertical',
                                 contents=[
                                     BoxComponent(
-                                         layout='baseline',
+                                         layout='horizontal',
                                          spacing='md',
                                          contents=[
                                             TextComponent(
@@ -939,13 +939,13 @@ def quest_template(answer,user_name):
                 contents=[
                     ButtonComponent(
                         style='secondary',
-                        color='#008800',
+                        color='#00DD00',
                         height='sm',
                         action=PostbackAction(label='確定送出',data='send')
                     ),
                     ButtonComponent(
                         style='secondary',
-                        color='#008800',
+                        color='#00DD00',
                         height='sm',
                         action=PostbackAction(label='清除資料',data='clear')
                     )
