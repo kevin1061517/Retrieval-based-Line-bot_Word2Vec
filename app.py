@@ -2001,6 +2001,48 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
+    elif event.message.text.lower() == 'quick':
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(
+                text='Quick reply',
+                quick_reply=QuickReply(
+                    items=[
+                        QuickReplyButton(
+                            action=PostbackAction(label="label1", data="data1")
+                        ),
+                        QuickReplyButton(
+                            action=MessageAction(label="label2", text="text2")
+                        ),
+                        QuickReplyButton(
+                            action=DatetimePickerAction(label="label3",
+                                                        data="data3",
+                                                        mode="date")
+                        ),
+                        QuickReplyButton(
+                            action=CameraAction(label="label4")
+                        ),
+                        QuickReplyButton(
+                            action=CameraRollAction(label="label5")
+                        ),
+                        QuickReplyButton(
+                            action=LocationAction(label="label6")
+                        ),
+                    ])))
+    elif event.message.text.lower() == 'qu':
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(
+                text='Quick reply',
+                quick_reply=QuickReply(
+                    items=[
+                        QuickReplyButton(
+                            action=MessageAction(label="label1")
+                        ),
+                        QuickReplyButton(
+                            action=MessageAction(label="label2", text="text2")
+                        )
+                    ])))
 
     elif event.message.text.lower() == 'draw':
         fb.delete('/{}/end'.format(user_id),None)
@@ -2028,12 +2070,12 @@ def handle_msg_text(event):
     elif questionnaire(num,user_id):
         print('-------問卷----')
         t  = questionnaire(num,user_id)
-        quick_reply = answer(num,user_id)
+        quick_reply = answer(num-1,user_id)
         g = ['那想請問','方便問一下','可以告訴我們','可以問','我們想知道']
         r = random.randint(0,4)
         t = '{}{}'.format(g[r],t)
         message = greet()
-        print('-------------1-------')
+
         fb.post('/{}/question/item'.format(user_id),{questionnaire(num-1,user_id):event.message.text})
 
         num += 1
@@ -2041,9 +2083,7 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             [message,TextSendMessage(text='--------- 消費體驗調查 ---------\n如需跳開問卷，請輸入exit或不做'),TextSendMessage(text=t),quick_reply])
-    
 
-    
     elif event.message.text.lower() == "choose":
         buttons_template = TemplateSendMessage(
             alt_text='抉擇領域template',
