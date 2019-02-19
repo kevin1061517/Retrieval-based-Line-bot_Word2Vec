@@ -865,7 +865,7 @@ def delete_row():
                 print('無法連線Google試算表', ex)
                 sys.exit(1)
 
-        worksheet.append_row(1)
+        worksheet.delete_row(1)
         print('delete一列資料到試算表' ,GSpreadSheet)
 
 def quest_template(question,answer,user_name):
@@ -2541,7 +2541,7 @@ def handle_msg_text(event):
             message
         )
     elif event.message.text.lower() == 'delete':
-        delete_row(1)
+        delete_row()
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='完成')
