@@ -2148,13 +2148,14 @@ def handle_msg_text(event):
         date_picker = TemplateSendMessage(
             alt_text='訂位系統',
             template=ButtonsTemplate(
-                text='{} 你好\n請設定一下取餐時間',
+                text='{} 你好\n請設定一下取餐時間'.format(user_name),
                 title='訂位系統',
+#                thumbnail_image_url=picture_url,
                 actions=[
                     DatetimePickerTemplateAction(
                         label='設定',
                         data='datetime',
-                        mode='date',
+                        mode='datetime',
                         initial='2017-04-01',
                         min='2017-04-01',
                         max='2099-12-31'
