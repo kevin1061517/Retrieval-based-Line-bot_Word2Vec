@@ -789,7 +789,7 @@ def answer(num,user_id):
     t = fb.get('/{}/question/no'.format(user_id),None)
     if  t:
         answer = [['Secret'],['是','不是，來過好幾次'],['約會','聚餐','朋友聚','家人聚餐'],['排骨套餐','雞排套餐','銷魂叉燒飯','黯然消魂炒飯','螞蟻上樹'],
-                  ['太鹹了','太清淡了','不好吃','好吃沒話講'],['價格公道','太貴了','普普通通'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁']]
+                  ['太鹹了','太清淡了','不好吃','好吃沒話講'],['價格公道','太貴了','普普通通'],['非常滿意','滿意','尚可','差勁','非常差勁'],['非常滿意','滿意','尚可','差勁','非常差勁'],['感覺很棒','感覺很差','食物好吃!','沒有']]
         answer_list = answer[num]
         content = []
         for i in answer_list:
@@ -803,7 +803,7 @@ def questionnaire(num,user_id):
     if  t:
 #        profile = line_bot_api.get_profile(event.source.user_id)
 #        user_name = profile.display_name
-        question = ['用餐編號','第一次來用餐?','用餐的目的是?','享用主餐的部份是?','對餐廳提供的菜餚口味感到?','對餐廳食物的價格感到?','對工作人員的服務態度感到?','餐廳衛生評價是?','對餐廳的整體感覺']  
+        question = ['用餐編號','第一次來用餐?','用餐的目的是?','享用主餐的部份是?','對餐廳提供的菜餚口味感到?','對餐廳食物的價格感到?','對工作人員的服務態度感到?','餐廳衛生評價是?','想對我們建議的話']  
         return question[num]
     else:
         return None
@@ -846,6 +846,25 @@ def delete_row():
         worksheet.delete_row(1)
         print('delete一列資料到試算表' ,GSpreadSheet)
 
+def audio_template(text):
+    Confirm_template = TemplateSendMessage(
+        alt_text='audio_template',
+        template=ConfirmTemplate(
+            title='確定一下吧',
+            text='您的建議是:\n{}'.format(text),
+            actions=[                              
+                MessageTemplateAction(
+                    label='對',
+                    text=text
+                ),
+                MessageTemplateAction(
+                    label='錯',
+                    text='那請再說一次'
+                )
+            ]
+        )
+    )
+    return Confirm_template
 def quest_template(answer,user_name):
     t = fb.get('/{}/question/item'.format('U19df1f98bcf1414ec15f9dad09b9b0cb'),None)
  
@@ -1886,6 +1905,34 @@ def handle_msg_img(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=t))
 
 
+from pydub import AudioSegment
+import speech_recognition as sr
+@handler.add(MessageEvent,message=AudioMessage)
+def handle_aud(event):
+    r = sr.Recognizer()
+    message_content = line_bot_api.get_message_content(event.message.id)
+    ext = 'mp3'
+    try:
+        with tempfile.NamedTemporaryFile(prefix=ext + '-', delete=False) as tf:
+            for chunk in message_content.iter_content():
+                tf.write(chunk)
+            tempfile_path = tf.name
+        path = tempfile_path 
+        AudioSegment.converter = '/app/vendor/ffmpeg/ffmpeg'
+        sound = AudioSegment.from_file_using_temporary_files(path)
+        path = os.path.splitext(path)[0]+'.wav'
+        sound.export(path, format="wav")
+        with sr.AudioFile(path) as source:
+            audio = r.record(source)
+    except Exception as e:
+        t = '音訊有問題'+test+str(e.args)+path
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=t))
+    os.remove(path)
+    text = r.recognize_google(audio,language='zh-TW')
+    message = audio_template(text)
+    line_bot_api.reply_message(event.reply_token,message)
+
+
 import sys
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials as SAC
@@ -2003,11 +2050,14 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
+    elif event.message.text.lower() == 'else':
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='敬請期待'))
+        
     elif event.message.text.lower() == 'food':
         image_message = [ImageSendMessage(
             original_content_url=url,
             preview_image_url=url
-        ) for url in ['https://i.imgur.com/RCGdggZ.jpg','https://i.imgur.com/5iMx8nk.jpg','https://i.imgur.com/EEy8s6m.jpg']]
+        ) for url in ['https://i.imgur.com/5iMx8nk.jpg','https://i.imgur.com/EEy8s6m.jpg','https://i.imgur.com/RCGdggZ.jpg']]
         line_bot_api.reply_message(event.reply_token,image_message)
         
         
@@ -2531,12 +2581,12 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
-    elif event.message.text.lower() == 'delete':
-        delete_row()
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text='完成')
-        )
+#    elif event.message.text.lower() == 'delete':
+#        delete_row()
+#        line_bot_api.reply_message(
+#            event.reply_token,
+#            TextSendMessage(text='完成')
+#        )
         
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
