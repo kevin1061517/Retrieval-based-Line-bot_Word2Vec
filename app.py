@@ -559,61 +559,6 @@ def check_pic(img_id):
     return Confirm_template
 
 
-#判斷是西洋還是華語歌曲 如果為西洋category是390 而華語是297
-def type_music(category,range_num=5):
-    template = []
-    yesterday = datetime.today() + timedelta(-1)
-    yesterday_format = yesterday.strftime('%Y-%m-%d')
-    t = 'https://kma.kkbox.com/charts/api/v1/daily?category='+str(category)+'&date='+yesterday_format+'&lang=tc&limit=50&terr=tw&type=song'
-    res = requests.get(t).json()
-    for i in range(range_num-5,range_num):
-        print('processing='+str(i))
-        template.append(process_mp3_template(res['data']['charts']['song'][i]['song_name'],i+1,res['data']['charts']['song'][i]['cover_image']['normal'],res['data']['charts']['song'][i]['artist_name'],res['data']['charts']['song'][i]['song_url'],process_mp3_url('https://www.kkbox.com/tw/tc/ajax/wp_songinfo.php?type=song&crypt_id='+res['data']['charts']['song'][i]['song_id']+'&ver=2'),range_num,category))
-    return template
-
-#處理kkbox抓來的mp3網址
-def process_mp3_url(url):
-    res = requests.get(url).json()
-    try:
-        t = res['data'][0]['mp3_url']
-        return t
-    except:
-        return '音樂版權未授權~'
-#一個模板來放抓來的音樂並顯示連結
-def process_mp3_template(title,rank,album_image,singer,song_url,listen_url,range_num,category):
-    if song_url == '#':
-        label = '無介紹與歌詞'
-        song_url = 'https://github.com/kevin1061517?tab=repositories'
-    else:
-        label = '介紹及歌詞'
-    buttons_template = TemplateSendMessage(
-        alt_text='mp3_template',
-        template=ButtonsTemplate(
-            title = '排行榜第{}名'.format(rank),
-            text='歌手:{}\n歌名:{}'.format(singer,title)[:60],
-            thumbnail_image_url = album_image,
-            actions=[
-                URITemplateAction(
-                    label = label,
-                    uri = song_url
-                ),
-                PostbackTemplateAction(
-                    label='試聽30秒',
-                    data = 'listen'+listen_url,
-                    
-                ),
-                PostbackTemplateAction(
-                    label = '再看看{}名~{}名 歌曲'.format(range_num+1,range_num+5),
-                    data = 'next'+str(range_num+5)+str(category)
-                )
-            ]
-         )
-    )
-    return buttons_template
-  
-
-
-
 def look_up(tex):
     content = ''
     target_url = 'https://tw.dictionary.search.yahoo.com/search;_ylt=AwrtXG86cTRcUGoAESt9rolQ?p={}&fr2=sb-top'.format(tex)
@@ -633,6 +578,23 @@ def look_up(tex):
         content = '查無此字'
     return content
 
+def get_total_flex(body_content,footer_content=[ButtonComponent(style='link',action=URIAction(label='My github', uri='https://github.com/kevin1061517?tab=repositories'))]):
+    bubble = BubbleContainer(
+#            header=BoxComponent(
+#                layout='vertical',
+#                contents=header_content#---->這樣子也行 contents=[t[0],t[1]]
+#            ),
+            body=BoxComponent(
+                layout='vertical',
+                contents=body_content
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing='sm',
+                contents= footer_content
+            )
+        )
+    return bubble
 
 def integer_word(word):
     content = look_up(word)
@@ -960,6 +922,12 @@ def handle_postback(event):
         line_bot_api.reply_message(
                 event.reply_token,
                 AudioSendMessage(original_content_url=url,duration=3000)
+            )
+    elif temp == 'datetime':
+        time = event.postback.params['date']
+        line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='時間為{}'.format(time))
             )
     elif temp == 'question':
         fb.put('/{}/question'.format(event.source.user_id),data={'no':'1'},name='no')
@@ -1838,14 +1806,7 @@ def handle_postback(event):
                 event.reply_token,
                 AudioSendMessage(original_content_url=url,duration=30000)
             )
-    elif temp[0:4] == 'next':
-        range_num = int(temp[4:-3])
-        if range_num > 50:
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已經到底了喔!!'))
-        else:
-            category = int(temp[-3:])
-            template = type_music(category,range_num)    
-            line_bot_api.reply_message(event.reply_token,template)
+
     elif temp[0:4] == 'porn':
         print('------in------')
         t = temp.split('/')
@@ -1853,7 +1814,7 @@ def handle_postback(event):
         keyword = t[2]
         index += 1
         try:
-            buttons_template = porn_video_template(keyword,judge,index)
+            buttons_template = porn_video_template(keyword,index)
             line_bot_api.reply_message(event.reply_token, buttons_template)
         except IndexError:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text='已經到底了喔'))
@@ -1869,21 +1830,28 @@ def handle_postback(event):
                 VideoSendMessage(
                     original_content_url=video_url,
                     preview_image_url=img))
-    elif temp[:5] == 'image':
-     print('------postback'+str(temp))
-     t = temp.split('/')
-     path = '/{}/{}'.format(t[2],t[3])
-     print('postback---------'+str(path))
-     img_id = 1
-     t = fb.get('/pic',None)
-     if t!=None:
-         count = 1
-         for key,value in t.items():
+
+# 處理圖片
+@handler.add(MessageEvent,message=ImageMessage)
+def handle_msg_img(event):
+    profile = line_bot_api.get_profile(event.source.user_id)
+    tem_name = str(profile.display_name)
+    img_id = 1
+    t = fb.get('/pic',None)
+    if t!=None:
+        count = 1
+        for key,value in t.items():
             if count == len(t):#取得最後一個dict項目
                 img_id = int(value['id'])+1
             count+=1
-     try:
-
+    try:
+        message_content = line_bot_api.get_message_content(event.message.id)
+        with tempfile.NamedTemporaryFile(prefix='jpg-', delete=False) as tf:
+            for chunk in message_content.iter_content():
+                tf.write(chunk)
+            fb.post('/pic',{'id':str(img_id),'user':tem_name,'describe':''})
+            tempfile_path = tf.name
+        path = tempfile_path
         client = ImgurClient(client_id, client_secret, access_token, refresh_token)
         config = {
             'album': album_id,
@@ -1895,26 +1863,9 @@ def handle_postback(event):
         os.remove(path)
         image_reply = check_pic(img_id)
         line_bot_api.reply_message(event.reply_token,[TextSendMessage(text='上傳成功'),image_reply])
-     except  Exception as e:
+    except  Exception as e:
         t = '上傳失敗'+str(e.args)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=t))
-
-
-
-# 處理圖片
-@handler.add(MessageEvent,message=ImageMessage)
-def handle_msg_img(event):
-    message_content = line_bot_api.get_message_content(event.message.id)
-    with tempfile.NamedTemporaryFile(prefix='jpg-', delete=False) as tf:
-        for chunk in message_content.iter_content():
-            tf.write(chunk)
-        tempfile_path = tf.name
-    path = tempfile_path
-
-    buttons_template = template_img(path)
-    line_bot_api.reply_message(event.reply_token,buttons_template)
-
-
 
 
 import sys
@@ -2192,8 +2143,32 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
+#訂位
+    elif event.message.text.lower() == "call":
+        date_picker = TemplateSendMessage(
+            alt_text='訂位系統',
+            template=ButtonsTemplate(
+                text='{} 你好\n請設定一下取餐時間',
+                title='訂位系統',
+                actions=[
+                    DatetimePickerTemplateAction(
+                        label='設定',
+                        data='datetime',
+                        mode='date',
+                        initial='2017-04-01',
+                        min='2017-04-01',
+                        max='2099-12-31'
+                    )
+                ]
+            )
+        )
 
-    
+        line_bot_api.reply_message(
+            event.reply_token,
+            date_picker
+        )
+        
+        
     elif event.message.text == "PanX泛科技":
         content = panx()
         line_bot_api.reply_message(
@@ -2209,50 +2184,7 @@ def handle_msg_text(event):
                     template
             ]
         )
-#https://kma.kkbox.com/charts/api/v1/daily?category=297&date=2018-12-17&lang=tc&limit=50&terr=tw&type=song
-    elif event.message.text == "kkbox-華語":
-        template = type_music(297)
-        line_bot_api.reply_message(event.reply_token,template)
-#https://kma.kkbox.com/charts/api/v1/daily?category=390&date=2018-12-17&lang=tc&limit=50&terr=tw&type=song
-    elif event.message.text == "kkbox-西洋":
-        template = type_music(390)
-        line_bot_api.reply_message(event.reply_token,template)
-    elif event.message.text == "kkbox-日語":
-        template = type_music(308)
-        line_bot_api.reply_message(event.reply_token,template)
-    elif event.message.text == "kkbox-台語":
-        template = type_music(304)
-        line_bot_api.reply_message(event.reply_token,template)
-    elif event.message.text.lower() == "kkbox":
-            buttons_template = TemplateSendMessage(
-            alt_text='kkbox template',
-            template=ButtonsTemplate(
-                title='kkbox歌曲熱門排行',
-                text='請選擇需要選項',
-                thumbnail_image_url='https://i.imgur.com/WWJ1ltx.jpg',
-                actions=[
-                    MessageTemplateAction(
-                        label='華語',
-                        text='kkbox-華語'
-                    ),
-                    MessageTemplateAction(
-                        label='西洋',
-                        text='kkbox-西洋'
-                    ),
-                    MessageTemplateAction(
-                        label='日語',
-                        text='kkbox-日語'
-                    ),
-                    MessageTemplateAction(
-                        label='台語',
-                        text='kkbox-台語'
-                    )
-                ]
-            )
-        )
-            line_bot_api.reply_message(event.reply_token, buttons_template)
 
-    
     elif event.message.text == "觸電網-youtube":
         target_url = 'https://www.youtube.com/user/truemovie1/videos'
         rs = requests.session()
@@ -2283,6 +2215,7 @@ def handle_msg_text(event):
     elif event.message.text.lower() == "movie":
         buttons_template = movie_template()
         line_bot_api.reply_message(event.reply_token, buttons_template)
+        
     elif event.message.text == "蘋果即時新聞":
         content = apple_news()
         line_bot_api.reply_message(
@@ -2544,35 +2477,6 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
-    elif event.message.text.lower() == 'quick reply':
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(
-                text='Quick reply',
-                quick_reply=QuickReply(
-                    items=[
-                        QuickReplyButton(
-                            action=MessageAction(label="第五人格", text="微博-第五人格")
-                        ),
-                        QuickReplyButton(
-                            action=MessageAction(label="kkbox-華語", text="kkbox-華語")
-                        ),
-                        QuickReplyButton(
-                            action=MessageAction(label="hank like2", text="hank like2")
-                        ),
-                        QuickReplyButton(
-                            action=MessageAction(label="hank like3", text="hank like3")
-                        ),
-                        QuickReplyButton(
-                            action=MessageAction(label="hank like5", text="hank like5")
-                        ),
-                        QuickReplyButton(
-                            action=CameraAction(label="Camera")
-                        ),
-                        QuickReplyButton(
-                            action=LocationAction(label="=Location")
-                        ),
-                    ])))
 
     elif re.search(r'yout$',event.message.text.lower())!=None:
         keyword = event.message.text.lower()[:-4]
