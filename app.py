@@ -924,11 +924,29 @@ def handle_postback(event):
                 AudioSendMessage(original_content_url=url,duration=3000)
             )
     elif temp == 'datetime':
-        time = event.postback.params['date']
+        time = event.postback.params['datetime']
         line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text='時間為{}'.format(time))
-            )
+                TextSendMessage(text='您訂位時間為{}'.format(time)),
+                TextSendMessage(
+                    text='請問來店人數為?',
+                    quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(
+                                action=PostbackAction(label="1人",text='您訂位時間為{}\n人數為{}人'.format(time,1),data="reservation1")
+                                ),
+                            QuickReplyButton(
+                                action=PostbackAction(label="2人",text='您訂位時間為{}\n人數為{}人'.format(time,2), data="reservation2")
+                                ),
+                            QuickReplyButton(
+                                action=PostbackAction(label="3人",text='您訂位時間為{}\n人數為{}人'.format(time,3), data="reservation3")
+                                ),
+                            QuickReplyButton(
+                                action=PostbackAction(label="4人",text='您訂位時間為{}\n人數為{}人'.format(time,4), data="reservation4")
+                                )
+                        ])
+                )
+        )
     elif temp == 'question':
         fb.put('/{}/question'.format(event.source.user_id),data={'no':'1'},name='no')
 
