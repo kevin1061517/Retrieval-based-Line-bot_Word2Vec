@@ -925,6 +925,7 @@ def handle_postback(event):
             )
     elif temp == 'datetime':
         time = event.postback.params['datetime']
+        t = str(time).replace('T','  ')
         line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(
@@ -932,16 +933,16 @@ def handle_postback(event):
                     quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(
-                                action=PostbackAction(label="1人",text='您訂位時間為{}\n人數為{}人'.format(str(time),1),data="reservation1")
+                                action=PostbackAction(label="1人",text='您訂位時間為{}\n人數為{}人'.format(t,1),data="reservation1")
                                 ),
                             QuickReplyButton(
-                                action=PostbackAction(label="2人",text='您訂位時間為{}\n人數為{}人'.format(str(time),2), data="reservation2")
+                                action=PostbackAction(label="2人",text='您訂位時間為{}\n人數為{}人'.format(t,2), data="reservation2")
                                 ),
                             QuickReplyButton(
-                                action=PostbackAction(label="3人",text='您訂位時間為{}\n人數為{}人'.format(str(time),3), data="reservation3")
+                                action=PostbackAction(label="3人",text='您訂位時間為{}\n人數為{}人'.format(t,3), data="reservation3")
                                 ),
                             QuickReplyButton(
-                                action=PostbackAction(label="4人",text='您訂位時間為{}\n人數為{}人'.format(str(time),4), data="reservation4")
+                                action=PostbackAction(label="4人",text='您訂位時間為{}\n人數為{}人'.format(t,4), data="reservation4")
                                 )
                         ])
                 )
@@ -2002,6 +2003,14 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
+    elif event.message.text.lower() == 'food':
+        image_message = [ImageSendMessage(
+            original_content_url=url,
+            preview_image_url=url
+        ) for url in ['https://i.imgur.com/RCGdggZ.jpg','https://i.imgur.com/5iMx8nk.jpg','https://i.imgur.com/EEy8s6m.jpg']]
+        line_bot_api.reply_message(event.reply_token,image_message)
+        
+        
     elif event.message.text.lower() == 'exit' or event.message.text == '不做':
         fb.delete('/{}/question'.format(event.source.user_id),None)
         line_bot_api.reply_message(
@@ -2512,7 +2521,7 @@ def handle_msg_text(event):
                      original_content_url=video_url,
                      preview_image_url=img)]
         )
-    elif re.search(r'eng$',event.message.text.lower())!=None:
+    elif re.search(r'?$',event.message.text.lower())!=None:
         keyword = event.message.text.lower()[:-3]
         keyword = keyword.replace(' ','')
         print('-----------'+keyword)
