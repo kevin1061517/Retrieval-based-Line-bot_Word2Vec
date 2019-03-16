@@ -2156,9 +2156,9 @@ def handle_msg_text(event):
                         label='設定',
                         data='datetime',
                         mode='datetime',
-                        initial='2017-04-01 12:30:00',
-                        min='2017-04-01 12:30:00',
-                        max='2099-12-31 12:30:00'
+                        initial='2017-04-01T12:30',
+                        min='2017-04-01T12:30',
+                        max='2099-12-31T12:30'
                     )
                 ]
             )
