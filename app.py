@@ -918,7 +918,7 @@ def quest_template(answer,user_name):
                     ),
                     ButtonComponent(
                         style='secondary',
-                        color='	#66FF66',
+                        color='#66FF66',
                         height='sm',
                         action=PostbackAction(label='清除資料',data='clear')
                     )
