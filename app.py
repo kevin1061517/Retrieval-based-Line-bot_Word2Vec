@@ -811,7 +811,7 @@ def questionnaire(num,user_id):
 def greet():
     t = ['哇!!感謝您的答案','太棒了!!','很寶貴的建議','我們會持續改進','謝謝您的建議','很特別的意見','會不斷提供最好服務給您','給我們持續改善的動力','真的是很寶貴的建議','謝謝您!','謝謝指教','中獎']
     r = random.randint(0,10)
-    if t[r] == '中獎':
+    if t[r] != '中獎':
         message = ImageSendMessage(
                 original_content_url='https://i.imgur.com/d9jnyyN.jpg',
                 preview_image_url='https://i.imgur.com/d9jnyyN.jpg')
@@ -877,7 +877,7 @@ def quest_template(answer,user_name):
     value = list(t.values())
     for v in value:
         for key,value in v.items():
-            answer += '{} \n---> {}\n\n'.format(key,uvalue)
+            answer += '{} \n---> {}\n\n'.format(key,value)
     bubble = BubbleContainer(
             direction='ltr',
             body=BoxComponent(
