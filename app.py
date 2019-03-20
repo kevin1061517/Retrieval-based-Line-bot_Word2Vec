@@ -903,7 +903,8 @@ def quest_template(answer,user_name):
                                                     color='#000000',
                                                     wrap = True,
                                                     gravity = 'center',
-                                                    size='md')]
+                                                    size='md'),
+                                            SeparatorComponent(margin='xl',color='#000000')]
                                     )
                                 ]
                             )
@@ -911,7 +912,7 @@ def quest_template(answer,user_name):
                     ),
                 ],
             ),
-            SeparatorComponent(margin='xl',color='#000000'),
+            
             footer=BoxComponent(
                 layout='vertical',
                 spacing='xs',
