@@ -854,12 +854,12 @@ def audio_template(text):
             text='您的建議是:\n{}'.format(text),
             actions=[                              
                 MessageTemplateAction(
-                    label='對',
-                    text=text
-                ),
-                MessageTemplateAction(
                     label='錯',
                     text='那請再說一次'
+                ),
+                MessageTemplateAction(
+                    label='對',
+                    text=text
                 )
             ]
         )
@@ -912,13 +912,13 @@ def quest_template(answer,user_name):
                 contents=[
                     ButtonComponent(
                         style='secondary',
-                        color='#00DD00',
+                        color='#66FF66',
                         height='sm',
                         action=PostbackAction(label='確定送出',data='send')
                     ),
                     ButtonComponent(
                         style='secondary',
-                        color='#00DD00',
+                        color='	#66FF66',
                         height='sm',
                         action=PostbackAction(label='清除資料',data='clear')
                     )
