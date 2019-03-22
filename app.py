@@ -2622,7 +2622,7 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
              VideoSendMessage(
-                     original_content_url=video_url,
+                     original_content_url=url,
                      preview_image_url=img)
         )
         
