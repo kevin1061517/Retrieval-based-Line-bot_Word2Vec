@@ -118,7 +118,7 @@ def movie_template():
                     ),
                     MessageTemplateAction(
                         label='觸電網-youtube',
-                        text='觸電網-youtube'
+                        text='觸電網-youtube')
                 ]
             )
         )
