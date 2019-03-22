@@ -119,11 +119,6 @@ def movie_template():
                     MessageTemplateAction(
                         label='觸電網-youtube',
                         text='觸電網-youtube'
-                    ),
-                    MessageTemplateAction(
-                        label='Marco體驗師-youtube',
-                        text='Marco體驗師'
-                    )
                 ]
             )
         )
@@ -2257,7 +2252,53 @@ def handle_msg_text(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
-        
+    elif event.message.text.lower() == "help":
+        Carousel_template = TemplateSendMessage(
+        alt_text='Carousel template',
+        template=CarouselTemplate(
+        columns=[
+            CarouselColumn(
+                thumbnail_image_url='https://i.imgur.com/d1XQC5H.jpg',
+                title = '功能目錄',
+                text = 'Hey {} bro!\n提供額外小工具，希望您能有美好的一天'.format(user_name),
+                actions=[
+                    MessageTemplateAction(
+                        label='餐廳資訊',
+                        text= 'menu'
+                    ),
+                    MessageTemplateAction(
+                        label='電影資訊',
+                        text= 'movie'
+                    ),
+                    MessageTemplateAction(
+                        label='新聞資訊',
+                        text= 'news'
+                    )
+                ]
+            ),
+            CarouselColumn(
+                thumbnail_image_url='https://i.imgur.com/d1XQC5H.jpg',
+                title = '功能目錄',
+                text = 'Hey {} bro!\n提供額外小工具，希望您能有美好的一天'.format(user_name),
+                actions=[
+                    MessageTemplateAction(
+                        label='英文字典',
+                        text= '提醒您:\n只需要在查詢英文單字後加上?即可'
+                    ),
+                    MessageTemplateAction(
+                        label='樂透查詢',
+                        text= 'lottery'
+                    ),
+                    MessageTemplateAction(
+                        label='中正大學',
+                        text= 'introduce'
+                    )
+                ]
+            )
+        ]
+        )
+        )
+        line_bot_api.reply_message(event.reply_token,Carousel_template) 
     elif event.message.text == "近期上映電影":
         content = movie()
         template = movie_template()
@@ -2282,18 +2323,6 @@ def handle_msg_text(event):
                 TextSendMessage(text=seqs[random.randint(0, len(seqs) - 1)]),
                 template
             ])
-   
-    elif event.message.text.lower() == "ramdom picture":
-        client = ImgurClient(client_id, client_secret)
-        images = client.get_album_images(album_id)
-        index = random.randint(0, len(images) - 1)
-        url = images[index].link
-        image_message = ImageSendMessage(
-            original_content_url=url,
-            preview_image_url=url
-        )
-        line_bot_api.reply_message(event.reply_token,image_message)
-
 
     elif event.message.text.lower() == "movie":
         buttons_template = movie_template()
@@ -2587,12 +2616,15 @@ def handle_msg_text(event):
             event.reply_token,
             message
         )
-#    elif event.message.text.lower() == 'delete':
-#        delete_row()
-#        line_bot_api.reply_message(
-#            event.reply_token,
-#            TextSendMessage(text='完成')
-#        )
+    elif event.message.text.lower() == 'introduce':
+        url = 'https://www.youtube.com/watch?v=vf3qc2-h9kE'
+        url, img = yvideo(url)
+        line_bot_api.reply_message(
+            event.reply_token,
+             VideoSendMessage(
+                     original_content_url=video_url,
+                     preview_image_url=img)
+        )
         
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
