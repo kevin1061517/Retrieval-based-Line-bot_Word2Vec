@@ -2577,7 +2577,7 @@ def handle_msg_text(event):
                      original_content_url=video_url,
                      preview_image_url=img)]
         )
-    elif re.search(r'?$',event.message.text.lower())!=None:
+    elif re.search(r'\?$',event.message.text.lower())!=None:
         keyword = event.message.text.lower()[:-3]
         keyword = keyword.replace(' ','')
         print('-----------'+keyword)
