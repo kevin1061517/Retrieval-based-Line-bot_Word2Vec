@@ -2578,7 +2578,7 @@ def handle_msg_text(event):
                      preview_image_url=img)]
         )
     elif re.search(r'\?$',event.message.text.lower())!=None:
-        keyword = event.message.text.lower()[:-3]
+        keyword = event.message.text.lower()[:-1]
         keyword = keyword.replace(' ','')
         print('-----------'+keyword)
         message = integer_word(keyword)
