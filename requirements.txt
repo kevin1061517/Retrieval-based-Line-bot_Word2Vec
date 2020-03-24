@@ -1,6 +1,9 @@
-test2
-
-
-
-
-
+jieba
+sklearn
+line-bot-sdk
+Flask
+scipy
+gensim
+gunicorn
+numpy
+torch
